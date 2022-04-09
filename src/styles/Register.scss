@@ -1,0 +1,127 @@
+header{
+    ul{
+        li{
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-direction: row;
+            p{
+                margin-right: 1rem;
+            }
+            button{
+                padding: 9px 20px 9px 20px;
+                border-radius: 1.125rem;
+                background-color: rgb(86, 136, 211);
+                color: white;
+            }
+            button:hover{
+                background-color: #5065c5;
+                cursor: pointer;
+            }
+        }
+    }
+}
+
+
+section{
+    min-height: 80vh;
+    .register-form{
+        justify-content: center;
+        display: flex;
+        align-items: center;
+        .register-form-body{
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 5rem;
+            border: 1px solid rgb(7, 7, 7);
+            border-radius: 1.125rem;
+            flex-direction: column;
+            max-width: 56%;
+            padding: 4%;
+            h1{
+                text-align: center;
+            }
+            form{
+                display: flex;
+                flex-direction: column;
+                .name{
+                    .lastname{
+                        margin-left : 1rem;
+                    }
+                }
+
+                .other{
+                    display: flex;
+                    flex-direction: column;
+                    margin-top: 5%;
+
+                    .password{
+                        margin-top: 5%;
+                    }
+                    .count{
+                        margin-top: 5%;
+                        margin-bottom: 5%;
+                    }
+                }
+                .line{
+                    width: 100%;
+                }
+                .usegoogle{
+                    text-align: center;
+                }
+                .terms{
+                    display: flex;
+                    flex-direction: row;
+                    align-items: center;
+                    text-align: center;
+                    
+                }
+                a{
+                    text-align: center;
+                    button{
+                        padding: 12px 60px 12px 60px;
+                        border-radius: 1.125rem;
+                        background-color: rgb(86, 136, 211);
+                        color: white;
+                    }
+                }
+                .googlelogin{
+                    background-color: #4285f4 !important;
+                    color: #fff !important;
+                    text-align: center !important;
+                    height: 40px !important;
+                    padding: 0 !important;
+                    display: flex !important;
+                    align-items: center !important;
+                    border-radius: 1.125rem !important;
+
+                }
+                button{
+                    margin-top: 5%;
+                    padding: 10px;
+                    border-radius: 1.125rem;
+                    background-color: #a2aee2;
+                    
+
+                    a{
+                        color: white;
+                        text-decoration: none;
+                    }
+                }
+                button:hover{
+                    background-color: #5065c5;
+                    cursor: pointer;
+                }
+                p{
+                    text-align: center;
+
+                    span{
+                        color: #5065c5;
+                    }
+                }
+            }
+
+        }
+    }
+}

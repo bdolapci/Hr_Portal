@@ -1,0 +1,43 @@
+.header{
+    background-color: #f1f1f1;
+    min-height: 60px;
+    padding: 0 50px 0 50px;
+    border-bottom: .5px solid #d9d9d9;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  
+}
+.logo a {
+    text-decoration: none;
+    color: rgb(49, 48, 48);
+}
+.header {
+    ul{
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+        display: flex;
+
+        li{
+            margin-left: 10px;
+            padding: 9px 20px 9px 20px;
+            border-radius: 1.125rem;
+        }
+        .register{
+            background-color: rgb(86, 136, 211);
+            a{
+                color: white;
+            }
+        }
+        a{
+            text-decoration: none;
+            color: rgb(49, 48, 48);
+        }
+    }
+    
+    
+}
+
+
