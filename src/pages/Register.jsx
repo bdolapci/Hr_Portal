@@ -10,8 +10,8 @@ import { InputLabel,MenuItem,TextField,Alert  } from '@mui/material';
 import countryList from 'react-select-country-list'
 import GoogleLogin from 'react-google-login';
 import axios from "axios";
-
-
+import { useNavigate } from "react-router-dom";
+import Footer from '../components/Footer';
 function Register() {
 
   // const [value, setValue] = useState('')
@@ -19,8 +19,11 @@ function Register() {
   const[lastName,setLastName]=React.useState("");
   const[email,setEmail]=React.useState("");
   const[password,setPassword]=React.useState("");
+  const[isUser,setIsUser]=React.useState("");
+  const[confirmPassword,setConfirmPassword]=React.useState("");
+  const [isApplicant, setIsApplicant] = useState(false);
   const [emptyField,setEmptyField] = React.useState(false);
-
+  const [errorField,setErrorField] = React.useState(false);
   function firstNameHandler(e){
     setFirstName(e.target.value);
   }
@@ -33,34 +36,37 @@ function Register() {
   function passwordHandler(e){
     setPassword(e.target.value);
   }
+  function isUserHandler(e){
+    setIsUser(e.target.value);
+  }
+  function confirmPasswordHandler(e){
+    setConfirmPassword(e.target.value);
+  }
+  const navigate = useNavigate();
 
   async function reg(){
     try {
       const response =await axios.post(
-        "http://localhost:46836/api/Home",
+        "https://localhost:44361/api/Home/register",
         {
           firstName:`${firstName}`,
           lastName:`${lastName}`,
           email:`${email}`,
-          password: `${password}`,
+          Passwords: `${password}`,
+          confirmPassword : `${confirmPassword}`,
+          userRole: `${isUser}`,
+          isApplicant: `${isApplicant}`
         }
       )
-      
+      console.log(response)
+      console.log(response.data)
+      navigate("/");
     } catch (error) {
-      console.log(error.response.status);
-      if (error.response.status === 400) {
-        console.log("Bad Password");
-      }
-      if (error.response.status === 404) {
-        console.log("Email not found");
-      }
+      setErrorField(true);
+      console.log(error);
     }
   }
-  
-  // const options = useMemo(() => countryList().getData(), [])
-  // const changeHandler = value => {
-  //   setValue(value)
-  // }
+
 
   return (
       <>
@@ -83,9 +89,9 @@ function Register() {
       <div className="register-form">
           <div className="register-form-body">
             <h1>Register as a Employee to work for <br></br> Worldwide Clients</h1>
-            {emptyField ? <Alert severity="error">All fields are required!</Alert> :  ""}
+            {errorField ? <Alert severity="error">This email already exists</Alert> :  ""}
             <form onSubmit={(e)=>{
-              if(firstName && lastName && email && password != ""){
+              if(firstName && lastName && email && password && confirmPassword != ""){
                 reg()
                 e.preventDefault()
               }
@@ -124,31 +130,43 @@ function Register() {
               required
               onChange={passwordHandler}
               />
+               <TextField type="password" 
+              placeholder='confirm password'
+              className='password'
+              variant='outlined'
+              required
+              onChange={confirmPasswordHandler}
+              />
+              <TextField type="text" 
+              placeholder='HR' 
+              className='hruser'
+              variant='outlined'
+              required
+              onChange={isUserHandler}
+              />
               {/* <div className="count">
               <InputLabel>Country</InputLabel>
               <Select options={options} value={value} onChange={changeHandler} />
               </div> */}
               </div>
              
-              <div className="terms"> 
+              {/* <div className="terms"> 
               <input type="checkbox"></input>
               <h4>Accept Terms&Conditions</h4>
               </div>
+              <div className="representetive">
+              <input type="checkbox"></input>
+              <h4>Join as Company Representetive</h4>
+              </div> */}
               <Button type="submit">Create Account</Button>
               <hr className='line'></hr>
               <p className='usegoogle'>You can also use google</p>
-              {/* <GoogleLogin className='googlelogin' buttonText="Log in with Google"/> */}
-            
-            
-
-            <p>Are you a client? <span> Register as a Client</span></p>
+               <GoogleLogin className='googlelogin' buttonText="Log in with Google"/> 
             </form>
           </div>
       </div>
     </section>
-    <footer>
-
-    </footer>
+    <Footer/>
       </>
   )
 }
