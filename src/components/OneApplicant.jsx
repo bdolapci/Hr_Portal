@@ -10,63 +10,23 @@ import axios from "axios";
 import { useEffect } from 'react';
 import { useState } from 'react';
 import { useRef } from 'react';
-
-function OneUser ({user}) {  
+import { CssBaseline } from '@mui/material';
+function OneApplicant ({user}) {  
     const [alertdelete,setAlertDelete]=useState(false);
-    const removeUser = async (Id) => {
-    try {
-      const res = await axios.delete(`${"https://localhost:44361/api/Home"}`,{
-          headers:{
-              id:Id
-          }
-      })
-      console.log(res.data)
-      window.location.reload(false);
-      setAlertDelete(true);
-    } catch (error) {
-      alert(error)
-    }
-  }
 
-  const makeHR =async (Id)=>{
-      try {
-          const res=await axios.post(`${"https://localhost:44361/api/Home/HR"}`,{
-                    id:Id,
-                    userRole: "hr",    
-                    email:"a",
-                    firstName:"as",
-                    lastName:"vc",
-                    Passwords:"cz",          
-          })
-          console.log(res.data)
-          window.location.reload(false);
-      } catch (error) {
-          alert(error)
-      }
-  }
 
-  const makeUser =async (Id)=>{
-    try {
-        const res=await axios.post(`${"https://localhost:44361/api/Home/HR"}`,{           
-                id:Id,
-                userRole: "user",
-                email:"a",
-                firstName:"as",
-                lastName:"vc",
-                Passwords:"cz",          
-        })
-        console.log(res.data)
-        window.location.reload(false);
-    } catch (error) {
-        alert(error)
-    }
-}
+
+
+
 
   return (
    <>
+    <CssBaseline />
         {alertdelete ? <Alert severity="success">User Successfully Deleted</Alert> :  ""}
+       
         {user.map((user)=>(
-            
+           
+         
             <Card sx={{marginBottom:"3%"}}>
             <CardContent sx={{
                 display: 'flex',
@@ -82,7 +42,7 @@ function OneUser ({user}) {
             </Typography>
             <h3 
             style={{"width":"10rem","textAlign":"left"}}
-            key={user}>{user.firstName} {user.lastName}</h3>
+            key={user}>{ } {user.firstName} {user.lastName} {console.log()}</h3>
                     </Box>
             <Box>
             <Typography sx={{
@@ -91,6 +51,7 @@ function OneUser ({user}) {
                 Email
             </Typography>
             <h3 key={user}>{user.email}</h3>
+            
             </Box>
             
                 </Box>
@@ -107,9 +68,13 @@ function OneUser ({user}) {
                     <Button type='submit' sx={{"border":"0.5px solid gray"}} >Reject Applicant</Button>
                 </ButtonGroup>: */}
                 <ButtonGroup>
-                <Button onClick={() => removeUser(user.Id)} type='submit' sx={{"border":"0.5px solid gray"}}>Delete Account</Button>
-                {user.userRole==="hr" ?<Button onClick={() => makeUser(user.Id)} type='submit' sx={{"border":"0.5px solid gray"}}>Make User</Button>:
-                <Button onClick={()=>makeHR(user.Id)} sx={{"border":"0.5px solid gray"}}>Make HR</Button>}
+                <Button  href="/profile"  sx={{"border":"0.5px solid gray"}}>Display Profle</Button>
+                <Button  sx={{"border":"0.5px solid gray"}}>Display Documents</Button>
+                {user ? 
+                <>
+                <Button style={{ backgroundColor: "rgb(30 173 37)",color:"white" }} sx={{"border":"0.5px solid gray"}}>Accept Applicant</Button>
+              
+                <Button style={{ backgroundColor: '#e42424',color:"white" }} sx={{"border":"0.5px solid gray"}}>Reject Applicant</Button>   </>: ""}
 
                 </ButtonGroup>
                
@@ -129,4 +94,4 @@ function OneUser ({user}) {
   )
 }
 
-export default OneUser
+export default OneApplicant

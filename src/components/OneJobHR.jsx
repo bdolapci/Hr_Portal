@@ -11,11 +11,12 @@ import { useEffect } from 'react';
 import { useState } from 'react';
 import { useRef } from 'react';
 
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 function OneJob({job}) {  
     const [jobState,setJobState]=useState();
 
     const navigate = useNavigate();
+
  
   const removeJob = async (Id) => {
   try {
@@ -72,7 +73,7 @@ return (
             <Typography sx={{
                 textAlign: 'left',
             }}>               
-                Date(YYYY-MM-DD)
+                Date
             </Typography>
             <h3
              style={{"width":"12rem","textAlign":"left"}}
@@ -87,20 +88,20 @@ return (
           }}>
   
           <CardActions>
-              {(job.Date.split("T")[0].split("-")[0]>date.split("-")[0]) ||
+          {(job.Date.split("T")[0].split("-")[0]>date.split("-")[0]) ||
               (job.Date.split("T")[0].split("-")[0]===date.split("-")[0] && job.Date.split("T")[0].split("-")[1]>date.split("-")[1] ) ||
               (job.Date.split("T")[0].split("-")[0]===date.split("-")[0] && job.Date.split("T")[0].split("-")[1]===date.split("-")[1] 
               &&job.Date.split("T")[0].split("-")[2]>date.split("-")[2])
               ? 
               <ButtonGroup>
-                <Button sx={{"border":"0.5px solid gray"}} >Edit Job</Button>
-                <Button onClick={() => removeJob(job.Id)} type='submit' sx={{"border":"0.5px solid gray"}}>Delete Job</Button>
+                <Button href='/hrPanel/jobs/EditJob'  sx={{"border":"0.5px solid gray"}} >Edit Job</Button>
+                <Button href="/hrPanel/applicants" type='submit' sx={{"border":"0.5px solid gray"}}>
+             Display Applicants
+                </Button>
               </ButtonGroup>            
               :           
-              <Button disabled sx={{"border":"0.5px solid gray"}} >Delete Job</Button>
-              }
-             
-                
+              <Button disabled sx={{"border":"0.5px solid gray"}} >Edit Job</Button>
+              }                    
           </CardActions>
                   </Box>
               </CardContent>

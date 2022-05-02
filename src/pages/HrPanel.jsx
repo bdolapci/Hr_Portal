@@ -11,44 +11,13 @@ import { TextField } from '@mui/material';
 import { useEffect } from 'react';
 import axios from 'axios';
 import OneJob from '../components/OneJob';
-import PostJob from '../components/PostJob';
+import { Card,CardContent } from '@mui/material'
+import Button from '@mui/material/Button'
+import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import Sidebar from '../components/SideBar';
+import Applicants from './Applicants';
 function HrPanel() {
-
-    function TabPanel(props) {
-        const { children, value, index, ...other } = props;
-      
-        return (
-          <div
-            role="tabpanel"
-            hidden={value !== index}
-            id={`simple-tabpanel-${index}`}
-            aria-labelledby={`simple-tab-${index}`}
-            {...other}
-          >
-            {value === index && (
-              <Box sx={{ p: 3 }}>
-                <Typography>{children}</Typography>
-              </Box>
-            )}
-          </div>
-        );
-      }
-      
-      
-      TabPanel.propTypes = {
-        children: PropTypes.node,
-        index: PropTypes.number.isRequired,
-        value: PropTypes.number.isRequired,
-      };
-
-      function a11yProps(index) {
-        return {
-          id: `simple-tab-${index}`,
-          'aria-controls': `simple-tabpanel-${index}`,
-        };
-      }
-
-      
 
   const [value, setValue] = React.useState(0);
   
@@ -59,11 +28,10 @@ function HrPanel() {
   const[job,setJob]=React.useState(null);
 
   useEffect(()=>{
-      axios.get("http://localhost:46836/api/Home",{
+      axios.get("https://localhost:44361/api/Home",{
       }).then((res)=>{
         let a = res.data.map((x=>x.isApplicant))
         let isapp=[]
-        console.log(a)
         for(let i=0;i<res.data.length;i++){
           if(a[i]===true){
             isapp.push(res.data[i])
@@ -74,64 +42,60 @@ function HrPanel() {
   },[]);
 
   useEffect(()=>{
-    axios.get("http://localhost:46836/api/Home/Jobs",{
+    axios.get("https://localhost:44361/api/Home/Jobs",{
     }).then((res)=>{
         console.table(res.data);
         setJob(res.data);     
     })
 },[]);
 
+const nav = useNavigate();
 
+const [name,setName]=React.useState("")
+const [date,setDate]=React.useState('')
+const [description,setDescription]=React.useState('')
+const [category,setCategory]=React.useState('')
+const [photo,setPhoto]=React.useState('')
 
+function NameHandler(e){
+setName(e.target.value);
+}
+function DateHandler(e){
+setDate(e.target.value);
+}
+function descriptionHandler(e){
+setDescription(e.target.value);
+}
+function categoryHandler(e){
+setCategory(e.target.value);
+}
+function photoHandler(e){
+setPhoto(e.target.value);
+}
+
+const postJob =async()=>{
+try {
+const res=await axios.post(
+  "https://localhost:44361/api/Home/Jobs",
+{
+  Name: `${name}`,
+
+  description: `${description}`,
+  category: `${category}`,
+  photo: `${photo}`,
+})
+console.log(res)
+console.log(res.data)
+window.location.reload()
+} catch (error) {
+console.log(error)
+}
+}
 
   return (
       <>
     <Navbar/>
-    <Tabs className='Tabs' value={value} onChange={handleChange} centered>
-    <Tab  label="Applicants" {...a11yProps(0)}/>
-    <Tab label="Post Jobs" {...a11yProps(1)}/>
-    <Tab label="Edit Jobs" {...a11yProps(2)}/>
-    </Tabs>
-    <TabPanel value={value} index={0}> 
-    <TextField
-          id="filled-search"
-          label="Search Applicant"
-          type="search"
-          variant="filled"
-          sx={{ "width": "80%" }}
-        />
-        <Box>
-        <div>{user ? <OneUser user={user}/> : ""}</div>
-        </Box>
-    </TabPanel>
-    <TabPanel value={value} index={1}>
-      <PostJob></PostJob>
-    <TextField
-          id="filled-search"
-          label="Search Jobs"
-          type="search"
-          variant="filled"
-          sx={{ "width": "80%" }}
-          
-        />
-        <Box>
-        <div>{job ? <OneJob job={job}/> : ""}</div>
-        </Box>
-        </TabPanel>
-    <TabPanel value={value} index={2}>
-    <TextField
-          id="filled-search"
-          label="Search Jobs"
-          type="search"
-          variant="filled"
-          sx={{ "width": "80%" }}
-        />
-        <Box>
-        <div>{job ? <OneJob  job={job} /> : ""}</div>
-        </Box>
-        </TabPanel>
-    
-   
+   <Sidebar/>
     </>
     
   )

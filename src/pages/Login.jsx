@@ -12,6 +12,7 @@ import { Navigate } from 'react-router-dom';
 import { Alert } from '@mui/material';
 import Footer from '../components/Footer';
 import { useEffect } from 'react';
+import jwt_decode from "jwt-decode";
 function Login() {
   //let Navigate =useNavigate();
   const[email,setEmail]=React.useState("");
@@ -30,14 +31,37 @@ function Login() {
       const response =await axios.post(
         "https://localhost:44361/api/Home/login",
         {
-          Email:`${email}`,
+          email:`${email}`,
           Password:`${password}`,
         }
       );
       console.log(errorField);
       console.log(response)
-      console.log(response.data);
+
+   
         localStorage.setItem("User", JSON.stringify(response.data));
+        var token=localStorage.getItem("User");
+        var decoded = jwt_decode(token);
+
+        if(decoded.userRole==="admin"){
+          setTimeout(function () { 
+           if(errorField === true || localStorage.getItem("User") !=null ){
+             Navigate("/adminPanel");
+             }
+          },);
+        }else if(decoded.userRole === "hr"){
+          setTimeout(function(){
+            if(errorField === true || localStorage.getItem("User") !=null ){
+              Navigate("/hrPanel/home");
+              }
+          },);
+        }else{
+          setTimeout(function(){
+            if(errorField === true || localStorage.getItem("User") !=null ){
+              Navigate("/");
+              }
+          },);
+        }
         Navigate("/");
     } catch (error) {
       setErrorField(true);

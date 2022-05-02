@@ -1,17 +1,14 @@
 import React from 'react'
 import Navbar from '../components/Navbar'
 import SideBar from '../components/SideBar'
-import jwt_decode from "jwt-decode";
 
-function AdminPanel() {
-    
+function HrPanelHome() {
   return (
     <>
     <Navbar/>
     <SideBar/>
-    
     </>
   )
 }
 
-export default AdminPanel
+export default HrPanelHome

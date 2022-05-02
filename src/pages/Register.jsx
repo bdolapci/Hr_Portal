@@ -12,6 +12,9 @@ import GoogleLogin from 'react-google-login';
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import Footer from '../components/Footer';
+import Checkbox from '@mui/material/Checkbox';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import CssBaseline from '@mui/material/CssBaseline';
 function Register() {
 
   // const [value, setValue] = useState('')
@@ -21,9 +24,9 @@ function Register() {
   const[password,setPassword]=React.useState("");
   const[isUser,setIsUser]=React.useState("");
   const[confirmPassword,setConfirmPassword]=React.useState("");
-  const [isApplicant, setIsApplicant] = useState(false);
-  const [emptyField,setEmptyField] = React.useState(false);
+
   const [errorField,setErrorField] = React.useState(false);
+  const [cheked ,setCheked] = React.useState(false);
   function firstNameHandler(e){
     setFirstName(e.target.value);
   }
@@ -37,7 +40,12 @@ function Register() {
     setPassword(e.target.value);
   }
   function isUserHandler(e){
-    setIsUser(e.target.value);
+    if(cheked==false){
+      setIsUser("hr");
+    }else{
+      setIsUser("user");
+    }
+    setCheked(e.target.checked)
   }
   function confirmPasswordHandler(e){
     setConfirmPassword(e.target.value);
@@ -55,11 +63,8 @@ function Register() {
           Passwords: `${password}`,
           confirmPassword : `${confirmPassword}`,
           userRole: `${isUser}`,
-          isApplicant: `${isApplicant}`
         }
-      )
-      console.log(response)
-      console.log(response.data)
+      );
       navigate("/");
     } catch (error) {
       setErrorField(true);
@@ -67,9 +72,10 @@ function Register() {
     }
   }
 
-
+  const label = { inputProps: { 'aria-label': 'Checkbox demo' } }
   return (
       <>
+      <CssBaseline />
     <header className='header'>
       <div className="logo">
         <Link to="/">HR Portal</Link>
@@ -91,7 +97,7 @@ function Register() {
             <h1>Register as a Employee to work for <br></br> Worldwide Clients</h1>
             {errorField ? <Alert severity="error">This email already exists</Alert> :  ""}
             <form onSubmit={(e)=>{
-              if(firstName && lastName && email && password && confirmPassword != ""){
+              if((firstName && lastName && email && password && confirmPassword) != ""){
                 reg()
                 e.preventDefault()
               }
@@ -109,7 +115,7 @@ function Register() {
                 type="text" 
                 placeholder='Last Name' 
                 className='lastname'
-                label="First Name"
+                label="Last Name"
                 variant='outlined'
                 required
                 onChange={lastNameHandler} 
@@ -118,6 +124,7 @@ function Register() {
               <div className="other">
               <TextField type="email" 
               placeholder='Email' 
+              label="Email"
               className='email'
               variant='outlined'
               required
@@ -125,6 +132,7 @@ function Register() {
               />
               <TextField type="password" 
               placeholder='Password' 
+              label="Password"
               className='password'
               variant='outlined'
               required
@@ -132,18 +140,20 @@ function Register() {
               />
                <TextField type="password" 
               placeholder='confirm password'
+              label = "Confirm Password"
               className='password'
               variant='outlined'
               required
               onChange={confirmPasswordHandler}
               />
-              <TextField type="text" 
+              {/* <TextField type="text" 
               placeholder='HR' 
               className='hruser'
               variant='outlined'
               required
               onChange={isUserHandler}
-              />
+              /> */}
+               <FormControlLabel  control={<Checkbox onChange={isUserHandler} />} label="Register as a Company Representetive" />
               {/* <div className="count">
               <InputLabel>Country</InputLabel>
               <Select options={options} value={value} onChange={changeHandler} />
