@@ -17,5 +17,7 @@ namespace HR_Portalgrad.Services.UserReporsitories
         Task<User> UpdatetoHr(int id,string userRole);
 
         Task<User> RemoveUser(int id);
+
+        Task<User> GetApplicantsbyUser(int id);
     }
 }

@@ -7,5 +7,8 @@ namespace HR_Portalgrad.Services.ApplicantsReporsitories
     public interface IApplicantsReporsitory
     {
         Task<List<Applicants>> GetAllApplicants();
+        Task<Applicants> CreateApplicants(Applicants applicants);
+        //Task<Applicants> AcceptReject(int id);
+       
     }
 }

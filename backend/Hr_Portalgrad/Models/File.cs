@@ -1,8 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+
 namespace HR_Portalgrad.Models
 {
-    public class Applicants
+    public class File
     {
         
         [Key]
@@ -10,10 +11,12 @@ namespace HR_Portalgrad.Models
         [Required]
         public int Id { get; set; }
         [ForeignKey("FK_User")]
-        public int? UserId { get; set; }
+        [Required]
+        public int Userid { get; set; }
         [ForeignKey("FK_Jobs")]
         [Required]
-        public int Jobsid { get; set; }
-        public int isAccepted { get; set; }
+        public int Jobid { get; set; }
+        [StringLength(250)]
+        public string Name { get; set; }
     }
 }

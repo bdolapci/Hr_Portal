@@ -18,6 +18,7 @@ using Microsoft.EntityFrameworkCore;
 using HR_Portalgrad.Services.JobsReporsitories;
 using Newtonsoft.Json.Serialization;
 using HR_Portalgrad.Services.ApplicantsReporsitories;
+using HR_Portalgrad.Services.ProfileReporsitories;
 
 namespace HR_Portalgrad
 {
@@ -60,6 +61,7 @@ namespace HR_Portalgrad
             services.AddScoped<IUserReporsitory, DbUserReporsitory>();
             services.AddScoped<IJobReporsitory,DbJobReporsitory>();
             services.AddScoped<IApplicantsReporsitory, DbApplicantsReporsitory>();
+            services.AddScoped<IProfileReporsitory, DbProfileReporsitory>();
 
 
 

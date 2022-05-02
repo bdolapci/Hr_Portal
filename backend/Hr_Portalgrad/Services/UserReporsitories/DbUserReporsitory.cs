@@ -49,10 +49,19 @@ namespace HR_Portalgrad.Services.UserReporsitories
         public async Task<User> RemoveUser(int id)
         {
             var us=await _context.Users.FindAsync(id);
+            var us2 =await _context.Applicants.FirstOrDefaultAsync(u=>u.UserId==id);
            _context.Users.Remove(us);
+            _context.Applicants.Remove(us2);
             await _context.SaveChangesAsync();
             return us;
 
+        }
+        public async Task<User> GetApplicantsbyUser(int id)
+        {
+            var us = await _context.Users.FindAsync(id);
+            var us2 = await _context.Applicants.Where(u => u.UserId == id).ToListAsync();
+            await _context.SaveChangesAsync();
+            return us;
         }
     }
 }

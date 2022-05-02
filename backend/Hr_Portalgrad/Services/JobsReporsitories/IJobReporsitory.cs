@@ -8,5 +8,10 @@ namespace HR_Portalgrad.Services.JobsReporsitories
     {
         Task<List<Jobs>> GetAllJobs();
         Task<Jobs> RemoveJob(int id);
+
+        Task<Jobs> PostJob(Jobs job);
+        Task<Jobs> EditJob(int id,string name,int UserId,string Date,string description,string category,string photo);
+        Task<Jobs> GetSingleJob(int id);
+        Task<Jobs> GetApplicantsJob(int id);
     }
 }

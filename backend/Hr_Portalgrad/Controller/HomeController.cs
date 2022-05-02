@@ -4,6 +4,7 @@ using HR_Portalgrad.Models.Responses;
 using HR_Portalgrad.Services;
 using HR_Portalgrad.Services.ApplicantsReporsitories;
 using HR_Portalgrad.Services.JobsReporsitories;
+using HR_Portalgrad.Services.ProfileReporsitories;
 using HR_Portalgrad.Services.TokenGenerators;
 using HR_Portalgrad.Services.UserReporsitories;
 using Microsoft.AspNetCore.Authorization;
@@ -25,40 +26,43 @@ namespace HR_Portalgrad.Controller
         private readonly AccessTokenGenerator _accessTokenGenerator;
         private readonly IJobReporsitory _jobReporsitory;
         private readonly IApplicantsReporsitory _applicantsReporsitory;
+        private readonly IProfileReporsitory _profileReporsitory;
 
 
         public HomeController(IUserReporsitory userReporsitory,
             IPasswordHasher passwordHasher,
             AccessTokenGenerator accessTokenGenerator,
             IJobReporsitory jobReporsitory,
-            IApplicantsReporsitory applicantsReporsitory)
+            IApplicantsReporsitory applicantsReporsitory,
+            IProfileReporsitory profileReporsitory)
         {
             _userReporsitory = userReporsitory;
             _passwordHasher = passwordHasher;
             _accessTokenGenerator = accessTokenGenerator;
             _jobReporsitory = jobReporsitory;
-            _applicantsReporsitory= applicantsReporsitory;
+            _applicantsReporsitory = applicantsReporsitory;
+            _profileReporsitory = profileReporsitory;
         }
 
 
         [HttpPost("register")]
         //RegisterRequest Model object
-      public async Task<IActionResult> Register([FromBody] RegisterRequest registerRequest)
+        public async Task<IActionResult> Register([FromBody] RegisterRequest registerRequest)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
-            if(registerRequest.Passwords != registerRequest.confirmPassword)
+            if (registerRequest.Passwords != registerRequest.confirmPassword)
             {
                 return BadRequest(new ErrorResponse("Password not match"));
             }
             User emailExists = await _userReporsitory.GetByEmail(registerRequest.Email);
-            if(emailExists != null)
+            if (emailExists != null)
             {
                 return Conflict(new ErrorResponse("Email already Exists"));
             }
-            string passwordHash =_passwordHasher.hashPassword(registerRequest.Passwords);
+            string passwordHash = _passwordHasher.hashPassword(registerRequest.Passwords);
             User regUser = new User()
             {
                 firstName = registerRequest.firstName,
@@ -78,7 +82,7 @@ namespace HR_Portalgrad.Controller
                 return BadRequest(ModelState);
             }
             User user = await _userReporsitory.GetByEmail(loginRequest.Email);
-            if(user == null)
+            if (user == null)
             {
                 return Unauthorized();
             }
@@ -117,15 +121,15 @@ namespace HR_Portalgrad.Controller
         [HttpPost("HR/{id?}")]
         public async Task<User> UpdatetoCompanyHr(User user)
         {
-           return await _userReporsitory.UpdatetoHr(user.Id,user.userRole);
+            return await _userReporsitory.UpdatetoHr(user.Id, user.userRole);
         }
         //[HttpPost("user/{id?}")]
         //public async Task<User> UpdatetoUser([FromBody] User user)
         //{
         //    return await _userReporsitory.UpdateUser(user.Id, user.userRole);
         //}
-        [HttpDelete]
-        public async Task<User> DeleteUser([FromHeader]int id)
+        [HttpDelete("{id?}")]
+        public async Task<User> DeleteUser(int id)
         {
             return await _userReporsitory.RemoveUser(id);
         }
@@ -134,8 +138,8 @@ namespace HR_Portalgrad.Controller
         {
             return await _jobReporsitory.GetAllJobs();
         }
-        [HttpDelete("Jobs")]
-        public async Task<Jobs> DeleteJobs([FromHeader]int id)
+        [HttpDelete("Jobs/{id?}")]
+        public async Task<Jobs> DeleteJobs(int id)
         {
             return await _jobReporsitory.RemoveJob(id);
         }
@@ -143,6 +147,59 @@ namespace HR_Portalgrad.Controller
         public async Task<List<Applicants>> GetApplicants()
         {
             return await _applicantsReporsitory.GetAllApplicants();
-        } 
+        }
+        [HttpPost("Jobs")]
+        public async Task<Jobs> AddJob([FromBody] Jobs job)
+        {
+            Jobs newJob = new Jobs()
+            {
+                UserId = job.UserId,
+                Name = job.Name,
+                Date = job.Date,
+                description = job.description,
+                category = job.category,
+                photo = job.photo,
+            };
+            await _jobReporsitory.PostJob(newJob);
+            return newJob;
+        }
+        [HttpPost("Jobs/EditJob")]
+        public async Task<Jobs> EditJob(Jobs job)
+        {
+            return await _jobReporsitory.EditJob(job.Id,job.Name,job.UserId,job.Date,job.description,job.category,job.photo);
+        }
+        [HttpGet("Jobs/{id}")]
+        public async Task<Jobs> GetSingleJob(int id)
+        {
+            return await _jobReporsitory.GetSingleJob(id);
+        }
+        [HttpGet("Profile")]
+        public async Task<List<Profile>> GetProfile()
+        {
+            return await _profileReporsitory.GetAllProfileInfo();
+        }
+        [HttpPost("Applicants")]
+        public async Task<Applicants> AddApplicants([FromBody] Applicants applicants)
+        {
+            Applicants newApplicant = new Applicants()
+            {
+                UserId = applicants.UserId,
+                Jobsid = applicants.Jobsid,
+                isAccepted = applicants.isAccepted,
+            };
+            await _applicantsReporsitory.CreateApplicants(newApplicant);
+            return newApplicant;
+        }
+        [HttpGet("JobApplicants/{id?}")]
+            public async Task<Jobs> GetJobApplicants(int id)
+        {
+            return await _jobReporsitory.GetApplicantsJob(id);
+        }
+
+        [HttpGet("UserApplicantJoin/{id?}")]
+        public async Task<User> UserApplicantJoin(int id)
+        {
+            return await _userReporsitory.GetApplicantsbyUser(id);
+        }
     }
 }

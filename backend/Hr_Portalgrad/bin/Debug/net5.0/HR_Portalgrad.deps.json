@@ -34,9 +34,11 @@
       "HR_Portalgrad/1.0.0": {
         "dependencies": {
           "BCrypt.Net-Next": "4.0.3",
+          "Microsoft.AspNet.WebApi.Core": "5.2.8",
           "Microsoft.AspNetCore.Mvc.NewtonsoftJson": "5.0.1",
           "Microsoft.EntityFrameworkCore": "5.0.1",
           "Microsoft.EntityFrameworkCore.SqlServer": "5.0.1",
+          "Microsoft.EntityFrameworkCore.Tools": "5.0.1",
           "System.IdentityModel.Tokens.Jwt": "6.17.0",
           "Microsoft.AspNetCore.Antiforgery": "5.0.0.0",
           "Microsoft.AspNetCore.Authentication.Abstractions": "5.0.0.0",
@@ -339,6 +341,43 @@
           "lib/net5.0/BCrypt.Net-Next.dll": {}
         }
       },
+      "Humanizer.Core/2.8.26": {
+        "runtime": {
+          "lib/netstandard2.0/Humanizer.dll": {
+            "assemblyVersion": "2.8.0.0",
+            "fileVersion": "2.8.26.1919"
+          }
+        }
+      },
+      "Microsoft.AspNet.WebApi.Client/5.2.8": {
+        "dependencies": {
+          "Newtonsoft.Json": "12.0.2",
+          "Newtonsoft.Json.Bson": "1.0.2"
+        },
+        "runtime": {
+          "lib/netstandard2.0/System.Net.Http.Formatting.dll": {
+            "assemblyVersion": "5.2.8.0",
+            "fileVersion": "5.2.34876.0"
+          }
+        },
+        "compile": {
+          "lib/netstandard2.0/System.Net.Http.Formatting.dll": {}
+        }
+      },
+      "Microsoft.AspNet.WebApi.Core/5.2.8": {
+        "dependencies": {
+          "Microsoft.AspNet.WebApi.Client": "5.2.8"
+        },
+        "runtime": {
+          "lib/net45/System.Web.Http.dll": {
+            "assemblyVersion": "5.2.8.0",
+            "fileVersion": "5.2.34876.0"
+          }
+        },
+        "compile": {
+          "lib/net45/System.Web.Http.dll": {}
+        }
+      },
       "Microsoft.AspNetCore.JsonPatch/5.0.1": {
         "dependencies": {
           "Microsoft.CSharp": "4.7.0",
@@ -485,6 +524,19 @@
         }
       },
       "Microsoft.EntityFrameworkCore.Analyzers/5.0.1": {},
+      "Microsoft.EntityFrameworkCore.Design/5.0.1": {
+        "dependencies": {
+          "Humanizer.Core": "2.8.26",
+          "Microsoft.CSharp": "4.7.0",
+          "Microsoft.EntityFrameworkCore.Relational": "5.0.1"
+        },
+        "runtime": {
+          "lib/netstandard2.1/Microsoft.EntityFrameworkCore.Design.dll": {
+            "assemblyVersion": "5.0.1.0",
+            "fileVersion": "5.0.120.57509"
+          }
+        }
+      },
       "Microsoft.EntityFrameworkCore.Relational/5.0.1": {
         "dependencies": {
           "Microsoft.EntityFrameworkCore": "5.0.1",
@@ -513,6 +565,11 @@
         },
         "compile": {
           "lib/netstandard2.1/Microsoft.EntityFrameworkCore.SqlServer.dll": {}
+        }
+      },
+      "Microsoft.EntityFrameworkCore.Tools/5.0.1": {
+        "dependencies": {
+          "Microsoft.EntityFrameworkCore.Design": "5.0.1"
         }
       },
       "Microsoft.Extensions.Caching.Abstractions/5.0.0": {
@@ -2957,6 +3014,27 @@
       "path": "bcrypt.net-next/4.0.3",
       "hashPath": "bcrypt.net-next.4.0.3.nupkg.sha512"
     },
+    "Humanizer.Core/2.8.26": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-OiKusGL20vby4uDEswj2IgkdchC1yQ6rwbIkZDVBPIR6al2b7n3pC91elBul9q33KaBgRKhbZH3+2Ur4fnWx2A==",
+      "path": "humanizer.core/2.8.26",
+      "hashPath": "humanizer.core.2.8.26.nupkg.sha512"
+    },
+    "Microsoft.AspNet.WebApi.Client/5.2.8": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-dkGLm30CxLieMlUO+oQpJw77rDs0IIx/w3lIHsp+8X94HXCsUfLYuFmlZPsQDItC0O2l1ZlWeKLkZX7ZiNRekw==",
+      "path": "microsoft.aspnet.webapi.client/5.2.8",
+      "hashPath": "microsoft.aspnet.webapi.client.5.2.8.nupkg.sha512"
+    },
+    "Microsoft.AspNet.WebApi.Core/5.2.8": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-AQ2Mmo2IEALj16Flk9L53Wl0WZ0QgeC5GPNe7G13e1E+GdbjIdewYeU7Y7EtGe921srIneGIsrlehMVFib4xiw==",
+      "path": "microsoft.aspnet.webapi.core/5.2.8",
+      "hashPath": "microsoft.aspnet.webapi.core.5.2.8.nupkg.sha512"
+    },
     "Microsoft.AspNetCore.JsonPatch/5.0.1": {
       "type": "package",
       "serviceable": true,
@@ -3013,6 +3091,13 @@
       "path": "microsoft.entityframeworkcore.analyzers/5.0.1",
       "hashPath": "microsoft.entityframeworkcore.analyzers.5.0.1.nupkg.sha512"
     },
+    "Microsoft.EntityFrameworkCore.Design/5.0.1": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-+/dbnLFwIkjZMPl4cGUCBVL6pS9ZAJYrW6Bm/n0TlKWKiwZmd0f1b7XCeji4BPMHbvZl/CryTVQ2Ox4au7AKEw==",
+      "path": "microsoft.entityframeworkcore.design/5.0.1",
+      "hashPath": "microsoft.entityframeworkcore.design.5.0.1.nupkg.sha512"
+    },
     "Microsoft.EntityFrameworkCore.Relational/5.0.1": {
       "type": "package",
       "serviceable": true,
@@ -3026,6 +3111,13 @@
       "sha512": "sha512-FHo52VV2pvAJZBfNIYmre6MLe4LHTUZxMdmNJIOahcwdVpl2UG5YPEnI0qwKauan1PdJyPKmBsbLQvIEfvYLOQ==",
       "path": "microsoft.entityframeworkcore.sqlserver/5.0.1",
       "hashPath": "microsoft.entityframeworkcore.sqlserver.5.0.1.nupkg.sha512"
+    },
+    "Microsoft.EntityFrameworkCore.Tools/5.0.1": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-aWC8uiAHkuZzOOxQwqzUyqRMGCCcqjthIUsJVn9I601UkVhxmHwvB/oARO1xb0GBaCfJuCJglo2wkehBjegwRQ==",
+      "path": "microsoft.entityframeworkcore.tools/5.0.1",
+      "hashPath": "microsoft.entityframeworkcore.tools.5.0.1.nupkg.sha512"
     },
     "Microsoft.Extensions.Caching.Abstractions/5.0.0": {
       "type": "package",
