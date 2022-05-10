@@ -47,17 +47,78 @@ function EditJob() {
         function dateHandler(e){
         setDate(e.target.value);
         }
-    const editJob =async()=>{
+
+    const editJobName =async()=>{
         try {
           const res=await axios.post(
-            `https://localhost:44361/api/Home/Jobs/EditJob`,
+            `https://localhost:44361/api/Home/Jobs/EditJobName`,
           {
             Id: `${id}`,
             UserId:decoded.id,
             Name: `${name}`,
+          })
+          console.log(res)
+          console.log(res.data)
+          nav("/hrPanel/jobs")
+        } catch (error) {
+          console.log(error)
+        }
+      }
+      const editJobDate =async()=>{
+        try {
+          const res=await axios.post(
+            `https://localhost:44361/api/Home/Jobs/EditJobDate`,
+          {
+            Id: `${id}`,
+            UserId:decoded.id,
             Date: `${date}`,
+          })
+          console.log(res)
+          console.log(res.data)
+          nav("/hrPanel/jobs")
+        } catch (error) {
+          console.log(error)
+        }
+      }
+      const editJobDescription =async()=>{
+        try {
+          const res=await axios.post(
+            `https://localhost:44361/api/Home/Jobs/EditJobDesciption`,
+          {
+            Id: `${id}`,
+            UserId:decoded.id,
             description: `${description}`,
+          })
+          console.log(res)
+          console.log(res.data)
+          nav("/hrPanel/jobs")
+        } catch (error) {
+          console.log(error)
+        }
+      }
+      const editJobCategory =async()=>{
+        try {
+          const res=await axios.post(
+            `https://localhost:44361/api/Home/Jobs/EditJobCategory`,
+          {
+            Id: `${id}`,
+            UserId:decoded.id,
             category: `${category}`,
+          })
+          console.log(res)
+          console.log(res.data)
+          nav("/hrPanel/jobs")
+        } catch (error) {
+          console.log(error)
+        }
+      }
+      const editJobPhoto =async()=>{
+        try {
+          const res=await axios.post(
+            `https://localhost:44361/api/Home/Jobs/EditJobPhoto`,
+          {
+            Id: `${id}`,
+            UserId:decoded.id,
             photo: `${photo}`,
           })
           console.log(res)
@@ -67,6 +128,9 @@ function EditJob() {
           console.log(error)
         }
       }
+
+
+
       const Input = styled('input')({
         display: 'none',
       });
@@ -85,7 +149,22 @@ function EditJob() {
       boxShadow: "rgb(0 0 0 / 8%) -8px -8px",
       }}>
             <form onSubmit={(e)=>{
-              editJob()
+              if(name!=''){
+                editJobName()
+              } 
+              if(date!=null){
+                editJobDate()
+              } 
+              if(description!=''){
+              editJobDescription()
+              } 
+              if(category!=''){
+                editJobCategory()
+              }
+              if (photo!=''){
+                editJobPhoto()
+              }
+              
               e.preventDefault()
               
             }}>
@@ -98,7 +177,7 @@ function EditJob() {
                     Job Name
                   </Typography>
                 <TextField 
-               // multiline  
+               // multiline 
                variant="filled"
                sx={{ marginBottom:"2%",width:"20%"}}
                label="Name"
@@ -115,6 +194,7 @@ function EditJob() {
                         label="Basic example"
                          value={date}
                         format="DD-MM-YYYY"
+                       disablePast
                         onChange={(newValue) => {
                           setDate(newValue);
                           console.log(newValue);

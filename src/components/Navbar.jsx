@@ -1,7 +1,7 @@
 import React from 'react'
 import "../styles/Navbar.scss"
 import Button from '@mui/material/Button';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { margin } from '@mui/system';
@@ -10,8 +10,10 @@ import MenuItem from '@mui/material/MenuItem';
 import IconButton from '@mui/material/IconButton';
 import AccountCircle from '@mui/icons-material/AccountCircle';
 import jwt_decode from "jwt-decode";
+import axios from 'axios';
 function Navbar() {
 
+  
   let user=JSON.parse(localStorage.getItem("User"));
   let Navigate = useNavigate();
   function logout(){
@@ -22,19 +24,43 @@ function Navbar() {
   const handleMenu = (event) => {
     setAnchorEl(event.currentTarget);
   };
+  
+  if(JSON.parse(localStorage.getItem("User")) !== null){
+    try {
+      var token=localStorage.getItem("User");
+      var decoded = jwt_decode(token);
+      
+    } catch (error) {
+      console.log(error)
+    }
+    }
+   const [profiledata,setProfiledata]=React.useState([]);
+    React.useEffect(()=>{
+      axios.get("https://localhost:44361/api/Home/Profile",{
+      }).then((res)=>{
+        let a=[]
+        let b = res.data.map((x=>x.Id))
+        for(let i=0;i<res.data.length;i++){
+          if(res.data[i].Userid==decoded.id){
+            a.push(b[i])
+          }
+        }
+        setProfiledata(a);
+      })
+     
+     
+  },[profiledata]);
 
+ 
+  
   const handleClose = () => {
     setAnchorEl(null);
-  };
+    Navigate(`/profile/${profiledata}`);
+  }
   const handle =()=>{
     handleClose();
     logout();
   }
-  if(user){
-    var token=localStorage.getItem("User");
-    var decoded = jwt_decode(token);
-  }
- 
   return (
     <header className='header' sx={{margin:"0px"}}>
       <div className="logo">
@@ -82,7 +108,7 @@ function Navbar() {
                 open={Boolean(anchorEl)}
                 onClose={handleClose}
               >
-                <MenuItem component={Link} to='/profile' onClick={handleClose}>Profile</MenuItem>
+                <MenuItem  onClick={handleClose}>Profile</MenuItem>
                 <MenuItem onClick={handle}> Logout</MenuItem>
               </Menu>
             </div>

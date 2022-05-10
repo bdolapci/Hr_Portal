@@ -67,71 +67,77 @@ function Applicants() {
   const[accepteduser,setAcceptedUser]=React.useState("");
   const[rejecteduser,setRejectedUser]=React.useState("");
   const[userIdhold,setUserIdhold]=React.useState("");
-  const [com,setCom]=React.useState([]);
-  const [com2,setCom2]=React.useState([]);
-  const [com3,setCom3]=React.useState([]);
 
-  const fetchData =()=>{
-    const usertable="https://localhost:44361/api/Home"
-    const applicanttable ="https://localhost:44361/api/Home/Applicants"
 
-    const getUsers=axios.get(usertable)
-    const getapplicants =axios.get(applicanttable)
-    axios.all([getUsers,getapplicants]).then(
-      axios.spread((...responses) => {
-        const userdata = responses[0].data
-        const applicantdata = responses[1].data
+  // const fetchData =()=>{
+  //   const usertable="https://localhost:44361/api/Home"
+  //   const applicanttable ="https://localhost:44361/api/Home/Applicants"
+
+  //   const getUsers=axios.get(usertable)
+  //   const getapplicants =axios.get(applicanttable)
+  //   axios.all([getUsers,getapplicants]).then(
+  //     axios.spread((...responses) => {
+  //       const userdata = responses[0].data
+  //       const applicantdata = responses[1].data
         
-        let k=[]
-        let l=[]
-        let m=[]
-        let s=[]
+  //       let k=[]
+  //       let l=[]
+  //       let m=[]
+  //       let s=[]
 
-        // eslint-disable-next-line no-lone-blocks
-        for(let i=0;i<applicantdata.length;i++){{
-          for(let j=0;j<userdata.length;j++){
-          if(userdata[j].Id==applicantdata[i].UserId &&applicantdata[i].Jobsid==id){
-            if(applicantdata[i].isAccepted=="0"){
-              k.push(userdata[j])
-            }
-            else if(applicantdata[i].isAccepted=="1"){
-              l.push(userdata[j])
-            }
-            else{
-              m.push(userdata[j])
-            }
+  //       // eslint-disable-next-line no-lone-blocks
+  //       for(let i=0;i<applicantdata.length;i++){{
+  //         for(let j=0;j<userdata.length;j++){
+  //         if(userdata[j].Id==applicantdata[i].UserId &&applicantdata[i].Jobsid==id){
+  //           if(applicantdata[i].isAccepted=="0"){
+  //             k.push(userdata[j])
+  //           }
+  //           else if(applicantdata[i].isAccepted=="1"){
+  //             l.push(userdata[j])
+  //           }
+  //           else{
+  //             m.push(userdata[j])
+  //           }
            
-          } }
-        }}
+  //         } }
+  //       }}
         
-        setUser(k)
-        setAcceptedUser(l)
-        setRejectedUser(m)
+  //       setUser(k)
+  //       setAcceptedUser(l)
+  //       setRejectedUser(m)
 
         
-      })
-    )
-  }
+  //     })
+  //   )
+  // }
 
-  // const combined =async()=>{
-  //   const res= axios.get(`https://localhost:44361/api/Home/UserApplicantJoin`,{
-  //   }).then((res)=>{
-  //     for(let i=0;i<res.data.length;i++){
-  //       if(res.data.Applicants[i].isAccepted=="0"){
-  //         setCom(res.data[i])
-  //       }
-  //       else if(res.data.Applicants[i].isAccepted=="1"){
-  //         setCom2(res.data[i])
-  //       }
-  //       else{
-  //         setCom3(res.data[i])
-  //       }
-  //     }
-  //       setCom(res.data);
-  //   })
-  // }  
+  const combined =async()=>{
+     axios.get(`https://localhost:44361/api/Home/UserApplicantJoin`,{
+    }).then((res)=>{
+      let k=[]
+      let l=[]
+      let m=[]
+      let s=[]
+      for(let i=0;i<res.data.length;i++){
+        if(res.data[i].Jobsid==id){
+          if(res.data[i].isAccepted=="0"){
+            k.push(res.data[i])
+          }
+          else if(res.data[i].isAccepted=="1"){
+            l.push(res.data[i])
+          }
+          else{
+            m.push(res.data[i])
+          }
+        }
+      }
+      setUser(k)
+      setAcceptedUser(l)
+      setRejectedUser(m)
+    })
+  }  
 
-
+console.log(accepteduser)
   const [job,setJob]=React.useState([]);
   useEffect(()=>{
     axios.get("https://localhost:44361/api/Home/Jobs",{
@@ -145,7 +151,7 @@ function Applicants() {
 
 
   useEffect(()=>{
-    fetchData();
+    combined();
    
   },[]);
 
@@ -153,10 +159,10 @@ function Applicants() {
 
   const acceptuser=async(Id)=>{
    try {
-     const res =await axios.patch(`https://localhost:44361/api/Home/Applicants/${Id}`,{
-     Id:Id, 
-     Jobsid:id,
-     isAccepted:1
+     const res =await axios.put(`https://localhost:44361/api/Home/AcceptApplicants/${Id}`,{
+      Id:Id,
+      Jobsid:id,
+      isAccepted:1
      },)
      window.location.reload(true);
      console.log(res)
@@ -166,7 +172,7 @@ function Applicants() {
   }
   const rejectuser=async(Id)=>{
     try {
-      const res =await axios.put(`https://localhost:44361/api/Home/Applicants/${Id}`,{
+      const res =await axios.put(`https://localhost:44361/api/Home/AcceptApplicants/${Id}`,{
       Id:Id,  
       Jobsid:id,
       isAccepted:2
@@ -199,12 +205,14 @@ function Applicants() {
       label:"Email",
     },
     {
-      name: "Display Profile",
+      name: "Id",
+      label:"Display Profile",
       options: {
         customBodyRender: (value, tableMeta, updateValue) => {
+          let a="/profile"+value
           return (
             <>
-            <Button href='/profile'><RemoveRedEyeIcon/></Button>
+            <Button href={a}><RemoveRedEyeIcon/></Button>
             </>
           );
         }
@@ -231,7 +239,7 @@ function Applicants() {
           return (
             <>
             <Button onClick={()=>acceptuser(value)} ><DoneIcon/></Button>
-            <Button onClick={()=>rejectuser()}><CancelIcon/></Button>
+            <Button onClick={()=>rejectuser(value)}><CancelIcon/></Button>
             </>
           );
         }
@@ -252,12 +260,14 @@ function Applicants() {
       label:"Email",
     },
     {
-      name: "Display Profile",
+      name: "ProfileId",
+      label:"Display Profile",
       options: {
         customBodyRender: (value, tableMeta, updateValue) => {
+          let a="/profile"+"/"+value
           return (
             <>
-            <Button href='/profile'><RemoveRedEyeIcon/></Button>
+            <Button href={a}><RemoveRedEyeIcon/></Button>
             </>
           );
         }
@@ -313,8 +323,8 @@ function Applicants() {
     <MUIDataTable
 
         title={<><Box>
-        <h3>Jobs Table</h3>
-        <Button  href='/hrPanel/jobs/Postjob'>Post New Job</Button>
+        <h3>Applicants Table</h3>
+       
         </Box>
         </>}
         data={accepteduser}
@@ -326,8 +336,8 @@ function Applicants() {
     <MUIDataTable
 
       title={<><Box>
-      <h3>Jobs Table</h3>
-      <Button  href='/hrPanel/jobs/Postjob'>Post New Job</Button>
+      <h3>Applicants Table</h3>
+      
       </Box>
       </>}
       data={rejecteduser}

@@ -1,0 +1,119 @@
+.page{
+    width: 100%;
+    background-color: rgb(236, 236, 236);
+    .topside{
+        img{
+            height: 20rem;
+            width: 100%;
+        }
+        .info{
+            position: relative;
+            top: -7rem;
+            margin-left: 33rem;
+            h1{
+                font-size: 1.5rem;
+                font-weight: bold;
+                color: #fff;
+                margin-bottom: 0rem;
+            }
+            h2{
+                font-size: 1.2rem;
+                font-weight: normal;
+                color: #fff;
+                margin-top: 0rem;
+            }
+
+        }
+        .pp{
+            background-color: #f0f0f0;
+            position: relative;
+            top: -20rem;
+            margin-left: 5rem;
+            width: 20rem;
+            box-shadow: 3px 5px 15px 3px #404040;
+
+            img{
+                height:25rem;
+            }
+            .about{
+                h3{
+                    color: rgb(71, 71, 71);
+                }
+             
+                color: #9e9c9c;
+                padding: 8%;
+               .follow{
+                   display: flex;
+                   flex-direction: column;
+                    .followers{
+                        display: flex;
+                        flex-direction: row;
+                        text-align: justify;
+                        align-items: stretch;
+                        justify-content: space-between;
+                        h4{
+                            margin-bottom: 0rem;
+                        }
+                    }
+                    .following{
+                        display: flex;
+                        flex-direction: row;
+                        text-align: justify;
+                        align-items: stretch;
+                        justify-content: space-between;
+                    }
+                }
+            }
+        }
+        .container{
+            position: relative;
+            top: -55rem;
+            margin-left: 20rem;
+            .activeapplications{
+                background-color: #f0f0f0;
+                border:1px solid #9e9c9c;
+                width: 80rem;
+                height: 25rem;
+                margin-top: 5%;
+                border-radius: 1.125rem;
+                .table{
+                    border-radius: 1.125rem;
+                }
+            }
+            .educaitons{
+                background-color: #f0f0f0;
+                border:1px solid #9e9c9c;
+                width: 80rem;
+                height: 20rem;
+                margin-top: 5%;
+                border-radius: 1.125rem;
+            }
+            .experience{
+                background-color: #f0f0f0;
+                border:1px solid #9e9c9c;
+                width: 80rem;
+                height: 20rem;
+                margin-top: 5%;
+                border-radius: 1.125rem;
+            }
+            .certifications{
+                background-color: #f0f0f0;
+                border:1px solid #9e9c9c;
+                width: 80rem;
+                height: 20rem;
+                margin-top: 5%;
+                border-radius: 1.125rem;
+            }
+            #simple-tabpanel-0{
+                .css-19kzrtu{
+                    margin-top: 0rem;
+                    padding-top:1rem;
+                    padding-bottom: 0rem;
+                    background-color: #f0f0f0;
+                }
+            }
+            
+          
+        }
+    }
+}
