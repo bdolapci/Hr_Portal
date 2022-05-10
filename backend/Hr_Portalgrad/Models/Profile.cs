@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace HR_Portalgrad.Models
@@ -22,6 +23,20 @@ namespace HR_Portalgrad.Models
         [StringLength(250)]
         public string certification { get; set; }
         [StringLength(250)]
+        public string Facebook { get; set; }
+        [StringLength(250)]
+        public string Linkedin { get; set; }
+        [StringLength(250)]
+        public string Twitter { get; set; }
+        public int Followers { get; set; }
+        public int Following { get; set; }
+        [StringLength(250)]
+        public string Skills { get; set; }
+
+        [StringLength(250)]
         public string photo { get; set; }
+        [StringLength(250)]
+        public string currentTitle { get; set; }
+        public List<Applicants> Applicants { get; set; }
     }
 }

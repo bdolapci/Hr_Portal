@@ -18,5 +18,6 @@ namespace HR_Portalgrad.Models.Requests
 
         public string userRole { get; set; }
         public bool isApplicant { get; set; }
+        public int isEmailValid { get; set; }
     }
 }

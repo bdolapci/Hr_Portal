@@ -14,6 +14,8 @@ namespace HR_Portalgrad.Models
         [ForeignKey("FK_Jobs")]
         [Required]
         public int Jobsid { get; set; }
+        [ForeignKey("FK_Profile")]
+        public int? ProfileId { get; set; }
         public int isAccepted { get; set; }
     }
 }

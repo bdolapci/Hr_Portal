@@ -18,5 +18,6 @@ namespace HR_Portalgrad.Models
         public int Jobid { get; set; }
         [StringLength(250)]
         public string Name { get; set; }
+        public string FileType { get; set; }
     }
 }

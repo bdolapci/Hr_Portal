@@ -19,6 +19,10 @@ using HR_Portalgrad.Services.JobsReporsitories;
 using Newtonsoft.Json.Serialization;
 using HR_Portalgrad.Services.ApplicantsReporsitories;
 using HR_Portalgrad.Services.ProfileReporsitories;
+using Azure.Storage.Blobs;
+using Microsoft.AspNetCore.Identity;
+using HR_Portalgrad.Models.Requests;
+using HR_Portalgrad.Services.EmailReporsitories;
 
 namespace HR_Portalgrad
 {
@@ -62,6 +66,8 @@ namespace HR_Portalgrad
             services.AddScoped<IJobReporsitory,DbJobReporsitory>();
             services.AddScoped<IApplicantsReporsitory, DbApplicantsReporsitory>();
             services.AddScoped<IProfileReporsitory, DbProfileReporsitory>();
+            services.Configure<MailSettings>(_configuration.GetSection("MailSettings"));
+            services.AddTransient<IMailService, MailService>();
 
 
 

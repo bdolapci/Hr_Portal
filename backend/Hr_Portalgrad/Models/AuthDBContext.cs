@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿
+using Microsoft.EntityFrameworkCore;
 
 namespace HR_Portalgrad.Models
 {
@@ -10,6 +11,7 @@ namespace HR_Portalgrad.Models
         public DbSet<Applicants> Applicants { get; set; }
         public DbSet<Profile> profiles { get; set; }
         public DbSet<File> files { get; set; }
+      
         //public DbSet<Jobs> Jobs { get; set; }
     }
 }

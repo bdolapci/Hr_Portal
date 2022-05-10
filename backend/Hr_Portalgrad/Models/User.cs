@@ -33,6 +33,13 @@ namespace HR_Portalgrad.Models
         [Required]
         [StringLength(250)]
         public string userRole { get; set; }
+        [StringLength(250)]
+        public string phoneNumber { get; set; }
+        [StringLength(250)]
+        public string country { get; set; }
+        [StringLength(250)]
+        public string gender { get; set; }
+        public int isEmailValid { get; set; }
 
         public List<Jobs> Jobs { get; set; }   
         public List<Applicants> Applicants { get; set; }

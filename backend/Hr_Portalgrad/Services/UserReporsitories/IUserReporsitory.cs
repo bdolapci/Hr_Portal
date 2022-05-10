@@ -1,5 +1,6 @@
 ﻿using HR_Portalgrad.Models;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -18,6 +19,8 @@ namespace HR_Portalgrad.Services.UserReporsitories
 
         Task<User> RemoveUser(int id);
 
-        Task<User> GetApplicantsbyUser(int id);
+        Task <IEnumerable> GetApplicantsbyUser();
+        Task<User> ChangePassword(int id, string Passwords, string firstName, string lastName, string userRole, string email);
+    
     }
 }

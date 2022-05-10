@@ -29,6 +29,9 @@ namespace HR_Portalgrad.Migrations
                     b.Property<int>("Jobsid")
                         .HasColumnType("int");
 
+                    b.Property<int?>("ProfileId")
+                        .HasColumnType("int");
+
                     b.Property<int?>("UserId")
                         .HasColumnType("int");
 
@@ -38,6 +41,8 @@ namespace HR_Portalgrad.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("Jobsid");
+
+                    b.HasIndex("ProfileId");
 
                     b.HasIndex("UserId");
 
@@ -50,6 +55,9 @@ namespace HR_Portalgrad.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .UseIdentityColumn();
+
+                    b.Property<string>("FileType")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Jobid")
                         .HasColumnType("int");
@@ -117,6 +125,28 @@ namespace HR_Portalgrad.Migrations
                         .HasColumnType("int")
                         .UseIdentityColumn();
 
+                    b.Property<string>("Facebook")
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
+
+                    b.Property<int>("Followers")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Following")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Linkedin")
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
+
+                    b.Property<string>("Skills")
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
+
+                    b.Property<string>("Twitter")
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
+
                     b.Property<int>("Userid")
                         .HasColumnType("int");
 
@@ -125,6 +155,10 @@ namespace HR_Portalgrad.Migrations
                         .HasColumnType("nvarchar(250)");
 
                     b.Property<string>("certification")
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
+
+                    b.Property<string>("currentTitle")
                         .HasMaxLength(250)
                         .HasColumnType("nvarchar(250)");
 
@@ -159,6 +193,10 @@ namespace HR_Portalgrad.Migrations
                         .HasMaxLength(250)
                         .HasColumnType("nvarchar(250)");
 
+                    b.Property<string>("country")
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
+
                     b.Property<string>("email")
                         .IsRequired()
                         .HasMaxLength(250)
@@ -169,8 +207,19 @@ namespace HR_Portalgrad.Migrations
                         .HasMaxLength(250)
                         .HasColumnType("nvarchar(250)");
 
+                    b.Property<string>("gender")
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
+
+                    b.Property<int>("isEmailValid")
+                        .HasColumnType("int");
+
                     b.Property<string>("lastName")
                         .IsRequired()
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
+
+                    b.Property<string>("phoneNumber")
                         .HasMaxLength(250)
                         .HasColumnType("nvarchar(250)");
 
@@ -191,6 +240,10 @@ namespace HR_Portalgrad.Migrations
                         .HasForeignKey("Jobsid")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.HasOne("HR_Portalgrad.Models.Profile", null)
+                        .WithMany("Applicants")
+                        .HasForeignKey("ProfileId");
 
                     b.HasOne("HR_Portalgrad.Models.User", null)
                         .WithMany("Applicants")
@@ -233,6 +286,11 @@ namespace HR_Portalgrad.Migrations
                     b.Navigation("Applicants");
 
                     b.Navigation("File");
+                });
+
+            modelBuilder.Entity("HR_Portalgrad.Models.Profile", b =>
+                {
+                    b.Navigation("Applicants");
                 });
 
             modelBuilder.Entity("HR_Portalgrad.Models.User", b =>

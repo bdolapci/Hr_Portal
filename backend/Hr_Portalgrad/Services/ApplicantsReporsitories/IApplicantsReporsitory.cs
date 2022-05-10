@@ -8,7 +8,8 @@ namespace HR_Portalgrad.Services.ApplicantsReporsitories
     {
         Task<List<Applicants>> GetAllApplicants();
         Task<Applicants> CreateApplicants(Applicants applicants);
-        //Task<Applicants> AcceptReject(int id);
+
+        Task<Applicants> Accept(int id,int isAccepted,int Jobsid);
        
     }
 }

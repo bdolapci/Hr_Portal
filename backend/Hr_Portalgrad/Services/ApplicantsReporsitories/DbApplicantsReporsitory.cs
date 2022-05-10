@@ -29,6 +29,14 @@ namespace HR_Portalgrad.Services.ApplicantsReporsitories
         {
             return await _context.Applicants.ToListAsync();
         }
-
+       
+        public async Task<Applicants> Accept(int id,int isAccepted,int Jobsid)
+        {
+            var us = new Applicants { Id = id, isAccepted = isAccepted ,Jobsid=Jobsid};
+            _context.Applicants.Attach(us);
+            _context.Entry(us).Property(x => x.isAccepted).IsModified = true;
+            await _context.SaveChangesAsync();
+            return us;
+        }
     }
 }

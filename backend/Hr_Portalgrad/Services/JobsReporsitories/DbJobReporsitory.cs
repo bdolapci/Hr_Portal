@@ -15,19 +15,69 @@ namespace HR_Portalgrad.Services.JobsReporsitories
             _context = context;
         }
 
-        public async Task<Jobs> EditJob(int id, string name, int UserId, string Date, string description, string category, string photo)
+        //public async Task<Jobs> EditJob(int id, int UserId, string Date, string name, string description, string category, string photo)
+        //{
+        //    var job = new Jobs { Id = id, Name = name, UserId = UserId, Date = Date, description = description, category = category, photo = photo };
+        //    _context.Jobs.Attach(job);
+        //    _context.Entry(job).Property(j => j.UserId).IsModified = false;
+        //    _context.Entry(job).Property(j => j.Name).IsModified = true;
+        //    _context.Entry(job).Property(j => j.Date).IsModified = true;
+        //    _context.Entry(job).Property(j => j.description).IsModified = true;
+        //    _context.Entry(job).Property(j => j.category).IsModified = true;
+        //    _context.Entry(job).Property(j => j.photo).IsModified = true;
+        //    await _context.SaveChangesAsync();
+        //    return job;
+
+        //}
+
+        public async Task<Jobs> EditJobCategory(int id, int UserId, string category)
         {
-            var job = new Jobs {Id=id,Name=name,UserId=UserId,Date=Date,description=description,category=category,photo=photo};
+            var job = new Jobs { Id = id,  UserId = UserId, category=category};
+            _context.Jobs.Attach(job);
+            _context.Entry(job).Property(j => j.UserId).IsModified = false;
+            _context.Entry(job).Property(j => j.category).IsModified = true;
+            await _context.SaveChangesAsync();
+            return job;
+        }
+
+        public async Task<Jobs> EditJobDate(int id, int UserId, string Date)
+        {
+            var job = new Jobs { Id = id, UserId = UserId, Date = Date };
+            _context.Jobs.Attach(job);
+            _context.Entry(job).Property(j => j.UserId).IsModified = false;
+            _context.Entry(job).Property(j => j.Date).IsModified = true;
+            await _context.SaveChangesAsync();
+            return job;
+        }
+
+        public async Task<Jobs> EditJobDescription(int id, int UserId, string description)
+        {
+            var job = new Jobs { Id = id, UserId = UserId, description = description };
+            _context.Jobs.Attach(job);
+            _context.Entry(job).Property(j => j.UserId).IsModified = false;
+            _context.Entry(job).Property(j => j.description).IsModified = true;
+            await _context.SaveChangesAsync();
+            return job;
+        }
+
+        public async Task<Jobs> EditJobName(int id, string name, int UserId)
+        {
+            var job = new Jobs { Id = id, UserId = UserId, Name = name };
             _context.Jobs.Attach(job);
             _context.Entry(job).Property(j => j.UserId).IsModified = false;
             _context.Entry(job).Property(j => j.Name).IsModified = true;
-            _context.Entry(job).Property(j=>j.Date).IsModified = true;
-            _context.Entry(job).Property(j => j.description).IsModified = true;
-            _context.Entry(job).Property(j => j.category).IsModified = true;
+            await _context.SaveChangesAsync();
+            return job;
+        }
+
+        public async Task<Jobs> EditJobPhoto(int id, int UserId, string photo)
+        {
+            var job = new Jobs { Id = id, UserId = UserId, photo = photo };
+            _context.Jobs.Attach(job);
+            _context.Entry(job).Property(j => j.UserId).IsModified = false;
             _context.Entry(job).Property(j => j.photo).IsModified = true;
             await _context.SaveChangesAsync();
             return job;
-         
         }
 
         public async Task<List<Jobs>> GetAllJobs()
