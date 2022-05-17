@@ -104,7 +104,7 @@ React.useEffect(()=>{
   const[following,setFollowing]=React.useState('');
   const [certification, setCertification] = React.useState('');
   const [title, setTitle] = React.useState('');
-
+  const [emptyField3,setEmptyField3] = React.useState(false);
   const addFollowers =async ()=>{
     try {
       const res = await axios.post(
@@ -354,7 +354,8 @@ React.useEffect(()=>{
           setNum(data)
         })
         randomNumber();
-        skip();
+      
+      
       } catch (error) {
         console.log(error);
      
@@ -379,31 +380,34 @@ React.useEffect(()=>{
           controlemail();
         if(email===user.email){
           randomNumber();
-          skip();      
+          skip();
+          setWrongEmail(false);
         }else{
-         setWrongEmail(true)
-          
-         
+          setWrongEmail(true); 
           //setEmptyField(true);
         }
       }else if(activeStep===1){
         if(controlNum==num){
           skip();
         }else{
-         
-          console.log("not correct number");
           randomNumber();
           setControlNum();
           setEmptyField2(true);
-          setTimeout(() => {
-           
-          }, 1000);
+          // setTimeout(() => {
+          //   window.location.reload();
+          // }, 1000);
          
         }
         //controlnum
       }else if(activeStep===2){
+        if(password.length<8){
+          setEmptyField3(true);
+        }
+        else{
+          setEmptyField3(false);
         changePass();
         skip();
+        }
       }else if(activeStep===3){
         //route main menu
       }
@@ -680,19 +684,20 @@ React.useEffect(()=>{
         </React.Fragment>
       ) : (
         <React.Fragment>
-        {emptyField2 ? <Alert severity="error">verification number is incorrect</Alert> :  ""}
+        {emptyField2 ? <Alert severity="error">verification number is incorrect</Alert> :  "" }
           {activeStep === 0 ?( 
           <TextField style={{marginTop:"20px",marginLeft:"20px"}} onChange={emailInput} id="outlined-basic" label="Email" variant="outlined" />
           ):""}
-          {wrongEmail ? <Alert severity="error">Email is not correct</Alert> :  ""}
+          {wrongEmail ? <Alert sx={{marginTop:"3%"}} severity="error">Email is not correct</Alert> :  ""}
           {activeStep === 1 ?( 
             <React.Fragment>
               {/* <Typography style={{marginTop:"20px",marginLeft:"20px",backgroundColor:"white",width:"200px",height:"50px",textAlign:"center"}} sx={{ mt: 2, mb: 1 }}>{randomnum}</Typography> */}
               <TextField style={{marginTop:"20px",marginLeft:"20px"}} onChange={controlInput}  id="outlined-basic" label="upper number" variant="outlined" />
             </React.Fragment>
           ):""}
+           {emptyField3 ? <Alert severity="error">Password cannot be shorter than 8 digit</Alert> :  "" }
           {activeStep === 2 ?( 
-          <TextField type= {"password"} style={{marginTop:"20px",marginLeft:"20px"}} onChange={passwordInput} id="outlined-basic" label="new password" variant="outlined" />
+          <TextField type= {"password"} style={{marginTop:"20px",marginLeft:"20px"}} inputProps= { {minLength: 8, maxLength: 16} }  onChange={passwordInput} id="outlined-basic" label="new password" variant="outlined" />
           ):""}
           
           <Box sx={{ display: 'flex', flexDirection: 'row', pt: 2 }}>
@@ -724,7 +729,7 @@ React.useEffect(()=>{
         <h3 style={{margin:"10px"}}>Experience</h3>
         <hr/>
         {profile.Userid == decoded.id ?
-        <Button 
+        <Button   
         onClick={handleOpenex}
         sx={{    
           top: "-50px",

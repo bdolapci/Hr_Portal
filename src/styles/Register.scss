@@ -34,7 +34,7 @@ section{
             align-items: center;
             justify-content: center;
             margin-top: 5rem;
-            border: 1px solid rgb(7, 7, 7);
+            box-shadow: rgb(149 157 165 / 20%) 0px 8px 24px;
             border-radius: 1.125rem;
             flex-direction: column;
             max-width: 56%;
@@ -108,7 +108,8 @@ section{
                     margin-top: 5%;
                     padding: 10px;
                     border-radius: 1.125rem;
-                    background-color: #a2aee2;
+                    background-color: rgb(21, 101, 192);
+                    color: white;
                     
 
                     a{

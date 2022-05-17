@@ -136,8 +136,6 @@ function Applicants() {
       setRejectedUser(m)
     })
   }  
-
-console.log(accepteduser)
   const [job,setJob]=React.useState([]);
   useEffect(()=>{
     axios.get("https://localhost:44361/api/Home/Jobs",{
@@ -183,7 +181,7 @@ console.log(accepteduser)
       console.log(error)
     }
    }
- 
+  
 
   const [value, setValue] = React.useState(0);
   
@@ -209,7 +207,7 @@ console.log(accepteduser)
       label:"Display Profile",
       options: {
         customBodyRender: (value, tableMeta, updateValue) => {
-          let a="/profile"+value
+          let a="/hrPanel/applicants/"+id+"/documents/"+value
           return (
             <>
             <Button href={a}><RemoveRedEyeIcon/></Button>
@@ -219,12 +217,15 @@ console.log(accepteduser)
       }
     },
     {
-      name: "Display Documents",
+      name: "UserId",
+      label: "Display Documents",
       options: {
         customBodyRender: (value, tableMeta, updateValue) => {
+          let a="/documents/"+value
+          console.log(accepteduser[0].UserId)
           return (
             <>
-            <Button href='/hrPanel/applicants/documents'><RemoveRedEyeIcon/></Button>
+            <Button href={a}><RemoveRedEyeIcon/></Button>
             </>
           );
         }
@@ -274,12 +275,14 @@ console.log(accepteduser)
       }
     },
     {
-      name: "Display Documents",
+      name: "UserId",
+      label: "Display Documents",
       options: {
         customBodyRender: (value, tableMeta, updateValue) => {
+          let a="/hrPanel/applicants/"+id+"/documents/"+value
           return (
             <>
-            <Button href='/hrPanel/applicants/documents'><RemoveRedEyeIcon/></Button>
+            <Button href={a}><RemoveRedEyeIcon/></Button>
             </>
           );
         }

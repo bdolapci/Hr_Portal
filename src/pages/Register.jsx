@@ -5,7 +5,7 @@ import "../styles/Navbar.scss"
 import Button from '@mui/material/Button';
 import { Link } from 'react-router-dom';
 import "../styles/Register.scss"
-import Select from 'react-select'
+import Select from 'react-select';
 import { InputLabel,MenuItem,TextField,Alert  } from '@mui/material';
 import countryList from 'react-select-country-list'
 import GoogleLogin from 'react-google-login';
@@ -24,8 +24,12 @@ function Register() {
   const[password,setPassword]=React.useState("");
   const[isUser,setIsUser]=React.useState("");
   const[confirmPassword,setConfirmPassword]=React.useState("");
+  const[country,setCountry]=React.useState("");
+  const [gender,setGender] =React.useState("");
+  const [phoneNumber,setPhoneNumber]=React.useState("");
 
   const [errorField,setErrorField] = React.useState(false);
+  const [errorField2,setErrorField2] = React.useState(false);
   const [cheked ,setCheked] = React.useState(false);
   function firstNameHandler(e){
     setFirstName(e.target.value);
@@ -39,6 +43,15 @@ function Register() {
   function passwordHandler(e){
     setPassword(e.target.value);
   }
+  function countryHandler(e){
+    setCountry(e.target.value);
+  }
+  const genderHandler = gender => {
+    setGender(gender)
+  }
+  function phoneNumberHandler(e){
+    setPhoneNumber(e.target.value);
+  }
   function isUserHandler(e){
     if(cheked==false){
       setIsUser("hr");
@@ -51,7 +64,17 @@ function Register() {
     setConfirmPassword(e.target.value);
   }
   const navigate = useNavigate();
+  const [value, setValue] = useState('')
+  const options = useMemo(() => countryList().getData(), [])
 
+  const changeHandler = value => {
+    setValue(value)
+  }
+const options2=[
+ { value: "Female",label:"Female"},
+ {value :"Male",label:"Male"},
+ {value:"No Answer",label:"No Answer"}
+]
   async function reg(){
     try {
       const response =await axios.post(
@@ -63,12 +86,17 @@ function Register() {
           Passwords: `${password}`,
           confirmPassword : `${confirmPassword}`,
           userRole: `${isUser}`,
+          country: `${value}`,
+          gender: `${gender}`,
+          phoneNumber:`${phoneNumber}`,
+          isEmailValid:0
         }
       );
       navigate("/");
     } catch (error) {
-      setErrorField(true);
-      console.log(error);
+      if(error.response.status==409){
+        setErrorField(true);
+      }
     }
   }
 
@@ -94,10 +122,18 @@ function Register() {
     <section className='body-register'>
       <div className="register-form">
           <div className="register-form-body">
-            <h1>Register as a Employee to work for <br></br> Worldwide Clients</h1>
-            {errorField ? <Alert severity="error">This email already exists</Alert> :  ""}
+            {isUser=="hr"?  <h1>Register as a Employee to work for <br></br> Worldwide Clients</h1>: 
+             <h1>Register as a Client to hire  <br></br> Top Employees</h1> }
+          
+            {errorField ? <Alert sx={{marginBottom:"3%"}} severity="error">This email already exists</Alert> :  ""}
+            {errorField2 ? <Alert sx={{marginBottom:"3%"}} severity="error">Passwords do not match</Alert> :  ""}
             <form onSubmit={(e)=>{
               if((firstName && lastName && email && password && confirmPassword) != ""){
+                if(password ==confirmPassword){
+                  setErrorField2(false);
+                }
+                setErrorField2(true);
+              
                 reg()
                 e.preventDefault()
               }
@@ -137,6 +173,7 @@ function Register() {
               variant='outlined'
               required
               onChange={passwordHandler}
+              inputProps= { {minLength: 8, maxLength: 16} } 
               />
                <TextField type="password" 
               placeholder='confirm password'
@@ -144,30 +181,51 @@ function Register() {
               className='password'
               variant='outlined'
               required
+              inputProps= { {minLength: 8, maxLength: 16} } 
               onChange={confirmPasswordHandler}
               />
-              {/* <TextField type="text" 
-              placeholder='HR' 
+            
+              <h4 style={{marginBottom:"0px"}}>Optional</h4>
+              <div className="count">
+              <TextField
+              sx={{scrollMarginBottom:"10px",width:"100%"}}
+               type="text" 
+              placeholder='Phone Number' 
               className='hruser'
               variant='outlined'
-              required
-              onChange={isUserHandler}
-              /> */}
+              label="Phone Number"
+              onChange={phoneNumberHandler}
+              /> 
+               <InputLabel sx={{marginTop:"10px"}}>Country</InputLabel>
+              <Select  
+              sx={{width:"100%"}}
+              labelId="demo-simple-select-label"
+              id="demo-simple-select"
+              value={value}
+              label="country"
+              onChange={changeHandler}
+              options={options} >
+                 
+                </Select>  
+              
+              <InputLabel sx={{marginTop:"10px"}}>Gender</InputLabel>
+              <Select  
+              sx={{width:"100%"}}
+              labelId="demo-simple-select-label"
+              id="demo-simple-select"
+              value={gender}
+              label="gender"
+              onChange={genderHandler} 
+              options={options2}>
+            
+                </Select>              
+            
+          </div> 
                <FormControlLabel  control={<Checkbox onChange={isUserHandler} />} label="Register as a Company Representetive" />
-              {/* <div className="count">
-              <InputLabel>Country</InputLabel>
-              <Select options={options} value={value} onChange={changeHandler} />
-              </div> */}
+             
               </div>
              
-              {/* <div className="terms"> 
-              <input type="checkbox"></input>
-              <h4>Accept Terms&Conditions</h4>
-              </div>
-              <div className="representetive">
-              <input type="checkbox"></input>
-              <h4>Join as Company Representetive</h4>
-              </div> */}
+        
               <Button type="submit">Create Account</Button>
               <hr className='line'></hr>
               <p className='usegoogle'>You can also use google</p>

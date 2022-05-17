@@ -1,5 +1,5 @@
 import React from 'react'
-import { Card,CardContent, Typography } from '@mui/material'
+import { Card,CardContent, Step, Typography } from '@mui/material'
 import Button from '@mui/material/Button'
 import axios from 'axios'
 import { TextField } from '@mui/material';
@@ -20,20 +20,27 @@ import jwt_decode from "jwt-decode";
 import Navbar from '../components/Navbar';
 import SideBar from '../components/SideBar';
 import Stepper from '../components/Stepperr';
+import { renderToString } from "react-dom/server";
+import jsPDF from "jspdf";
 
 function Application() {
     const Input = styled('input')({
         display: 'none',
       });
+    
   return (
    <>
    <Navbar/>
    <div className="container" style={{marginTop:"3%"}}>
-       <div className="middle" style={{width:"50%"}}>
+       <div className="middle" style={{width:"50%",boxShadow:" 0px 2px 1px -1px rgb(0 0 0 / 20%), 0px 1px 1px 0px rgb(0 0 0 / 14%), 0px 1px 3px 0px rgb(0 0 0 / 12%)"
+       ,borderRadius: "1.125rem",
+     padding: "2%",
+}}>
        <h1 style={{marginBottom:"10%"}}>
                   Job Name:Jr Software Engineer
               </h1>
            <Stepper/>
+          
        </div>
    </div>
    </>

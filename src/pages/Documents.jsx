@@ -1,0 +1,87 @@
+import React from 'react'
+import { useParams } from "react-router-dom";
+import Navbar from '../components/Navbar';
+import SideBar from '../components/SideBar';
+import Tabs from '@mui/material/Tabs';
+import Tab from '@mui/material/Tab';
+import PropTypes from 'prop-types';
+import Typography from '@mui/material/Typography';
+import MUIDataTable from "mui-datatables";
+import { Button } from '@mui/material';
+import { Box } from '@mui/material';
+import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
+import FileDownloadIcon from '@mui/icons-material/FileDownload';
+import axios from 'axios';
+function Documents() {
+    let { id } = useParams();
+    console.log(id)
+    const options = {
+        filterType: 'checkbox',
+        selectableRows: "none",
+        print:false,
+        viewColumns:false,
+        download	:false,
+        filter :false,
+      };
+      const [getFiles, setGetFiles] = React.useState([]);
+      const fetchFile =async (event)=>{
+    try {
+      const res=await axios.get("https://localhost:44361/api/Home/GetFiles",{
+          headers:{
+                'Content-Type':'application/json',
+                'Accept':'*/*',
+          }
+      })   
+          setGetFiles(res.data)  
+    } catch (error) {
+       
+      console.log(error)
+    }
+      }
+
+      React.useEffect(()=>{
+        fetchFile();
+      },[])
+   
+      const downloadFile =async (name)=>{
+        try {
+          const res=await axios.get(`https://localhost:44361/api/Home/downloadFile/${name}`,{
+          })
+          var fileDownload = require('js-file-download');
+          fileDownload(res.data, name);
+        } catch (error) {
+           
+          console.log(error)
+        }
+          }
+
+          
+
+  return (
+    <>
+        <Navbar />
+        <SideBar />
+        <div className='container'style={{margin:"auto",width:"80%",marginTop:"10rem"}} >
+          <h1>
+            Uploaded Files
+          </h1>
+         <Typography sx={{    boxShadow: "0px 2px 4px -1px rgb(0 0 0 / 20%), 0px 4px 5px 0px rgb(0 0 0 / 14%), 0px 1px 10px 0px rgb(0 0 0 / 12%) !important"}}>
+           {getFiles ? getFiles.map((item,index)=>{
+            
+              return(
+                item.Name.split("_")[0]==id ? 
+                <Box>
+               
+                <Button onClick={()=>downloadFile(item.Name)}> <FileDownloadIcon></FileDownloadIcon>{item.Name}</Button>
+                </Box>:""
+              )
+            })
+           :""}
+         </Typography>
+        <Button href='http://localhost:3000/hrPanel/jobs' sx={{"border":"0.5px solid gray,",marginTop:"5%"}}>Go Back</Button>
+    </div>
+    </>
+  )
+}
+
+export default Documents

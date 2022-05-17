@@ -41,6 +41,33 @@ function categoryHandler(e){
 function photoHandler(e){
   setPhoto(e.target.value);
 }
+const [file,setFile]=React.useState();
+const [fileName,setFileName]=React.useState();
+const saveFile=(event)=>{
+  setFile(event.target.files[0])
+  setFileName(event.target.files[0].name)
+}
+const [alert1,setAlert1]=React.useState(false);
+
+const nameoffile=name+"_"+decoded.id+"_"+fileName
+const uploadFile =async (event)=>{
+  
+  const formData=new FormData();
+  formData.append("formFile",file,nameoffile)
+try {
+const res=await axios.post("https://localhost:44361/api/Home/UploadFile",formData)
+console.log(res);
+setAlert1(true)
+setTimeout(() => {
+  setAlert1(false);
+}, 4000); 
+
+} catch (error) {
+  setAlert1(false);
+console.log(error)
+}
+}
+
 const [value, setValue] = React.useState(null);
 const postJob =async()=>{
   try {
@@ -52,7 +79,7 @@ const postJob =async()=>{
       Date: `${value}`,
       description: `${description}`,
       category: `${category}`,
-      photo: `${photo}`,
+      photo: `${nameoffile}`,
     })
     console.log(res)
     console.log(res.data)
@@ -61,7 +88,7 @@ const postJob =async()=>{
     console.log(error)
   }
 }
-
+const dat=new Date().toISOString()
 
   const Input = styled('input')({
     display: 'none',
@@ -76,58 +103,59 @@ const postJob =async()=>{
       margin:"auto"
       ,width:"70%",
       borderRadius:"1.125rem",
-      boxShadow: "rgb(0 0 0 / 8%) -8px -8px",
+      boxShadow: "0px 2px 4px -1px rgb(0 0 0 / 20%), 0px 4px 5px 0px rgb(0 0 0 / 14%), 0px 1px 10px 0px rgb(0 0 0 / 12%) ",
+      padding:"3%"
       }}>
-            <form onSubmit={(e)=>{
+          <h1 style={{textAlign:"center"}}>Post Job</h1>
+            <form  onSubmit={(e)=>{
               
               postJob()
+              uploadFile()
               e.preventDefault()
               
             }}>
-                <Box sx={{justifyContent:'center',
+              <div className="contain" style={{display:"flex"}}>
+
+            
+                <div style={{justifyContent:'center',
                 display:'flex',
                 flexDirection:"column",
                 alignItems:"center",
-                textAlign:"center"}} >
+                textAlign:"center",
+                width:"70%"}} >
                   <Typography>
                     Job Name
                   </Typography>
                 <TextField 
                // multiline  
                variant="filled"
-               sx={{ marginBottom:"2%",width:"20%"}}
+               sx={{ marginBottom:"2%",width:"40%"}}
                label="Name"
                multiline
+               required
                placeholder="Name"
                onChange={NameHandler}
                ></TextField>
-                <Box sx={{ marginTop:"0",marginBottom:"2%",width:"20%"}}>
+                <Box sx={{ marginTop:"0",marginBottom:"2%",width:"40%"}}>
                 <Typography>
                     Job Deadline
                   </Typography>
                   <LocalizationProvider dateAdapter={AdapterDateFns}>
                       <DatePicker
-                        label="Basic example"
+                        label="Date"
                         value={value}
+                        required
                         format="DD-MM-YYYY"
                         onChange={(newValue) => {
                           setValue(newValue);
                           console.log(newValue);
                         }}
+                         disablePast={true}
                         renderInput={(params) => <TextField {...params} />}
                       />
                   </LocalizationProvider>
                 </Box>
-                <Typography>
-                    Job Description
-                  </Typography>
-                <TextField 
-                multiline 
-                variant="filled"sx={{ marginBottom:"2%",width:"20%"}}
-                label="Description"
-                placeholder="Description"
-                onChange={descriptionHandler}
-                ></TextField>
+                
                 <Box sx={{width:"100%","marginBottom":"2%",marginTop:"0"}}>
                 <Typography>
                     Chose the Category
@@ -140,6 +168,7 @@ const postJob =async()=>{
                     sx={{color:"black"}}
                     value={category}
                     label="Category"
+                    required
                     onChange={categoryHandler}
                     >
                     <MenuItem value={"Software"}>Software</MenuItem>
@@ -151,19 +180,62 @@ const postJob =async()=>{
                       <Typography>
                     Pick a photo
                   </Typography>
-                  <Stack direction="row" alignItems="center" spacing={2}>
-                  <label htmlFor="contained-button-file">
-                    <Input onChange={photoHandler} accept="image/*" id="contained-button-file" multiple type="file" />
-                    <Button variant="contained" component="span">
-                      Upload
-                    </Button>
-                  </label>
-                </Stack>
-                <Button type="submit">Post Job</Button>
-                </Box>
+                  <div className="photoupload" style={{display:"flex",flexDirection:"row"}}>
+
+                  <input style={{
+                    display: "inline-block",
+                    background:" linear-gradient(top, #f9f9f9, #e3e3e3)",
+                    border: "1px solid #999",
+                          borderRadius: "3px",
+                          padding:" 5px 8px",
+                          outline: "none",
+                          whiteSpace: "nowrap",
+                          cursor: "pointer",
+                          textShadow: "1px 1px #fff",
+                          fontWeight: "700",
+                          fontSize: "10pt",
+                        }} type="file" onChange={saveFile}/>
+             {/* <input 
+             style={{
+              display: "inline-block",
+              background:" linear-gradient(top, #f9f9f9, #e3e3e3)",
+              border: "1px solid #999",
+              borderRadius: "3px",
+              padding:" 5px 8px",
+              outline: "none",
+              whiteSpace: "nowrap",
+              cursor: "pointer",
+              textShadow: "1px 1px #fff",
+              fontWeight: "700",
+              fontSize: "10pt",
+              marginLeft:"3%"
+            }}
+            
+            type="button" value="upload" onClick={uploadFile}/>    */}
+            </div>
                 
+                </div>
+                <div style={{width:"30%"}} className="multi">
+                <Typography>
+                    Job Description
+                  </Typography>
+                <TextField 
+                multiline 
+                rows={10}
+                variant="filled"sx={{ marginBottom:"2%",width:"80%"}}
+                label="Description"
+                placeholder="Description"
+                onChange={descriptionHandler}
+                ></TextField>
+                </div>
+                </div>
+                <div style={{marginTop:"5%",justifyContent:"center",aligItems:"center",textAlign:"center"}}  className="postdiv">
+
+                <Button type="submit">Post Job</Button>
+                </div>
             </form>
                 </div>
+                
                 </section>
 
     </>

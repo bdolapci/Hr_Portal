@@ -49,7 +49,7 @@ function Navbar() {
       })
      
      
-  },[profiledata]);
+  },[]);
 
  
   
@@ -77,11 +77,11 @@ function Navbar() {
         {
           localStorage.getItem("User") ?
           <>
-           {decoded.userRole =="hr" ?  <li>
+           {decoded ? decoded.userRole =="hr" ?  <li>
           <Link to="/hrPanel/home">Dashboard</Link>
         </li> : decoded.userRole=="admin" ? <li>
           <Link to="/adminPanel">Dashboard</Link>
-        </li> : "" }
+        </li> : "" :""}
            <div>
               <IconButton
                 size="large"
