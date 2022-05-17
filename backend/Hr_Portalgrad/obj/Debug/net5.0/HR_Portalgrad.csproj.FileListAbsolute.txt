@@ -77,3 +77,4 @@ C:\Users\baran\Desktop\Githuba atılacaklar\web\HR_Portalgrad\HR_Portalgrad\bin\
 C:\Users\baran\Desktop\Githuba atılacaklar\web\HR_Portalgrad\HR_Portalgrad\bin\Debug\net5.0\MailKit.dll
 C:\Users\baran\Desktop\Githuba atılacaklar\web\HR_Portalgrad\HR_Portalgrad\bin\Debug\net5.0\MimeKit.dll
 C:\Users\baran\Desktop\Githuba atılacaklar\web\HR_Portalgrad\HR_Portalgrad\bin\Debug\net5.0\BouncyCastle.Crypto.dll
+C:\Users\baran\Desktop\Githuba atılacaklar\web\HR_Portalgrad\HR_Portalgrad\bin\Debug\net5.0\Microsoft.AspNetCore.Authentication.Google.dll

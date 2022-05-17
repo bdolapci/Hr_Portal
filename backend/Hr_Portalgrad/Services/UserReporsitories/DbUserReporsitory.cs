@@ -25,10 +25,15 @@ namespace HR_Portalgrad.Services.UserReporsitories
         }
 
         public async Task<User> GetByEmail(string email)
-        {
+        {          
+            
             return await _context.Users.FirstOrDefaultAsync(u => u.email == email);
         }
+        public async Task<User> GetByEmailAsync(string email)
+        {
 
+            return await _context.Users.FirstOrDefaultAsync(u => u.email == email);
+        }
         public async Task<User> GetById(int id)
         {
             return await _context.Users.FindAsync(id);
@@ -41,7 +46,8 @@ namespace HR_Portalgrad.Services.UserReporsitories
 
         public async Task<User> UpdatetoHr(int id,string userRole)
         {
-            var us=new User { Id=id,userRole = userRole };
+
+            var us = await _context.Users.FindAsync(id);
             _context.Users.Attach(us);
             _context.Entry(us).Property(x => x.userRole).IsModified = true;
             await _context.SaveChangesAsync();
@@ -92,6 +98,7 @@ namespace HR_Portalgrad.Services.UserReporsitories
         {
             var us = new User { Id = id, Passwords = Passwords ,firstName=firstName,lastName=lastName,userRole=userRole,email=email };
             _context.Users.Attach(us);
+            _context.Entry(us).Property(j => j.Id).IsModified = false;
             _context.Entry(us).Property(j => j.firstName).IsModified = false;
             _context.Entry(us).Property(j => j.lastName).IsModified = false;
             _context.Entry(us).Property(j => j.userRole).IsModified = false;
@@ -101,5 +108,6 @@ namespace HR_Portalgrad.Services.UserReporsitories
             await _context.SaveChangesAsync();
             return us;
         }
+      
     }
 }

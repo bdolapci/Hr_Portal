@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "Za2PNWAIopsquAvQOs+X2E7zToJlYUa/ss9eeMu8pCrKF1Cj+fUOs+EaSZ5KZHkE/9eG5tfdhHyadPKRgIpzcw==",
+  "dgSpecHash": "fz9Rx63P75YPQOCLSE7b4KhApgR7d1iOx1QbUogOSrX3uEUdx3B7CofVSxixNDaW3EzfV/X0zokoGgYc8Z2BrA==",
   "success": true,
   "projectFilePath": "C:\\Users\\baran\\Desktop\\Githuba atılacaklar\\web\\HR_Portalgrad\\HR_Portalgrad\\HR_Portalgrad.csproj",
   "expectedPackageFiles": [
@@ -12,6 +12,7 @@
     "C:\\Users\\baran\\.nuget\\packages\\mailkit\\3.2.0\\mailkit.3.2.0.nupkg.sha512",
     "C:\\Users\\baran\\.nuget\\packages\\microsoft.aspnet.webapi.client\\5.2.8\\microsoft.aspnet.webapi.client.5.2.8.nupkg.sha512",
     "C:\\Users\\baran\\.nuget\\packages\\microsoft.aspnet.webapi.core\\5.2.8\\microsoft.aspnet.webapi.core.5.2.8.nupkg.sha512",
+    "C:\\Users\\baran\\.nuget\\packages\\microsoft.aspnetcore.authentication.google\\5.0.1\\microsoft.aspnetcore.authentication.google.5.0.1.nupkg.sha512",
     "C:\\Users\\baran\\.nuget\\packages\\microsoft.aspnetcore.cryptography.internal\\6.0.4\\microsoft.aspnetcore.cryptography.internal.6.0.4.nupkg.sha512",
     "C:\\Users\\baran\\.nuget\\packages\\microsoft.aspnetcore.cryptography.keyderivation\\6.0.4\\microsoft.aspnetcore.cryptography.keyderivation.6.0.4.nupkg.sha512",
     "C:\\Users\\baran\\.nuget\\packages\\microsoft.aspnetcore.jsonpatch\\5.0.1\\microsoft.aspnetcore.jsonpatch.5.0.1.nupkg.sha512",

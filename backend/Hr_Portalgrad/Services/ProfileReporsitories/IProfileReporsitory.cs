@@ -23,6 +23,7 @@ namespace HR_Portalgrad.Services.ProfileReporsitories
         Task<Profile> EditProfilefollowing(int id, int UserID, int following);
 
         Task<Profile> EditProfiletitle(int id, int UserID, string title);
+        Task<Profile> Create(Profile prof);
 
     }
 }

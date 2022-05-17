@@ -177,5 +177,14 @@ namespace HR_Portalgrad.Services.ProfileReporsitories
            
             return await result;
         }
+
+        public async Task<Profile> Create(Profile prof)
+        {
+            
+            _context.profiles.Add(prof);
+            await _context.SaveChangesAsync();
+
+            return prof;
+        }
     }
 }

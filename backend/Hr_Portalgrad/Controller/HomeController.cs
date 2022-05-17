@@ -87,9 +87,20 @@ namespace HR_Portalgrad.Controller
                 email = registerRequest.Email,
                 Passwords = passwordHash,
                 userRole = registerRequest.userRole,
+                country = registerRequest.country,
+                gender = registerRequest.gender,
+                phoneNumber = registerRequest.phoneNumber,
+                isEmailValid = registerRequest.isEmailValid,
             };
-            await _userReporsitory.Create(regUser);
+          
 
+            await _userReporsitory.Create(regUser);
+            Profile profile = new Profile()
+            {
+                Userid = regUser.Id,
+            };
+            await _profileReporsitory.Create(profile);
+ 
 
             return Ok();
         }
@@ -129,6 +140,14 @@ namespace HR_Portalgrad.Controller
         public async Task<User> GetSingleUser(int id)
         {
             return await _userReporsitory.GetById(id);
+        }
+        [HttpGet("Useremail/{email?}")]
+        public async Task<User> GetSingleEmail([FromHeader] ForgotPasswordRequest forgot)
+        {
+            User user = await _userReporsitory.GetByEmailAsync(forgot.Email);
+            return user;
+
+
         }
 
         //[HttpPost("logout")]
@@ -242,7 +261,7 @@ namespace HR_Portalgrad.Controller
         [HttpPost("Profile/EditProfileAbout")]
         public async Task<Profile> EditAboutSection(Profile profile)
         {
-            return await _profileReporsitory.EditProfileAbout( profile.Id, profile.Userid,profile.about);
+            return await _profileReporsitory.EditProfileAbout( profile.Id, profile.Userid, profile.about);
         }
         [HttpPost("Profile/EditProfileLinkedin")]
         public async Task<Profile> EditProfileLinkedin(Profile profile)
@@ -297,14 +316,14 @@ namespace HR_Portalgrad.Controller
         [HttpPost("Profile/EditProfilefollowing")]
         public async Task<Profile> EditProfilefollowing(Profile profile)
         {
-            return await _profileReporsitory.EditProfilefollowing(profile.Id, profile.Userid, profile.Following);
+            return await _profileReporsitory.EditProfilefollowing(profile.Id,profile.Userid,  profile.Following);
         }
-        [HttpGet("Jobs/{id}")]
+        [HttpGet("Jobs/{id?}")]
         public async Task<Jobs> GetSingleJob(int id)
         {
             return await _jobReporsitory.GetSingleJob(id);
         }
-        [HttpGet("Profile/{id}")]
+        [HttpGet("Profile/{id?}")]
         public async Task<Profile> GetSingleProfile(int id)
         {
             return await _profileReporsitory.GetProfileInfo(id);
@@ -381,7 +400,31 @@ namespace HR_Portalgrad.Controller
             }
 
         }
-
-
+        [HttpGet("downloadFile/{name?}")]
+        public async Task<IActionResult> Download(string name)
+        {
+            var container = new BlobContainerClient(_azureConnectionString, "uploadfile");
+            var blob = container.GetBlobClient(name);
+            if (await blob.ExistsAsync())
+            {
+                var a = await blob.DownloadAsync();
+                return File(a.Value.Content, a.Value.ContentType, name);
+            }
+            return BadRequest();
+        }
+        [HttpGet("GetFiles")]
+        public async Task<IActionResult> Get()
+        {
+            var blobs = new List<BlobDto>();
+            var container = new BlobContainerClient(_azureConnectionString, "uploadfile");
+            await foreach (var blobItem in container.GetBlobsAsync())
+            {
+                var uri = container.Uri.AbsoluteUri;
+                var name = blobItem.Name;
+                var fullUri = uri + "/" + name;
+                blobs.Add(new BlobDto { Name = name, Uri = fullUri, ContentType = blobItem.Properties.ContentType });
+            }
+            return Ok(blobs);
+        }
     }
 }

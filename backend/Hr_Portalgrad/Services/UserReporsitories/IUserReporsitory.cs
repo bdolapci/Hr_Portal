@@ -9,6 +9,7 @@ namespace HR_Portalgrad.Services.UserReporsitories
     public interface IUserReporsitory
     {
         Task<User> GetByEmail(string email);
+        Task<User> GetByEmailAsync(string email);
         Task<User> Create(User user);
 
         Task<User> GetById(int id);
@@ -21,6 +22,7 @@ namespace HR_Portalgrad.Services.UserReporsitories
 
         Task <IEnumerable> GetApplicantsbyUser();
         Task<User> ChangePassword(int id, string Passwords, string firstName, string lastName, string userRole, string email);
-    
+        
+      
     }
 }

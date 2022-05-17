@@ -38,5 +38,6 @@ namespace HR_Portalgrad.Models
         [StringLength(250)]
         public string currentTitle { get; set; }
         public List<Applicants> Applicants { get; set; }
+   
     }
 }

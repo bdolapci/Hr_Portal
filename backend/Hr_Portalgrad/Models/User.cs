@@ -29,7 +29,7 @@ namespace HR_Portalgrad.Models
         [Required]
         [StringLength(250)]
         public string Passwords { get; set; }
-     
+        
         [Required]
         [StringLength(250)]
         public string userRole { get; set; }
@@ -45,8 +45,8 @@ namespace HR_Portalgrad.Models
         public List<Applicants> Applicants { get; set; }
         public List<File> File { get; set; }
         public List<Profile> Profile { get; set; }
-      //  public string country { get; set; }
-      // public string phoneNumber { get; set; }
+        //  public string country { get; set; }
+        // public string phoneNumber { get; set; }
 
     }
 }
