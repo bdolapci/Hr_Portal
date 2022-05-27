@@ -20,9 +20,12 @@ import DoneIcon from '@mui/icons-material/Done';
 import CancelIcon from '@mui/icons-material/Cancel';
 import Cancel from '@mui/icons-material/Cancel';
 import { useParams } from "react-router-dom";
-
+import Unauthorized from '../components/Unauthorized';
+import jwt_decode  from 'jwt-decode';
+import NotFound from '../components/NotFound';
 function Applicants() {
-
+  var token=localStorage.getItem("User");
+  var decoded = jwt_decode(token);
   function TabPanel(props) {
     const { children, value, index, ...other } = props;
   
@@ -203,11 +206,11 @@ function Applicants() {
       label:"Email",
     },
     {
-      name: "Id",
+      name: "UserId",
       label:"Display Profile",
       options: {
         customBodyRender: (value, tableMeta, updateValue) => {
-          let a="/hrPanel/applicants/"+id+"/documents/"+value
+          let a="/profile/"+value;
           return (
             <>
             <Button href={a}><RemoveRedEyeIcon/></Button>
@@ -221,8 +224,8 @@ function Applicants() {
       label: "Display Documents",
       options: {
         customBodyRender: (value, tableMeta, updateValue) => {
-          let a="/documents/"+value
-          console.log(accepteduser[0].UserId)
+          let a="/hrPanel/applicants/"+id+"/documents/"+value
+          
           return (
             <>
             <Button href={a}><RemoveRedEyeIcon/></Button>
@@ -301,6 +304,7 @@ function Applicants() {
 
   return (
  <>
+    {decoded.userRole =="hr" ? <>
     <Navbar/>
     <Sidebar/>
     <div className='container'style={{margin:"auto",width:"80%"}} >
@@ -351,6 +355,7 @@ function Applicants() {
      
         <Button href='http://localhost:3000/hrPanel/jobs' sx={{"border":"0.5px solid gray"}}>Go Back</Button>
     </div>
+    </>:<NotFound/>}
  </>
   )
 }

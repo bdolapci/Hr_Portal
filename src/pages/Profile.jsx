@@ -19,15 +19,23 @@ import Step from '@mui/material/Step';
 import StepLabel from '@mui/material/StepLabel';
 import Alert from '@mui/material/Alert';
 import Typography from '@mui/material/Typography';
-
+import { InputLabel } from '@mui/material';
+import Select from 'react-select';
+import countryList from 'react-select-country-list'
 import Stack from '@mui/material/Stack';
+import  {  useMemo } from 'react'
+import LanguageIcon from '@mui/icons-material/Language';
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import MenuItem from '@mui/material/MenuItem';
+import FormControl from '@mui/material/FormControl';
+import { useLocation } from 'react-router-dom'
 function Profile() {
   
   const [open, setOpen] = useState(false);
   const [openex, setOpenex] = useState(false);
   const [opened, setOpened] = useState(false);
-  const [opencer, setOpencer] = useState(false);
-  const [opensk, setOpensk] = useState(false);
   const [opench, setOpench] = useState(false);
   const [openit, setOpenit] = useState(false);
   const handleOpen = () => setOpen(true);
@@ -36,10 +44,6 @@ function Profile() {
   const handleCloseex = () => setOpenex(false);
   const handleOpened = () => setOpened(true);
   const handleCloseed = () => setOpened(false);
-  const handleOpencer = () => setOpencer(true);
-  const handleClosecer = () => setOpencer(false);
-  const handleOpensk = () => setOpensk(true);
-  const handleClosesk = () => setOpensk(false);
   const handleOpench = () => setOpench(true);
   const handleClosech = () => setOpench(false);
   const handleOpenit = () => setOpenit(true);
@@ -57,13 +61,56 @@ function Profile() {
   };
   const {id} = useParams();
   const[job,setJob]=React.useState([]);
-  const[profile,setProfile]=React.useState([]);
+  const[profile,setProfile]=React.useState("");
   const[user,setUser]=React.useState([]);
   var token=localStorage.getItem("User");
     var decoded = jwt_decode(token);
 
   React.useEffect(()=>{
-    axios.get("https://localhost:44361/api/Home/Jobs",{
+    
+   
+},[]);
+
+const getallInfo = () => {
+  axios.get(`https://localhost:44361/api/Home/Profile/${id}`,{
+  }).then((res)=>{
+      setProfile(res.data);
+     
+   
+  })
+}
+const location = useLocation();
+const content = ()=>{
+ if(profile.education){
+  setSchoolName(profile.education.split(",")[0]);
+  setSchoolName2(profile.education.split(",")[1]);
+  setSchoolName3(profile.education.split(",")[2]);
+  setDegree(profile.education.split(",")[3]);
+  setDegree2(profile.education.split(",")[4]);
+  setDegree3(profile.education.split(",")[5]);
+  setGpa(profile.education.split(",")[6]);
+  setGpa2(profile.education.split(",")[7]);
+  setGpa3(profile.education.split(",")[8]);
+  setEducationdate(profile.education.split(",")[9]);
+  setEducationdate2(profile.education.split(",")[10]);
+  setEducationdate3(profile.education.split(",")[11]);
+  setCompanyName(profile.experience.split(",")[0]);
+  setCompanyName2(profile.experience.split(",")[1]);
+  setCompanyName3(profile.experience.split(",")[2]);
+  setJobTitle(profile.experience.split(",")[3]);
+  setJobTitle2(profile.experience.split(",")[4]);
+  setJobTitle3(profile.experience.split(",")[5]);
+  setJobDescription(profile.experience.split(",")[6]);
+  setJobDescription2(profile.experience.split(",")[7]);
+  setJobDescription3(profile.experience.split(",")[8]);
+  setYearsOfExperience(profile.experience.split(",")[9]);
+  setYearsOfExperience2(profile.experience.split(",")[10]);
+  setYearsOfExperience3(profile.experience.split(",")[11]);
+ }
+}
+let a=""
+React.useEffect(()=>{
+  axios.get("https://localhost:44361/api/Home/JobsApplicantJoin",{
     }).then((res)=>{
       let a=[]
       for(let i=0;i<res.data.length;i++){
@@ -74,54 +121,204 @@ function Profile() {
         setJob(a);
     })
    
+ getallInfo();
+ content();
+
+ axios.get(`https://localhost:44361/api/Home/ProfileUserJoin`,{
+}).then((res)=>{
    
-},[]);
+   for(var i=0;i<res.data.length;i++){
+     if(res.data[i].Id==id){
+       a=(res.data[i])
+     }
+   }
+   setUser(a);
+   console.log(user)
+})
 
-
+},[location])
 React.useEffect(()=>{
-  axios.get(`https://localhost:44361/api/Home/Profile/${id}`,{
-  }).then((res)=>{
-    
-      setProfile(res.data);
-  })
-},[]);
+  getallInfo();
+  content();
+ 
+},[location])
 
-React.useEffect(()=>{
-  axios.get(`https://localhost:44361/api/Home/User/${decoded.id}`,{
-  }).then((res)=>{
-      setUser(res.data);
-  })
-},[]);
+
   const [facebook, setFacebook] = React.useState('');
   const [twitter, setTwitter] = React.useState('');
   const [linkedin, setLinkedin] = React.useState('');
   const [photo, setPhoto] = React.useState('');
   const [aboutsection, setAboutsection] = React.useState('');
-  const [skills, setSkills] = React.useState('');
   const [education, setEducation] = React.useState('');
   const [experience, setExperience] = React.useState('');
-  const [followers, setFollowers] = React.useState('');
-  const[following,setFollowing]=React.useState('');
-  const [certification, setCertification] = React.useState('');
+
   const [title, setTitle] = React.useState('');
   const [emptyField3,setEmptyField3] = React.useState(false);
-  const addFollowers =async ()=>{
+  const [country, setCountry] = React.useState('');
+  const [gender,setGender] =React.useState('');
+  const [phonenumber,setPhonenumber]=React.useState('');
+
+
+  const [schoolName, setSchoolName] = React.useState("");
+
+  const [schoolName2, setSchoolName2] = React.useState("");
+  const [schoolName3, setSchoolName3] = React.useState("");
+  const [degree, setDegree] = React.useState("");
+  const [degree2, setDegree2] = React.useState("");
+  const [degree3, setDegree3] = React.useState("");
+  const [gpa, setGpa] = React.useState("");
+  const [gpa2, setGpa2] = React.useState("");
+  const [gpa3, setGpa3] = React.useState("");
+  const [educationdate, setEducationdate] = React.useState("");
+  const [educationdate2, setEducationdate2] = React.useState("");
+  const [educationdate3, setEducationdate3] = React.useState("");
+  const [companyName,setCompanyName]=React.useState("");
+  const [companyName2,setCompanyName2]=React.useState("");
+  const [companyName3,setCompanyName3]=React.useState("");
+  const [jobTitle,setJobTitle]=React.useState("");
+  const [jobTitle2,setJobTitle2]=React.useState("");
+  const [jobTitle3,setJobTitle3]=React.useState("");
+  const [jobDescription,setJobDescription]=React.useState("");
+  const [jobDescription2,setJobDescription2]=React.useState("");
+  const [jobDescription3,setJobDescription3]=React.useState("");
+  const [yearsOfExperience,setYearsOfExperience]=React.useState("");
+  const [yearsOfExperience2,setYearsOfExperience2]=React.useState("");
+  const [yearsOfExperience3,setYearsOfExperience3]=React.useState("");
+  const schoolNameHandler = (e) => {
+    setSchoolName(e.target.value);
+  };
+  const schoolNameHandler2 = (e) => {
+    setSchoolName2(e.target.value);
+  };
+  const schoolNameHandler3 = (e) => {
+    setSchoolName3(e.target.value);
+  };
+  const degreeHandler = (e) => {
+    setDegree(e.target.value);
+  };
+  const degreeHandler2 = (e) => {
+    setDegree2(e.target.value);
+  };
+  const degreeHandler3 = (e) => {
+    setDegree3(e.target.value);
+  };
+  const gpaHandler = (e) => {
+    setGpa(e.target.value);
+  };
+  const gpaHandler2 = (e) => {
+    setGpa2(e.target.value);
+  };
+  const gpaHandler3 = (e) => {
+    setGpa3(e.target.value);
+  };
+  const educationdateHandler = (e) => {
+    setEducationdate(e.target.value);
+  };
+  const educationdateHandler2 = (e) => {
+    setEducationdate2(e.target.value);
+  };
+  const educationdateHandler3 = (e) => {
+    setEducationdate3(e.target.value);
+  };
+  const companyNameHandler = (e) => {
+    setCompanyName(e.target.value);
+  };
+  const companyNameHandler2 = (e) => {
+    setCompanyName2(e.target.value);
+  };
+  const companyNameHandler3 = (e) => {
+    setCompanyName3(e.target.value);
+  };
+  const jobTitleHandler = (e) => {
+    setJobTitle(e.target.value);
+  };
+  const jobTitleHandler2 = (e) => {
+    setJobTitle2(e.target.value);
+  };
+  const jobTitleHandler3 = (e) => {
+    setJobTitle3(e.target.value);
+  };
+  const jobDescriptionHandler = (e) => {
+    setJobDescription(e.target.value);
+  };
+  const jobDescriptionHandler2 = (e) => {
+    setJobDescription2(e.target.value);
+  };
+  const jobDescriptionHandler3 = (e) => {
+    setJobDescription3(e.target.value);
+  };
+  const yearsOfExperienceHandler = (e) => {
+    setYearsOfExperience(e.target.value);
+  };
+  const yearsOfExperienceHandler2 = (e) => {
+    setYearsOfExperience2(e.target.value);
+  };
+  const yearsOfExperienceHandler3 = (e) => {
+    setYearsOfExperience3(e.target.value);
+  };
+  const changeHandler = value => {
+    setValue(value)
+  }
+
+  const editgender =async()=>{
     try {
-      const res = await axios.post(
-        `https://localhost:44361/api/Home/Profile/EditProfilefollowers`,	
+      const res =await axios.post(
+        `https://localhost:44361/api/Home/Profile/EditProfileGender`,	
         {
-            Id:id,
-            UserId:decoded.id,
-            about:aboutsection,
+           Id:decoded.id,
+           firstName:"abc",
+            lastName:"abc",
+            email:"abc",
+            Passwords:"abc",
+            userRole:"abc",
+           gender:gender.value,
         }
       )
       window.location.reload();
-      console.log(res)
-
     } catch (error) {
       console.log(error)
     }
   }
+  const editcountry =async()=>{
+    try {
+      const res =await axios.post(
+        `https://localhost:44361/api/Home/Profile/EditProfileCountry`,	
+        {
+            Id:decoded.id,
+            firstName:"abc",
+            lastName:"abc",
+            email:"abc",
+            Passwords:"abc",
+            userRole:"abc",
+           country:value.label,
+        }
+      )
+      window.location.reload();
+    } catch (error) {
+      console.log(error)
+    }
+
+      }
+      const editPhonenumber =async()=>{
+        try {
+          const res =await axios.post(
+            `https://localhost:44361/api/Home/Profile/EditUserPhone`,	
+            {
+                Id:decoded.id,
+                firstName:"abc",
+                lastName:"abc",
+                email:"abc",
+                Passwords:"abc",
+                userRole:"abc",
+               phoneNumber:phonenumber,
+            }
+          )
+          window.location.reload();
+        } catch (error) {
+          console.log(error)
+        }
+    
+          }
 
   const editprofile=async()=>{
     try {
@@ -140,40 +337,7 @@ React.useEffect(()=>{
       console.log(error)
     }
   }
-  const editskills=async()=>{
-    try {
-      const res = await axios.post(
-        `https://localhost:44361/api/Home/Profile/EditProfileskills`,	
-        {
-            Id:id,
-            UserId:decoded.id,
-            skills:skills,
-        }
-      )
-      window.location.reload();
-      console.log(res)
-
-    } catch (error) {
-      console.log(error)
-    }
-  }
-  const editcertification=async()=>{
-    try {
-      const res = await axios.post(
-        `https://localhost:44361/api/Home/Profile/EditProfilecertification`,	
-        {
-            Id:id,
-            UserId:decoded.id,
-            certification:certification,
-        }
-      )
-      window.location.reload();
-      console.log(res)
-
-    } catch (error) {
-      console.log(error)
-    }
-  }
+  
   const editprofileex=async()=>{
     try {
       const res = await axios.post(
@@ -181,7 +345,7 @@ React.useEffect(()=>{
         {
             Id:id,
             UserId:decoded.id,
-            experience:experience,
+            experience:`${companyName},${companyName2},${companyName3},${jobTitle},${jobTitle2},${jobTitle3},${jobDescription},${jobDescription2},${jobDescription3},${yearsOfExperience},${yearsOfExperience2},${yearsOfExperience3},`,
         }
       )
       window.location.reload();
@@ -263,12 +427,27 @@ React.useEffect(()=>{
         {
             Id:id,
             UserId:decoded.id,
-            education:education,
+            education:`${schoolName},${schoolName2},${schoolName3},${degree},${degree2},${degree3},${gpa},${gpa2},${gpa3},${educationdate},${educationdate2},${educationdate3}`,
         }
       )
       window.location.reload(true);
-      console.log(res)
+      console.log(res.data)
 
+    } catch (error) {
+      console.log(error)
+    }
+  }
+  const editprofilephoto =async()=>{
+    try {
+      const res =await axios.post(
+        `https://localhost:44361/api/Home/Profile/EditProfilePhoto`,
+        {
+            Id:id,
+            UserId:decoded.id,
+            photo:photo,
+        }
+      )
+      window.location.reload(true);
     } catch (error) {
       console.log(error)
     }
@@ -292,25 +471,30 @@ React.useEffect(()=>{
   function aboutsectionHandler(e){
     setAboutsection(e.target.value);
   }
-  function skillsHandler(e){
-    setSkills(e.target.value);
-  }
   function educationHandler(e){
     setEducation(e.target.value);
   }
   function experienceHandler(e){
     setExperience(e.target.value);
   }
-  function followersHandler(e){
-    setFollowers(e.target.value);
+
+  function countryHandler(e){
+    setValue(e);
   }
-  function followingHandler(e){
-    setFollowing(e.target.value);
+  function genderHandler(e){
+    setGender(e);
   }
-  function certificationHandler(e){
-    setCertification(e.target.value);
+  function phonenumberHandler(e){
+    setPhonenumber(e.target.value);
   }
 
+ 
+
+  const options2=[
+    { value: "Female",label:"Female"},
+    {value :"Male",label:"Male"},
+    {value:"No Answer",label:"No Answer"}
+   ]
   const steps = ['Enter Email', 'Confirmation', 'New Password'];
 
   let randomnum="0";
@@ -374,7 +558,12 @@ React.useEffect(()=>{
       setActiveStep((prevActiveStep) => prevActiveStep + 1);
       setSkipped(newSkipped);
     };
-  
+    const [age, setAge] = React.useState('');
+
+    const handleChange = (event) => {
+      setAge(event.target.value);
+    };
+
     const handleNext = () => {
       if (activeStep===0) {
           controlemail();
@@ -454,22 +643,24 @@ React.useEffect(()=>{
   var formData =new FormData();
 
   const onfileChange =(e)=>{
-    console.log(e.target.files[0])
+  
     if(e.target.files[0]){
       formData.append("file",e.target.files[0])
     }
+   
   }
   async function submitFileData(){
-   await axios.post("https://localhost:44361/api/Home/UploadFile",{
-      formData
-    })
+   await axios.post("https://localhost:44361/api/Home/UploadFile", formData)
     .then(res=>{
       console.log(res)
+      setPhoto(res.data.split("uploadfile/")[1])
+      
     })
     .catch(err=>{
       console.log(err)
     })
   }
+
   const options = {
     filterType: 'checkbox',
     selectableRows: "none",
@@ -478,7 +669,8 @@ React.useEffect(()=>{
     download	:false,
     filter :false,
   };
-
+  const [value, setValue] = useState('')
+  const options3 = useMemo(() => countryList().getData(), [])
   return (
     <>
     <Navbar/>
@@ -530,11 +722,11 @@ React.useEffect(()=>{
             </Modal> 
       </div>
         </div>
-       
+
      
         <div className="pp">
-        <img src={banner} alt="banner">
-        </img>
+          {profile.photo =="" ?  <img src={"https://hrportal.blob.core.windows.net/uploadfile/banner.jpg"} alt="banner"></img>: 
+           <img src={"https://hrportal.blob.core.windows.net/uploadfile/"+profile.photo} alt="banner"></img> }
         {profile.Userid == decoded.id ?
         <Button 
         onClick={handleOpen}
@@ -565,6 +757,18 @@ React.useEffect(()=>{
                     if(linkedin !== ""){
                     addlinkedin();
                     }
+                    if(value !== ""){
+                    editcountry();
+                    }                    
+                    if(photo !== ""){
+                      editprofilephoto();
+                    }
+                    if(gender !== "" ){
+                      editgender();
+                    }
+                    if(phonenumber !=="" ){
+                      editPhonenumber();
+                    }
                     }
                     }>
                <Box sx={{justifyContent:'center',
@@ -574,12 +778,34 @@ React.useEffect(()=>{
                 textAlign:"center"}} >
                         <Box sx={{width:"100%"}}>
                         <Stack direction="row" alignItems="center" spacing={2}>
-                  <label htmlFor="contained-button-file">
-                    <input name="file" onChange={onfileChange}  accept="file/*" id="contained-button-file" multiple type="file" />
-                    <button onClick={submitFileData}  variant="contained" component="span">
+                 
+                    <input style={{  display: "inline-block",
+                          background:" linear-gradient(top, #f9f9f9, #e3e3e3)",
+                          border: "1px solid #999",
+                          borderRadius: "3px",
+                          padding:" 5px 8px",
+                          outline: "none",
+                          whiteSpace: "nowrap",
+                          cursor: "pointer",
+                          textShadow: "1px 1px #fff",
+                          fontWeight: "700",
+                          fontSize: "10pt",
+                          marginBottom:"3%"}} name="file" onChange={onfileChange}  accept="file/*" id="contained-button-file" multiple type="file" />
+                    <button style={{  display: "inline-block",
+                          background:" linear-gradient(top, #f9f9f9, #e3e3e3)",
+                          border: "1px solid #999",
+                          borderRadius: "3px",
+                          padding:" 5px 8px",
+                          outline: "none",
+                          whiteSpace: "nowrap",
+                          cursor: "pointer",
+                          textShadow: "1px 1px #fff",
+                          fontWeight: "700",
+                          fontSize: "10pt",
+                          marginBottom:"3%"}} onClick={submitFileData}  variant="contained" component="span">
                       Upload
                     </button>
-                  </label>
+                  
                 </Stack>                 
                         </Box>
                         <Box sx={{width:"100%",display:"flex",flexDirection:"column"}}>
@@ -587,55 +813,89 @@ React.useEffect(()=>{
                             label="About"
                             multiline
                             rows={5}                
-                            onChange={aboutsectionHandler}       
+                            onChange={aboutsectionHandler} 
+                            inputProps={{maxLength:100}}      
+                            defaultValue={profile.about}
                             />
                             <Box>                            
                             <TextField 
                             label="Facebook"
                             sx={{marginRight:"3%"}}
                             onChange={facebookHandler}
+                            defaultValue={profile.Facebook}
                             />
                              <TextField 
-                            label="Twitter"
+                            label="Website"
                             sx={{marginRight:"3%"}}
                             onChange={twitterHandler}
+                            defaultValue={profile.website}
                             />
                              <TextField 
                             label="Linkedin"      
-                            onChange={linkedinHandler}     
+                            onChange={linkedinHandler}    
+                            defaultValue={profile.Linkedin}     
+                            />
+                            </Box>
+                            <Box sx={{display:"flex",flexDirection:"row"}}>                            
+                            <div style={{display:"flex",flexDirection:"column",width:"33%",marginRight:"2%"}} className="adjust">
+                            <InputLabel sx={{marginTop:"10px"}}>Country</InputLabel>
+            
+                          <Select  
+                            
+                            labelId="demo-simple-select-label"
+                            id="demo-simple-select"
+                            value={value}
+                            label="country"
+                            onChange={changeHandler}
+                            options={options3} >
+                              
+                              </Select>  
+                            </div>
+                           
+                            <div style={{display:"flex",flexDirection:"column",width:"33%",marginRight:"2%"}} className="adjust">
+                            <Box>
+                            
+                            <InputLabel >Gender</InputLabel>
+                          <Select  
+                          sx={{width:"50%"}}
+                          labelId="demo-simple-select-label"
+                          id="demo-simple-select"
+                          value={gender}
+                          label="gender"
+                          onChange={genderHandler} 
+                          options={options2}>
+                        
+                            </Select>  
+                          
+                            </Box>
+                </div>
+            
+                             <TextField 
+                            label="Phone"
+                            sx={{marginTop:"2%"}}
+                            onChange={phonenumberHandler}
+                            defaultValue={user.phoneNumber}
                             />
                             </Box>
                         </Box>
-                <Button type="submit">Save</Button>
+                <Button  type="submit">Save</Button>
                 </Box>
                </form>
            </Box>
             </Modal> 
-        <Button 
-        onClick={addFollowers}
-        sx={{position:"relative",
-        top:"-4rem",
-        marginLeft:"2rem",
-        backgroundColor:"white",
-        border:"1px solid white",
-        color:"black",
-        paddingLeft:"2rem",
-        paddingRight:"2rem",
-        borderRadius:"2rem",
-    }} >Follow Me</Button>
-   
+    
         <div className="about">
             <h3 >About</h3>
             <h4>{profile.about}</h4>
                 <hr />
                 <div className="follow">
                     <div className="followers">
-                    <h4>Followers</h4>
-                    <h4>{profile.Followers}</h4>
+                    <h4>Country</h4>
+                    <h4>{user.country=="undefined" ? "" : user.country}</h4>
                     </div>
             <div className="following">
-            <h4>Following</h4>  
-            <h4>{profile.Following}</h4>
+            <h4>Gender</h4>  
+            <h4>{user.gender =="undefined" ? "":user.gender}</h4>
             </div>
             <Box sx={{justifyContent:"space-around",alignItems:"center",textAlign:"center"}}>
               <Button target="_blank" href={profile.Facebook}>
@@ -643,7 +903,7 @@ React.useEffect(()=>{
            <GitHubIcon sx={{marginRight:"5%"}}/>
               </Button>
               <Button target="_blank" href={profile.Twitter}> 
-              <TwitterIcon sx={{marginRight:"5%"}}/>
+              <LanguageIcon sx={{marginRight:"5%"}}/>
               </Button>    
               <Button target="_blank" href={profile.Linkedin}>
             <LinkedInIcon/>
@@ -723,10 +983,9 @@ React.useEffect(()=>{
         </div> 
      
 
-     
         <div className="container">
-        <div className="experience" style={{boxShadow: "0px 2px 4px 0px #404040"}}>
-        <h3 style={{margin:"10px"}}>Experience</h3>
+        <div className="experience" >
+        <h3 style={{margin:"10px"}}>Education</h3>
         <hr/>
         {profile.Userid == decoded.id ?
         <Button   
@@ -738,66 +997,36 @@ React.useEffect(()=>{
         <SettingsIcon />
         
        </Button> : "" }
-            <Box  sx={{marginTop:"0px",textAlign:"start",padding:"10px",    
-           position: "relative"}}>
-          {profile.experience}
+          <Box sx={{display:"flex",flexDirection:"row",justifyContent:"space-around",marginTop:"0px"}}>
+          <div  style={{display:"flex",flexDirection:"column"}}>
+             <h4 style={{marginTop:"0px"}}>First Education</h4>
+           <Typography><b>School Name:</b>  {profile.education ? schoolName=="undefined" ? schoolName=="": schoolName : ""}</Typography>
+           <Typography><b>Degree:</b>  {profile.education ? degree=="undefined" ? degree=="": degree  : ""}</Typography>
+           <Typography><b>GPA: </b> {profile.education ? gpa=="undefined" ? gpa=="": gpa  : ""}</Typography>
+          <Typography><b>Graduation Date: </b>  {profile.education ? educationdate.toString()=="undefined" ? educationdate.toString()=="":educationdate.toString().slice(3,15): ""}</Typography> 
 
-            </Box>
+            </div>
+            <div  style={{display:"flex",flexDirection:"column"}}>
+             <h4 style={{marginTop:"0px"}}>Second Education</h4>
+           <Typography><b>School Name:</b>  {profile.education ? schoolName2=="undefined" ? schoolName2=="": schoolName2  : ""}</Typography>
+           <Typography><b>Degree:</b>  {profile.education ? degree2=="undefined" ? degree2=="": degree2  : ""}</Typography>
+           <Typography><b>GPA: </b> {profile.education ? gpa2=="undefined" ? gpa2=="": gpa2  : ""}</Typography>
+           <Typography><b>Graduation Date: </b>  {profile.education ? educationdate2.toString()=="undefined" ? educationdate2.toString()=="":educationdate2.toString().slice(3,15): ""}</Typography> 
+
+            </div>
+            <div  style={{display:"flex",flexDirection:"column"}}>
+             <h4 style={{marginTop:"0px"}}>Third Education</h4> 
+           <Typography><b>School Name:</b>  {profile.education ? schoolName3=="undefined" ? schoolName3=="": schoolName3  : ""}</Typography>
+           <Typography><b>Degree:</b>  {profile.education ? degree3=="undefined" ? degree3=="": degree3  : ""}</Typography>
+           <Typography><b>GPA: </b> {profile.education ? gpa3=="undefined" ? gpa3=="": gpa3  : ""}</Typography>
+           <Typography><b>Graduation Date: </b>  {profile.education ? educationdate3.toString()=="undefined" ? educationdate3.toString()=="":educationdate3.toString().slice(3,15): ""}</Typography> 
+
+            </div>
+          </Box>
           
        <Modal
             open={openex}
             onClose={handleCloseex}
-            aria-labelledby="modal-modal-title"
-            aria-describedby="modal-modal-description"
-            >
-           <Box sx={{ ...style, width: 800, background:"" }}>
-               <form onSubmit={(e)=>{
-                    e.preventDefault();
-                    editprofileex();
-                    }
-                    }>
-               <Box sx={{justifyContent:'center',
-                display:'flex',
-                flexDirection:"column",
-                alignItems:"center",
-                textAlign:"center"}} >
-                        <Box sx={{width:"100%",display:"flex",flexDirection:"column"}}>
-                        <TextField 
-                            label="Experience"
-                            multiline
-                            rows={5}                
-                            onChange={experienceHandler}       
-                            />
-
-                        </Box>
-                <Button type="submit">Save</Button>
-                </Box>
-               </form>
-           </Box>
-            </Modal> 
-          </div>
-          <div className="experience" style={{boxShadow: "0px 2px 4px 0px #404040"}}>
-        <h3 style={{margin:"10px"}}>Education</h3>
-        <hr/>
-        {profile.Userid == decoded.id ?
-        <Button 
-        onClick={handleOpened}
-        sx={{    
-          top: "-50px",
-          left: "-37rem",
-          position: "relative"}}>
-        <SettingsIcon />
-        
-       </Button> : "" }
-            <Box  sx={{marginTop:"0px",textAlign:"start",padding:"10px", 
-           position: "relative"}}>
-          {profile.education}
-
-            </Box>
-          
-       <Modal
-            open={opened}
-            onClose={handleCloseed}
             aria-labelledby="modal-modal-title"
             aria-describedby="modal-modal-description"
             >
@@ -813,27 +1042,145 @@ React.useEffect(()=>{
                 alignItems:"center",
                 textAlign:"center"}} >
                         <Box sx={{width:"100%",display:"flex",flexDirection:"column"}}>
-                        <TextField 
-                            label="Education"
-                            multiline
-                            rows={5}                
-                            onChange={educationHandler}       
+                        <label>1</label>
+                             <Box>
+                             <TextField 
+                            label="School Name"           
+                            onChange={schoolNameHandler}       
+                            sx={{marginRight:"10px"}}
+                            defaultValue={profile.education ? profile.education.split(",")[0] :null}
+                           
                             />
-
+                          
+                             <TextField 
+                            label="Degree"      
+                            defaultValue={profile.education ? profile.education.split(",")[3] :null}   
+                            sx={{marginRight:"10px"}}   
+                            onChange={degreeHandler}    
+                      
+                            />
+                             <TextField 
+                            label="Gpa"
+                            defaultValue={profile.education ? profile.education.split(",")[6] :null}   
+                            sx={{marginRight:"10px"}}
+                            onChange={gpaHandler}       
+                            type="number"
+                            />
+                             </Box>
+              <Box> <Typography>Graduation Date</Typography>
+                    <LocalizationProvider dateAdapter={AdapterDateFns}>
+                          <DatePicker
+                          label="Date"
+                          defaultValue={profile.education ? profile.education.split(",")[9] :null}   
+                          value={educationdate ||null}
+                        format="DD-MM-YYYY"
+                        onChange={(newValue) => {
+                            setEducationdate(newValue);
+                        
+                        }}
+                        
+                        renderInput={(params) => <TextField {...params} />}
+                          />
+                      </LocalizationProvider></Box>
                         </Box>
+                        <Box sx={{width:"100%",display:"flex",flexDirection:"column"}}>
+                          <label >2</label>
+                            <Box>
+                            <TextField 
+                            label="School Name"           
+                            onChange={schoolNameHandler2}      
+                            defaultValue={profile.education ? profile.education.split(",")[1] :null}   
+                            sx={{marginRight:"10px"}} 
+                             
+                            />
+                             <TextField 
+                            label="Degree"         
+                            onChange={degreeHandler2}       
+                            defaultValue={profile.education ? profile.education.split(",")[4] :null}   
+                             
+                            sx={{marginRight:"10px"}}
+                            />
+                             <TextField 
+                            label="Gpa"
+                            sx={{marginRight:"10px"}}
+                            onChange={gpaHandler2}       
+                            defaultValue={profile.education ? profile.education.split(",")[7] :null} 
+                            type="number"
+                            />
+                            </Box>
+         <Box>
+         <Typography>Graduation Date</Typography>
+              <LocalizationProvider dateAdapter={AdapterDateFns}>
+                          <DatePicker
+                          label="Date"
+                          value={educationdate2 ||null}
+                        format="DD-MM-YYYY"
+                        defaultValue={profile.education ? profile.education.split(",")[10] :null}   
+                        onChange={(newValue2) => {
+                            setEducationdate2(newValue2);
+                        
+                        }}
+                        
+                        renderInput={(params) => <TextField {...params} />}
+                          />
+                      </LocalizationProvider>
+         </Box>
+                        </Box>
+                        <Box sx={{width:"100%",display:"flex",flexDirection:"column"}}>
+                          <label >3</label>
+                        <Box>
+                        <TextField 
+                            label="School Name"           
+                            sx={{marginRight:"10px"}}
+                            defaultValue={profile.education ? profile.education.split(",")[2] :null}   
+                            onChange={schoolNameHandler3}       
+                            />
+                             <TextField 
+                            label="Degree"         
+                            sx={{marginRight:"10px"}}
+                            defaultValue={profile.education ? profile.education.split(",")[5] :null}   
+                            onChange={degreeHandler3}       
+                            />
+                             <TextField 
+                            label="Gpa"
+                            sx={{marginRight:"10px"}}
+                            defaultValue={profile.education ? profile.education.split(",")[8] :null}   
+                            onChange={gpaHandler3}       
+                            type="number"
+                            />
+                        </Box>
+         <Box>
+         <Typography>Graduation Date</Typography>
+              <LocalizationProvider dateAdapter={AdapterDateFns}>
+                          <DatePicker
+                          label="Date"
+                          value={educationdate3 ||null}
+                        format="DD-MM-YYYY"
+                        defaultValue={profile.education ? profile.education.split(",")[11] :null}   
+                        onChange={(newValue3) => {
+                            setEducationdate3(newValue3);
+                        
+                        }}
+                        
+                        renderInput={(params) => <TextField {...params} />}
+                          />
+                      </LocalizationProvider>
+         </Box>
+                        </Box>
+                       
+                       
                 <Button type="submit">Save</Button>
                 </Box>
                </form>
            </Box>
             </Modal> 
           </div>
-           
-          <div className="experience" style={{boxShadow: "0px 2px 4px 0px #404040"}}>
-        <h3 style={{margin:"10px"}}>Certification</h3>
+          <div className="experience" >
+        <h3 style={{margin:"10px"}}>Experience</h3>
         <hr/>
         {profile.Userid == decoded.id ?
         <Button 
-        onClick={handleOpencer}
+        onClick={handleOpened}
         sx={{    
           top: "-50px",
           left: "-37rem",
@@ -841,37 +1188,160 @@ React.useEffect(()=>{
         <SettingsIcon />
         
        </Button> : "" }
-            <Box  sx={{marginTop:"0px",textAlign:"start",padding:"10px",    
-           position: "relative"}}>
-          {profile.certification}
+       <Box sx={{display:"flex",flexDirection:"row",justifyContent:"space-around",marginTop:"0px"}}>
+          <div  style={{display:"flex",flexDirection:"column"}}>
+             <h4 style={{marginTop:"0px"}}>First Job</h4>
+           <Typography><b>Company Name:</b>  {profile.experience ? companyName=="undefined" ? companyName=="": companyName : ""}</Typography>
+           <Typography><b>Job Title:</b>  {profile.experience ? jobTitle=="undefined" ? jobTitle=="": jobTitle  : ""}</Typography>
+           <Typography><b>Years of Experience: </b> {profile.experience ? yearsOfExperience=="undefined" ? yearsOfExperience=="": yearsOfExperience  : ""}</Typography>
+          <Typography sx={{display:"flex",flexDirection:"column"}}><b>Job Description </b>  {profile.experience ? jobDescription=="undefined" ? jobDescription=="":jobDescription: ""}</Typography> 
 
-            </Box>
+            </div>
+            <div  style={{display:"flex",flexDirection:"column"}}>
+             <h4 style={{marginTop:"0px"}}>Second Job</h4>
+           <Typography><b>Company Name:</b>  {profile.experience ? companyName2=="undefined" ? companyName2=="": companyName2 : ""}</Typography>
+           <Typography><b>Job Title:</b>  {profile.experience ? jobTitle2=="undefined" ? jobTitle2=="": jobTitle2  : ""}</Typography>
+           <Typography><b>Years of Experience: </b> {profile.experience ? yearsOfExperience2=="undefined" ? yearsOfExperience2=="": yearsOfExperience2  : ""}</Typography>
+          <Typography sx={{display:"flex",flexDirection:"column"}}><b>Job Description </b>  {profile.experience ? jobDescription2=="undefined" ? jobDescription2=="":jobDescription2: ""}</Typography> 
+
+            </div>
+            <div  style={{display:"flex",flexDirection:"column"}}>
+             <h4 style={{marginTop:"0px"}}>Third Job</h4>
+           <Typography><b>Company Name:</b>  {profile.experience ? companyName3=="undefined" ? companyName3=="": companyName3 : ""}</Typography>
+           <Typography><b>Job Title:</b>  {profile.experience ? jobTitle3=="undefined" ? jobTitle3=="": jobTitle3  : ""}</Typography>
+           <Typography><b>Years of Experience: </b> {profile.experience ? yearsOfExperience3=="undefined" ? yearsOfExperience3=="": yearsOfExperience3  : ""}</Typography>
+          <Typography sx={{display:"flex",flexDirection:"column"}}><b>Job Description </b>  {profile.experience ? jobDescription3=="undefined" ? jobDescription3=="":jobDescription3: ""}</Typography> 
+
+            </div>
+          </Box>
           
        <Modal
-            open={opencer}
-            onClose={handleClosecer}
+            open={opened}
+            onClose={handleCloseed}
             aria-labelledby="modal-modal-title"
             aria-describedby="modal-modal-description"
+            sx={{ overflow:'scroll',}}
             >
            <Box sx={{ ...style, width: 800, background:"" }}>
                <form onSubmit={(e)=>{
                     e.preventDefault();
-                    editcertification();
+                    editprofileex();
                     }
                     }>
-               <Box sx={{justifyContent:'center',
+                <Box sx={{justifyContent:'center',
                 display:'flex',
                 flexDirection:"column",
                 alignItems:"center",
                 textAlign:"center"}} >
                         <Box sx={{width:"100%",display:"flex",flexDirection:"column"}}>
-                        <TextField 
-                            label="Certification"
-                            multiline
-                            rows={5}                
-                            onChange={certificationHandler}       
+                        <label>1</label>
+                             <Box>
+                             <TextField 
+                            label="Company Name"           
+                            onChange={companyNameHandler}       
+                            sx={{marginRight:"10px"}}
+                            defaultValue={profile.experience ? profile.experience.split(",")[0] :null}
+                           
                             />
-
+                          
+                             <TextField 
+                            label="Title"      
+                            defaultValue={profile.experience ? profile.experience.split(",")[3] :null}   
+                            sx={{marginRight:"10px"}}   
+                            onChange={jobTitleHandler}    
+                      
+                            />
+                           <TextField 
+                            label="Years of Experience"      
+                            defaultValue={profile.experience ? profile.experience.split(",")[9] :null}   
+                            sx={{marginRight:"10px"}}   
+                            onChange={yearsOfExperienceHandler}    
+                      
+                            />
+                             </Box>
+              <Box> <TextField 
+                            label="Job Description"
+                            defaultValue={profile.experience ? profile.experience.split(",")[6] :null}   
+                            sx={{marginRight:"10px",width:"500px"}}
+                            onChange={jobDescriptionHandler}       
+                            multiline
+                            rows={6}       
+                           
+                            /> </Box>
+                     
+                        </Box>
+                        <Box sx={{width:"100%",display:"flex",flexDirection:"column"}}>
+                        <label>2</label>
+                             <Box>
+                             <TextField 
+                            label="Company Name"           
+                            onChange={companyNameHandler2}       
+                            sx={{marginRight:"10px"}}
+                            defaultValue={profile.experience ? profile.experience.split(",")[1] :null}
+                           
+                            />
+                          
+                             <TextField 
+                            label="Title"      
+                            defaultValue={profile.experience ? profile.experience.split(",")[4] :null}   
+                            sx={{marginRight:"10px"}}   
+                            onChange={jobTitleHandler2}    
+                      
+                            />
+                           <TextField 
+                            label="Years of Experience"      
+                            defaultValue={profile.experience ? profile.experience.split(",")[10] :null}   
+                            sx={{marginRight:"10px"}}   
+                            onChange={yearsOfExperienceHandler2}    
+                      
+                            />
+                             </Box>
+              <Box> <TextField 
+                            label="Job Description"
+                            defaultValue={profile.experience ? profile.experience.split(",")[7] :null}   
+                            sx={{marginRight:"10px",width:"500px"}}
+                            onChange={jobDescriptionHandler2}       
+                            multiline
+                            rows={6}
+                            /> </Box>
+                     
+                        </Box>
+                        <Box sx={{width:"100%",display:"flex",flexDirection:"column"}}>
+                        <label>3</label>
+                             <Box>
+                             <TextField 
+                            label="Company Name"           
+                            onChange={companyNameHandler3}       
+                            sx={{marginRight:"10px"}}
+                            defaultValue={profile.experience ? profile.experience.split(",")[2] :null}
+                           
+                            />
+                          
+                             <TextField 
+                            label="Title"      
+                            defaultValue={profile.experience ? profile.experience.split(",")[5] :null}   
+                            sx={{marginRight:"10px"}}   
+                            onChange={jobTitleHandler3}    
+                      
+                            />
+                           <TextField 
+                            label="Years of Experience"      
+                            defaultValue={profile.experience ? profile.experience.split(",")[11] :null}   
+                            sx={{marginRight:"10px"}}   
+                            onChange={yearsOfExperienceHandler3}    
+                      
+                            />
+                             </Box>
+              <Box> <TextField 
+                            label="Job Description"
+                            defaultValue={profile.experience ? profile.experience.split(",")[8] :null}   
+                            sx={{marginRight:"10px",width:"500px"}}
+                            onChange={jobDescriptionHandler3}       
+                            multiline
+                            rows={6}   
+                           
+                            /> </Box>
+                     
                         </Box>
                 <Button type="submit">Save</Button>
                 </Box>
@@ -879,56 +1349,6 @@ React.useEffect(()=>{
            </Box>
             </Modal> 
           </div>
-            <div className="experience" style={{boxShadow: "0px 2px 4px 0px #404040"}}>
-        <h3 style={{margin:"10px"}}>Skills</h3>
-        <hr/>
-        {profile.Userid == decoded.id ?
-        <Button 
-        onClick={handleOpensk}
-        sx={{    
-          top: "-50px",
-          left: "-37rem",
-          position: "relative"}}>
-        <SettingsIcon />
-        
-       </Button> : "" }
-            <Box  sx={{marginTop:"0px",textAlign:"start",padding:"10px",    
-           position: "relative"}}>
-          {profile.Skills}
-            </Box>
-        
-       <Modal
-            open={opensk}
-            onClose={handleClosesk}
-            aria-labelledby="modal-modal-title"
-            aria-describedby="modal-modal-description"
-            >
-           <Box sx={{ ...style, width: 800, background:"" }}>
-               <form onSubmit={(e)=>{
-                    e.preventDefault();
-                    editskills();
-                    }
-                    }>
-               <Box sx={{justifyContent:'center',
-                display:'flex',
-                flexDirection:"column",
-                alignItems:"center",
-                textAlign:"center"}} >
-                        <Box sx={{width:"100%",display:"flex",flexDirection:"column"}}>
-                        <TextField 
-                            label="Skills"
-                            multiline
-                            rows={5}                
-                            onChange={skillsHandler}       
-                            />
-
-                        </Box>
-                <Button type="submit">Save</Button>
-                </Box>
-               </form>
-           </Box>
-            </Modal> 
-          </div> 
             <div className="activeapplications">           
              <MUIDataTable
                 className="table"

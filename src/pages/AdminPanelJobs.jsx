@@ -20,6 +20,7 @@ import AddIcon from '@mui/icons-material/Add';
 import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
 import { useNavigate } from 'react-router-dom';
 import EditIcon from '@mui/icons-material/Edit';
+import Unauthorized from '../components/Unauthorized';
 function AdminPanelJobs() {
 
       var token=localStorage.getItem("User");
@@ -38,7 +39,7 @@ function AdminPanelJobs() {
           }
             setJob(a);
         })
-    });
+    },[]);
       const removeJob = async (Id) => {
         try {
           const res = await axios.delete(`https://localhost:44361/api/Home/Jobs/${Id}`,{
@@ -99,7 +100,8 @@ const options = {
 
   return (
       <>
-    <Navbar/>
+      {decoded.userRole =="admin" ? <>
+      <Navbar/>
     <SideBar/>
     <div className="container">
     <Box sx={{marginBottom:"2%",marginTop:"1%"}}>
@@ -118,6 +120,8 @@ const options = {
     />
     </Box>
           </div>      
+      </>: <Unauthorized/>}
+  
     </>
     
   )

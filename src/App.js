@@ -43,7 +43,7 @@ function App() {
           <Route path='/oneuser' element={<OneUser />}></Route>
           <Route path='hrPanel/jobs/Postjob' element={<PostJob />}></Route>
           <Route path='/hrPanel/applicants/:id'element={<Applicants />}></Route>
-          <Route path='/hrPanel/applicants/:id/documents/:id'element={<Documents />}></Route>
+          <Route path='/hrPanel/applicants/:jobid/documents/:id'element={<Documents />}></Route>
           <Route path='/hrPanel/home' element={<HrPanelHome />}></Route>
           <Route path='/hrPanel/jobs' element={<Jobs />}></Route>
           <Route path='/hrPanel/jobs/EditJob/:id' element={<EditJob />}></Route>

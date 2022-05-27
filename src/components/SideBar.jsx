@@ -17,6 +17,8 @@ import { Link } from "react-router-dom";
 import HomeIcon from '@mui/icons-material/Home';
 import WorkIcon from '@mui/icons-material/Work';
 import jwt_decode from "jwt-decode";
+import GroupIcon from '@mui/icons-material/Group';
+import ApartmentIcon from '@mui/icons-material/Apartment';
 export default function SideBar(){
 
   var token=localStorage.getItem("User");
@@ -49,11 +51,11 @@ return (
                 </ListItemIcon>Home</ListItem>
                  <ListItem  button component={Link}  to="/adminpanel/users" >
                  <ListItemIcon>
-                     <WorkIcon/>
+                     <GroupIcon/>
                      </ListItemIcon>Users</ListItem>
                      <ListItem  button component={Link}  to="/adminpanel/hr" >
                  <ListItemIcon>
-                     <WorkIcon/>
+                     <ApartmentIcon/>
                      </ListItemIcon> Hr</ListItem>
                      <ListItem  button component={Link}  to="/adminpanel/jobs" >
                  <ListItemIcon>

@@ -12,9 +12,13 @@ import { Box } from '@mui/material';
 import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
 import FileDownloadIcon from '@mui/icons-material/FileDownload';
 import axios from 'axios';
+import jwt_decode  from 'jwt-decode';
+import NotFound from '../components/NotFound';
 function Documents() {
     let { id } = useParams();
-    console.log(id)
+    let { jobid } = useParams();
+    var token=localStorage.getItem("User");
+    var decoded = jwt_decode(token);
     const options = {
         filterType: 'checkbox',
         selectableRows: "none",
@@ -40,12 +44,14 @@ function Documents() {
       }
 
       React.useEffect(()=>{
+        
         fetchFile();
       },[])
    
       const downloadFile =async (name)=>{
         try {
           const res=await axios.get(`https://localhost:44361/api/Home/downloadFile/${name}`,{
+            responseType: 'blob',
           })
           var fileDownload = require('js-file-download');
           fileDownload(res.data, name);
@@ -54,12 +60,23 @@ function Documents() {
           console.log(error)
         }
           }
-
-          
-
+          const [getJob,setGetJob]=React.useState('')
+          const getsinglejob =async()=>{
+            try {
+              const res =await axios.get("https://localhost:44361/api/Home/Jobs/"+id)
+              setGetJob(res.data)
+            } catch (error) {
+              console.log(error)
+            }
+          }
+          React.useEffect(()=>{
+            getsinglejob()
+          },[])
+          console.log(getJob)
   return (
     <>
-        <Navbar />
+      {decoded.userRole=="hr"  ? <>
+      <Navbar />
         <SideBar />
         <div className='container'style={{margin:"auto",width:"80%",marginTop:"10rem"}} >
           <h1>
@@ -69,9 +86,9 @@ function Documents() {
            {getFiles ? getFiles.map((item,index)=>{
             
               return(
-                item.Name.split("_")[0]==id ? 
+                item.Name.split("_")[0]==id && item.Name.split("_")[1]==jobid ? 
                 <Box>
-               
+              
                 <Button onClick={()=>downloadFile(item.Name)}> <FileDownloadIcon></FileDownloadIcon>{item.Name}</Button>
                 </Box>:""
               )
@@ -80,6 +97,7 @@ function Documents() {
          </Typography>
         <Button href='http://localhost:3000/hrPanel/jobs' sx={{"border":"0.5px solid gray,",marginTop:"5%"}}>Go Back</Button>
     </div>
+      </>: <NotFound/>}
     </>
   )
 }

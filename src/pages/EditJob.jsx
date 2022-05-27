@@ -19,6 +19,8 @@ import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import jwt_decode  from 'jwt-decode';
 import { useEffect } from 'react';
+import Unauthorized from '../components/Unauthorized';
+import NotFound from '../components/NotFound';
 
 
 function EditJob() {
@@ -55,6 +57,18 @@ function EditJob() {
         }
         const nameoffile=id+"_"+fileName
         const [alert1,setAlert1]=React.useState(false);
+        const getsinglejob =async()=>{
+          try {
+            const res =await axios.get("https://localhost:44361/api/Home/Jobs/"+id)
+            setGetJob(res.data)
+          } catch (error) {
+            console.log(error)
+          }
+        }
+        React.useEffect(()=>{
+          getsinglejob()
+        },[])
+       
         const uploadFile =async (event)=>{
         
           const formData=new FormData();
@@ -161,10 +175,11 @@ function EditJob() {
         display: 'none',
       });
 
-
+     
   return (
    <>
-   <Navbar/>
+  {decoded.userRole=="hr" && getJob.UserId ==decoded.id ?<>
+  <Navbar/>
    <SideBar/>
    <section >
       <div className="formpart" 
@@ -211,9 +226,10 @@ width:"70%"}} >
   </Typography>
 <TextField 
 // multiline  
+defaultValue={getJob.Name}
 variant="filled"
 sx={{ marginBottom:"2%",width:"40%"}}
-label="Name"
+
 multiline
 placeholder="Name"
 onChange={NameHandler}
@@ -227,6 +243,7 @@ onChange={NameHandler}
         label="Date"
         value={date}
         format="DD-MM-YYYY"
+
         onChange={(newValue) => {
           setDate(newValue);
           console.log(newValue);
@@ -250,6 +267,7 @@ onChange={NameHandler}
     value={category}
     label="Category"
     onChange={categoryHandler}
+    
     >
     <MenuItem value={"Software"}>Software</MenuItem>
     <MenuItem value={20}>20</MenuItem>
@@ -302,8 +320,9 @@ onChange={NameHandler}
               <TextField 
               multiline 
               rows={10}
+              defaultValue={getJob.description}
               variant="filled"sx={{ marginBottom:"2%",width:"80%"}}
-              label="Description"
+              
               placeholder="Description"
               onChange={descriptionHandler}
               ></TextField>
@@ -317,6 +336,7 @@ onChange={NameHandler}
             </form>
                 </div>
                 </section>
+  </> : <NotFound/>}
    </>
     
   )
