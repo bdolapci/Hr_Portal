@@ -1,4 +1,5 @@
 ﻿using HR_Portalgrad.Models;
+using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -10,6 +11,6 @@ namespace HR_Portalgrad.Services.ApplicantsReporsitories
         Task<Applicants> CreateApplicants(Applicants applicants);
 
         Task<Applicants> Accept(int id,int isAccepted,int Jobsid);
-       
+        Task<IEnumerable> GetAppliedJobs();
     }
 }

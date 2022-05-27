@@ -24,6 +24,7 @@ namespace HR_Portalgrad.Services.ProfileReporsitories
 
         Task<Profile> EditProfiletitle(int id, int UserID, string title);
         Task<Profile> Create(Profile prof);
-
+        Task<Profile> GetProfile2(int id);
+      
     }
 }

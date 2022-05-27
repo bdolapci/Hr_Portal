@@ -16,9 +16,7 @@ namespace HR_Portalgrad.Models
         public int Userid { get; set; }
         [StringLength(250)]
         public string about { get; set; }
-        [StringLength(250)]
         public string experience { get; set; }
-        [StringLength(250)]
         public string education { get; set; }
         [StringLength(250)]
         public string certification { get; set; }
@@ -28,6 +26,8 @@ namespace HR_Portalgrad.Models
         public string Linkedin { get; set; }
         [StringLength(250)]
         public string Twitter { get; set; }
+        public string website { get; set; }
+
         public int Followers { get; set; }
         public int Following { get; set; }
         [StringLength(250)]
@@ -38,6 +38,5 @@ namespace HR_Portalgrad.Models
         [StringLength(250)]
         public string currentTitle { get; set; }
         public List<Applicants> Applicants { get; set; }
-   
     }
 }

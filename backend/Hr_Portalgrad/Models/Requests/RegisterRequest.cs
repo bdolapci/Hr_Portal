@@ -26,5 +26,11 @@ namespace HR_Portalgrad.Models.Requests
         public string gender { get; set; }
         public string phoneNumber { get; set; }
         public int isEmailValid { get; set; }
+        public string education { get; set; }
+        public string experience { get; set; }
+        public string linkedin { get; set; }
+        public string facebook { get; set; }
+        public string website { get; set; }
+
     }
 }

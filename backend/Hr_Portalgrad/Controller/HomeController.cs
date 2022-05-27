@@ -24,6 +24,7 @@ using Azure.Storage.Blobs.Models;
 using Microsoft.AspNetCore.Identity;
 using System.Net;
 using HR_Portalgrad.Services.EmailReporsitories;
+using HR_Portalgrad.Services.FileReporsitories;
 
 namespace HR_Portalgrad.Controller
 {
@@ -39,6 +40,7 @@ namespace HR_Portalgrad.Controller
         private readonly IProfileReporsitory _profileReporsitory;
         private readonly string _azureConnectionString;
         private readonly IMailService _mailService;
+        private readonly IFileReportsitory _filereporsitory;
         public HomeController(IUserReporsitory userReporsitory,
             IPasswordHasher passwordHasher,
             AccessTokenGenerator accessTokenGenerator,
@@ -46,7 +48,8 @@ namespace HR_Portalgrad.Controller
             IApplicantsReporsitory applicantsReporsitory,
             IProfileReporsitory profileReporsitory,
             IConfiguration configuration,
-            IMailService mailService
+            IMailService mailService,
+            IFileReportsitory fileReporsitory
 
             )
         {
@@ -58,6 +61,7 @@ namespace HR_Portalgrad.Controller
             _profileReporsitory = profileReporsitory;
             _azureConnectionString = configuration.GetConnectionString("AzureConnectionString");
             _mailService = mailService;
+            _filereporsitory= fileReporsitory;
         
         }
 
@@ -98,9 +102,16 @@ namespace HR_Portalgrad.Controller
             Profile profile = new Profile()
             {
                 Userid = regUser.Id,
+                education= registerRequest.education,
+                experience= registerRequest.experience,
+                Linkedin=registerRequest.linkedin,
+                Facebook=registerRequest.facebook,
+                website=registerRequest.website,
+                photo="banner.jpg",
             };
             await _profileReporsitory.Create(profile);
  
+
 
             return Ok();
         }
@@ -165,13 +176,24 @@ namespace HR_Portalgrad.Controller
         [HttpPost("HR/{id?}")]
         public async Task<User> UpdatetoCompanyHr(User user)
         {
-            return await _userReporsitory.UpdatetoHr(user.Id, user.userRole);
+            return await _userReporsitory.UpdatetoHr(user.Id, user.Passwords, user.firstName, user.lastName, user.userRole, user.email);
         }
         [HttpGet("UserApplicantJoin")]
         public async Task<IEnumerable> UserApplicantJoin()
         {
 
             return await _userReporsitory.GetApplicantsbyUser();
+        }
+        [HttpGet("ProfileUserJoin")]
+        public async Task<IEnumerable> ProfileUserJoin()
+        {
+            return await _userReporsitory.GetUserProfile();
+        }
+        [HttpGet("JobsApplicantJoin")]
+        public async Task<IEnumerable> ApplicantJobsJoin()
+        {
+
+            return await _applicantsReporsitory.GetAppliedJobs();
         }
       
         //[HttpPost("user/{id?}")]
@@ -213,6 +235,18 @@ namespace HR_Portalgrad.Controller
             };
             await _jobReporsitory.PostJob(newJob);
             return newJob;
+        }
+        [HttpPost("CreateFile")]
+        public async Task<Files> AddFile([FromBody] Files file)
+        {
+            Files newFile=new Files()
+            {
+                Userid = file.Userid,
+                Name = file.Name,
+                Jobid = file.Jobid,
+            };
+            await _filereporsitory.CreateFile(file);
+            return file;
         }
         //[HttpPatch("Jobs/EditJob")]
         //public async Task<Jobs> EditJob(Jobs job)
@@ -303,30 +337,42 @@ namespace HR_Portalgrad.Controller
         {
             return await _profileReporsitory.EditProfileskills(profile.Id, profile.Userid, profile.Skills);
         }
-        [HttpPost("Profile/EditProfilefollowers")]
-        public async Task<Profile> EditProfilefollowers(Profile profile)
-        {
-            return await _profileReporsitory.EditProfilefollowers(profile.Id, profile.Userid, profile.Followers);
-        }
         [HttpPost("Profile/EditProfileexperience")]
         public async Task<Profile> EditProfileexperience(Profile profile)
         {
             return await _profileReporsitory.EditProfileexperience(profile.Id, profile.Userid, profile.experience);
         }
-        [HttpPost("Profile/EditProfilefollowing")]
-        public async Task<Profile> EditProfilefollowing(Profile profile)
+
+        [HttpPost("Profile/EditProfileCountry")]
+        public async Task<User> EditProfileCountry(User user)
         {
-            return await _profileReporsitory.EditProfilefollowing(profile.Id,profile.Userid,  profile.Following);
+            return await _userReporsitory.EditUserCountry( user.Id, user.firstName, user.lastName, user.email, user.Passwords, user.userRole, user.country);
+        }
+        [HttpPost("Profile/EditProfileGender")]
+        public async Task<User> EditProfileGender(User user)
+        {
+            return await _userReporsitory.EditUserGender(user.Id,user.firstName,user.lastName,user.email,user.Passwords, user.userRole, user.gender);
+        }
+        [HttpPost("Profile/EditUserPhone")]
+        public async Task<User> EditProfilePhone(User user)
+        {
+            return await _userReporsitory.EditUserPhone(user.Id,user.firstName,user.lastName,user.email,user.Passwords, user.userRole, user.phoneNumber);
         }
         [HttpGet("Jobs/{id?}")]
         public async Task<Jobs> GetSingleJob(int id)
         {
             return await _jobReporsitory.GetSingleJob(id);
         }
+
         [HttpGet("Profile/{id?}")]
         public async Task<Profile> GetSingleProfile(int id)
         {
             return await _profileReporsitory.GetProfileInfo(id);
+        }
+        [HttpGet("ProfileSingle/{id?}")]
+        public async Task<Profile> GetSingleProfile2(int id)
+        {
+            return await _profileReporsitory.GetProfile2(id);
         }
         [HttpGet("Profile")]
         public async Task<List<Profile>> GetProfile()
@@ -344,6 +390,7 @@ namespace HR_Portalgrad.Controller
                 ProfileId = applicants.ProfileId,
             };
             await _applicantsReporsitory.CreateApplicants(newApplicant);
+           
             return newApplicant;
         }
         [HttpGet("JobApplicants/{id?}")]
@@ -400,6 +447,12 @@ namespace HR_Portalgrad.Controller
             }
 
         }
+        [HttpPost("SendSuccess")]
+        public async Task<string> SendSuccessMail([FromBody] MailRequest request,int id)
+        {
+            return await _mailService.SendEmailSuccess(request, id);
+        }
+
         [HttpGet("downloadFile/{name?}")]
         public async Task<IActionResult> Download(string name)
         {

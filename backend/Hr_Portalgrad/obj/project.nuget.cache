@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "fz9Rx63P75YPQOCLSE7b4KhApgR7d1iOx1QbUogOSrX3uEUdx3B7CofVSxixNDaW3EzfV/X0zokoGgYc8Z2BrA==",
+  "dgSpecHash": "rkvppZXka3VZFewXvgRVn1q1CzO0d6r0uIkeK6Ji0WIvT0BayKXVfT3s+ms5okE8WiribxeHIWwdPgdm5EtC6g==",
   "success": true,
   "projectFilePath": "C:\\Users\\baran\\Desktop\\Githuba atılacaklar\\web\\HR_Portalgrad\\HR_Portalgrad\\HR_Portalgrad.csproj",
   "expectedPackageFiles": [
@@ -15,6 +15,7 @@
     "C:\\Users\\baran\\.nuget\\packages\\microsoft.aspnetcore.authentication.google\\5.0.1\\microsoft.aspnetcore.authentication.google.5.0.1.nupkg.sha512",
     "C:\\Users\\baran\\.nuget\\packages\\microsoft.aspnetcore.cryptography.internal\\6.0.4\\microsoft.aspnetcore.cryptography.internal.6.0.4.nupkg.sha512",
     "C:\\Users\\baran\\.nuget\\packages\\microsoft.aspnetcore.cryptography.keyderivation\\6.0.4\\microsoft.aspnetcore.cryptography.keyderivation.6.0.4.nupkg.sha512",
+    "C:\\Users\\baran\\.nuget\\packages\\microsoft.aspnetcore.identity.entityframeworkcore\\5.0.1\\microsoft.aspnetcore.identity.entityframeworkcore.5.0.1.nupkg.sha512",
     "C:\\Users\\baran\\.nuget\\packages\\microsoft.aspnetcore.jsonpatch\\5.0.1\\microsoft.aspnetcore.jsonpatch.5.0.1.nupkg.sha512",
     "C:\\Users\\baran\\.nuget\\packages\\microsoft.aspnetcore.mvc.newtonsoftjson\\5.0.1\\microsoft.aspnetcore.mvc.newtonsoftjson.5.0.1.nupkg.sha512",
     "C:\\Users\\baran\\.nuget\\packages\\microsoft.bcl.asyncinterfaces\\1.1.1\\microsoft.bcl.asyncinterfaces.1.1.1.nupkg.sha512",
@@ -34,6 +35,7 @@
     "C:\\Users\\baran\\.nuget\\packages\\microsoft.extensions.dependencyinjection\\6.0.0\\microsoft.extensions.dependencyinjection.6.0.0.nupkg.sha512",
     "C:\\Users\\baran\\.nuget\\packages\\microsoft.extensions.dependencyinjection.abstractions\\6.0.0\\microsoft.extensions.dependencyinjection.abstractions.6.0.0.nupkg.sha512",
     "C:\\Users\\baran\\.nuget\\packages\\microsoft.extensions.identity.core\\6.0.4\\microsoft.extensions.identity.core.6.0.4.nupkg.sha512",
+    "C:\\Users\\baran\\.nuget\\packages\\microsoft.extensions.identity.stores\\5.0.1\\microsoft.extensions.identity.stores.5.0.1.nupkg.sha512",
     "C:\\Users\\baran\\.nuget\\packages\\microsoft.extensions.logging\\6.0.0\\microsoft.extensions.logging.6.0.0.nupkg.sha512",
     "C:\\Users\\baran\\.nuget\\packages\\microsoft.extensions.logging.abstractions\\6.0.0\\microsoft.extensions.logging.abstractions.6.0.0.nupkg.sha512",
     "C:\\Users\\baran\\.nuget\\packages\\microsoft.extensions.options\\6.0.0\\microsoft.extensions.options.6.0.0.nupkg.sha512",

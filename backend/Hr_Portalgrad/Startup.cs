@@ -23,6 +23,7 @@ using Azure.Storage.Blobs;
 using Microsoft.AspNetCore.Identity;
 using HR_Portalgrad.Models.Requests;
 using HR_Portalgrad.Services.EmailReporsitories;
+using HR_Portalgrad.Services.FileReporsitories;
 
 namespace HR_Portalgrad
 {
@@ -66,9 +67,10 @@ namespace HR_Portalgrad
             services.AddScoped<IJobReporsitory,DbJobReporsitory>();
             services.AddScoped<IApplicantsReporsitory, DbApplicantsReporsitory>();
             services.AddScoped<IProfileReporsitory, DbProfileReporsitory>();
+            services.AddScoped<IFileReportsitory, DbFileReporsitory>();
             services.Configure<MailSettings>(_configuration.GetSection("MailSettings"));
             services.AddTransient<IMailService, MailService>();
-
+           
 
         }
 

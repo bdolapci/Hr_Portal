@@ -26,6 +26,6 @@ namespace HR_Portalgrad.Models
         [StringLength(500)]
         public string photo { get; set; }
         public List<Applicants> Applicants { get; set; }
-        public List<File> File { get; set; }
+        public List<Files> File { get; set; }
     }
 }

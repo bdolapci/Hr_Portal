@@ -145,28 +145,6 @@ namespace HR_Portalgrad.Services.ProfileReporsitories
             return profile;
         }
 
-        //public async Task<Profile> EditAboutInfo(int id, int UserID, string about, string photo, string facebook, string twitter, 
-        //    string linkedin, string experience, string certification, string education, int followers, string skills,int following)
-        //{
-        //    var abouts = new Profile { Id = id, Userid=UserID,about=about,Facebook=facebook,Twitter=twitter,Linkedin=linkedin ,
-        //        photo = photo,experience=experience,certification=certification,education=education,Followers=followers,Skills=skills,Following=following };
-        //    _context.profiles.Attach(abouts);
-        //    _context.Entry(abouts).Property(j => j.Userid).IsModified = false;
-        //    _context.Entry(abouts).Property(j => j.about).IsModified = true;
-        //    _context.Entry(abouts).Property(j => j.Facebook).IsModified = true;
-        //    _context.Entry(abouts).Property(j => j.Twitter).IsModified = true;
-        //    _context.Entry(abouts).Property(j => j.Linkedin).IsModified = true;
-        //    _context.Entry(abouts).Property(j => j.experience).IsModified = true;
-        //    _context.Entry(abouts).Property(j => j.certification).IsModified = true;
-        //    _context.Entry(abouts).Property(j => j.education).IsModified = true;
-        //    _context.Entry(abouts).Property(j => j.Followers).IsModified = true;
-        //    _context.Entry(abouts).Property(j => j.Skills).IsModified = true;
-        //    _context.Entry(abouts).Property(j => j.photo).IsModified = true;
-        //    _context.Entry(abouts).Property(j => j.Following).IsModified = true;
-        //    await _context.SaveChangesAsync();
-        //    return abouts;
-        //}
-
         public async Task<List<Profile>> GetAllProfileInfo()
         {
             return await _context.profiles.ToListAsync();
@@ -177,7 +155,12 @@ namespace HR_Portalgrad.Services.ProfileReporsitories
            
             return await result;
         }
+        public async Task<Profile> GetProfile2(int id)
+        {
+            var result = _context.profiles.FirstOrDefaultAsync(j => j.Userid == id);
 
+            return await result;
+        }
         public async Task<Profile> Create(Profile prof)
         {
             
@@ -186,5 +169,6 @@ namespace HR_Portalgrad.Services.ProfileReporsitories
 
             return prof;
         }
+    
     }
 }

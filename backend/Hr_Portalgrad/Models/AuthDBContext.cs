@@ -10,8 +10,8 @@ namespace HR_Portalgrad.Models
         public DbSet<Jobs> Jobs { get; set; }
         public DbSet<Applicants> Applicants { get; set; }
         public DbSet<Profile> profiles { get; set; }
-        public DbSet<File> files { get; set; }
-      
+        public DbSet<Files> files { get; set; }
+
         //public DbSet<Jobs> Jobs { get; set; }
     }
 }
