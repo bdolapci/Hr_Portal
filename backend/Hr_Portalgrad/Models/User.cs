@@ -40,8 +40,8 @@ namespace HR_Portalgrad.Models
         public string country { get; set; }
         [StringLength(250)]
         public string gender { get; set; }
-        public int isEmailValid { get; set; }
-       
+        public string regDate { get; set; }
+        public bool isCompanyVerified { get; set; }
         public List<Jobs> Jobs { get; set; }   
         public List<Applicants> Applicants { get; set; }
         public List<Files> File { get; set; }

@@ -94,7 +94,8 @@ namespace HR_Portalgrad.Controller
                 country = registerRequest.country,
                 gender = registerRequest.gender,
                 phoneNumber = registerRequest.phoneNumber,
-                isEmailValid = registerRequest.isEmailValid,
+                regDate = registerRequest.regDate,
+                isCompanyVerified = false,
             };
           
 
@@ -134,7 +135,10 @@ namespace HR_Portalgrad.Controller
                 return Unauthorized();
             }
             string accessToken = _accessTokenGenerator.GenerateToken(user);
-
+            if (user.isCompanyVerified==false && user.userRole=="hr")
+            {
+                return NotFound();
+            }
             return Ok(new AuthenticatedUserResponse()
             {
                 AccessToken = accessToken,
@@ -259,6 +263,12 @@ namespace HR_Portalgrad.Controller
             string passwordHash = _passwordHasher.hashPassword(user.Passwords);
             return await _userReporsitory.ChangePassword(user.Id, passwordHash, user.firstName, user.lastName, user.userRole, user.email);
         }
+        [HttpPost("regDate")]
+        public async Task<User> registerDate(User user)
+        {
+            return await _userReporsitory.EditEmailValid(user.Id,  user.firstName, user.lastName,user.Passwords, user.userRole, user.email,user.regDate);
+        }
+    
         [HttpPost("Jobs/EditJobName")]
         public async Task<Jobs> EditJobsName(Jobs job)
         {
@@ -358,7 +368,12 @@ namespace HR_Portalgrad.Controller
         {
             return await _userReporsitory.EditUserPhone(user.Id,user.firstName,user.lastName,user.email,user.Passwords, user.userRole, user.phoneNumber);
         }
-        [HttpGet("Jobs/{id?}")]
+        [HttpPost("VerifyCompany")]
+        public async Task<User> VerifyCompany(User user)
+        {
+            return await _userReporsitory.EditVerifyCompany(user.Id, user.firstName, user.lastName, user.email, user.Passwords, user.userRole, user.isCompanyVerified);
+        }
+       [HttpGet("Jobs/{id?}")]
         public async Task<Jobs> GetSingleJob(int id)
         {
             return await _jobReporsitory.GetSingleJob(id);
@@ -479,5 +494,6 @@ namespace HR_Portalgrad.Controller
             }
             return Ok(blobs);
         }
+       
     }
 }

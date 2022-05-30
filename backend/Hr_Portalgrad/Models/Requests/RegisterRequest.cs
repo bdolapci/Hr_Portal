@@ -25,12 +25,13 @@ namespace HR_Portalgrad.Models.Requests
         public string country { get; set; }
         public string gender { get; set; }
         public string phoneNumber { get; set; }
-        public int isEmailValid { get; set; }
+        public string regDate { get; set; }
         public string education { get; set; }
         public string experience { get; set; }
         public string linkedin { get; set; }
         public string facebook { get; set; }
         public string website { get; set; }
+        public bool isCompanyVerified { get; set; }
 
     }
 }

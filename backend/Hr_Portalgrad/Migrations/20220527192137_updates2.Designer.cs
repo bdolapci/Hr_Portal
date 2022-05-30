@@ -4,14 +4,16 @@ using HR_Portalgrad.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace HR_Portalgrad.Migrations
 {
     [DbContext(typeof(AuthDBContext))]
-    partial class AuthDBContextModelSnapshot : ModelSnapshot
+    [Migration("20220527192137_updates2")]
+    partial class updates2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -104,7 +106,8 @@ namespace HR_Portalgrad.Migrations
                         .HasColumnType("nvarchar(250)");
 
                     b.Property<string>("description")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
 
                     b.Property<string>("photo")
                         .HasMaxLength(500)
@@ -214,6 +217,9 @@ namespace HR_Portalgrad.Migrations
                     b.Property<bool>("isCompanyVerified")
                         .HasColumnType("bit");
 
+                    b.Property<int>("isEmailValid")
+                        .HasColumnType("int");
+
                     b.Property<string>("lastName")
                         .IsRequired()
                         .HasMaxLength(250)
@@ -222,9 +228,6 @@ namespace HR_Portalgrad.Migrations
                     b.Property<string>("phoneNumber")
                         .HasMaxLength(250)
                         .HasColumnType("nvarchar(250)");
-
-                    b.Property<string>("regDate")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("userRole")
                         .IsRequired()

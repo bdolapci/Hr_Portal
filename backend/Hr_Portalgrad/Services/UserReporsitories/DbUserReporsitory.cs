@@ -183,9 +183,9 @@ namespace HR_Portalgrad.Services.UserReporsitories
             await _context.SaveChangesAsync();
             return user;
         }
-        public async Task<User> EditEmailValid(int id, string firstName, string lastName, string email, string Passwords, string userRole, int isEmailValid)
+        public async Task<User> EditEmailValid(int id, string firstName, string lastName, string email, string Passwords, string userRole, string regDate)
         {
-            var user = new User { Id = id, firstName = firstName, lastName = lastName, email = email, Passwords = Passwords, userRole = userRole, isEmailValid = 1 };
+            var user = new User { Id = id, firstName = firstName, lastName = lastName, email = email, Passwords = Passwords, userRole = userRole, regDate = regDate };
             _context.Users.Attach(user);
             _context.Entry(user).Property(j => j.Id).IsModified = false;
             _context.Entry(user).Property(j => j.firstName).IsModified = false;
@@ -193,7 +193,21 @@ namespace HR_Portalgrad.Services.UserReporsitories
             _context.Entry(user).Property(j => j.email).IsModified = false;
             _context.Entry(user).Property(j => j.Passwords).IsModified = false;
             _context.Entry(user).Property(j => j.userRole).IsModified = false;
-            _context.Entry(user).Property(j => j.isEmailValid).IsModified = true;
+            _context.Entry(user).Property(j => j.regDate).IsModified = true;
+            await _context.SaveChangesAsync();
+            return user;
+        }
+        public async Task<User> EditVerifyCompany(int id, string firstName, string lastName, string email, string Passwords, string userRole,bool isCompanyVerified)
+        {
+            var user = new User { Id = id, firstName = firstName, lastName = lastName, email = email, Passwords = Passwords, userRole = userRole, isCompanyVerified = true };
+            _context.Users.Attach(user);
+            _context.Entry(user).Property(j => j.Id).IsModified = false;
+            _context.Entry(user).Property(j => j.firstName).IsModified = false;
+            _context.Entry(user).Property(j => j.lastName).IsModified = false;
+            _context.Entry(user).Property(j => j.email).IsModified = false;
+            _context.Entry(user).Property(j => j.Passwords).IsModified = false;
+            _context.Entry(user).Property(j => j.userRole).IsModified = false;
+            _context.Entry(user).Property(j => j.isCompanyVerified).IsModified = true;
             await _context.SaveChangesAsync();
             return user;
         }

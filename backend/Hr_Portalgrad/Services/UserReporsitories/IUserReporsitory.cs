@@ -31,6 +31,7 @@ namespace HR_Portalgrad.Services.UserReporsitories
         Task<User> EditUserCountry(int id, string firstName, string lastName, string email, string Passwords, string userRole, string country);
         Task<User> EditUserPhone(int id, string firstName, string lastName, string email, string Passwords, string userRole,string phone);
         Task<User> EditUserGender(int id,string firstName,string lastName,string email,string Passwords,string userRole,string gender);
-        Task<User> EditEmailValid(int id, string firstName, string lastName, string email, string Passwords, string userRole, int isEmailValid);
+        Task<User> EditEmailValid(int id, string firstName, string lastName, string email, string Passwords, string userRole, string regDate);
+        Task<User> EditVerifyCompany(int id, string firstName, string lastName, string email, string Passwords, string userRole, bool verifyCompany);
     }
 }

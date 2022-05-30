@@ -19,7 +19,6 @@ namespace HR_Portalgrad.Models
         public string Name { get; set; }
         [StringLength(250)]
         public string Date { get; set; }
-        [StringLength(500)]
         public string description { get; set; }
         [StringLength(250)]
         public string category { get; set; }
