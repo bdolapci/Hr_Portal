@@ -18,6 +18,7 @@ import MUIDataTable from 'mui-datatables';
 import { Button } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
+import Unauthorized  from '../components/Unauthorized';
 function AdminPanelHr() {
       var token=localStorage.getItem("User");
       var decoded = jwt_decode(token);
@@ -36,13 +37,13 @@ const [hr,setHr]=React.useState([]);
       }
       setHr(hr);
     })
-  })
+  },[])
   const removeUser = async (Id) => {
     try {
       const res = await axios.delete(`https://localhost:44361/api/Home/${Id}`,{
       })
       console.log(res.data)
-      window.location.reload(false);
+      window.location.reload(true);
       
     } catch (error) {
       alert(error)
@@ -59,7 +60,7 @@ const [hr,setHr]=React.useState([]);
                 Passwords:"cz",          
         })
         console.log(res.data)
-        window.location.reload(false);
+        window.location.reload(true);
     } catch (error) {
         alert(error)
     }
@@ -118,8 +119,11 @@ const options = {
 
 
   return (
+  
       <>
-    <Navbar/>
+        {decoded.userRole =="admin" ?
+        <>
+         <Navbar/>
     <SideBar/>
     <div className="container">
     <Box sx={{marginBottom:"2%",marginTop:"1%"}}>
@@ -137,7 +141,9 @@ const options = {
       options={options}
     />
     </Box>
-          </div>      
+          </div>    
+        </> :<Unauthorized/>}
+     
     </>
     
   )

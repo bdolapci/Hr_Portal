@@ -15,6 +15,7 @@ import Footer from '../components/Footer';
 import Checkbox from '@mui/material/Checkbox';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import CssBaseline from '@mui/material/CssBaseline';
+import Stepperr from '../components/Stepperr';
 function Register() {
 
   // const [value, setValue] = useState('')
@@ -52,6 +53,7 @@ function Register() {
   function phoneNumberHandler(e){
     setPhoneNumber(e.target.value);
   }
+  console.log(isUser,cheked)
   function isUserHandler(e){
     if(cheked==false){
       setIsUser("hr");
@@ -99,7 +101,9 @@ const options2=[
       }
     }
   }
-
+  React.useEffect(() => {
+    setIsUser("user");
+  }, [])
   const label = { inputProps: { 'aria-label': 'Checkbox demo' } }
   return (
       <>
@@ -119,121 +123,17 @@ const options2=[
 
       </ul>
     </header>
-    <section className='body-register'>
-      <div className="register-form">
-          <div className="register-form-body">
-            {isUser=="hr"?  <h1>Register as a Employee to work for <br></br> Worldwide Clients</h1>: 
-             <h1>Register as a Client to hire  <br></br> Top Employees</h1> }
-          
-            {errorField ? <Alert sx={{marginBottom:"3%"}} severity="error">This email already exists</Alert> :  ""}
-            {errorField2 ? <Alert sx={{marginBottom:"3%"}} severity="error">Passwords do not match</Alert> :  ""}
-            <form onSubmit={(e)=>{
-              if((firstName && lastName && email && password && confirmPassword) != ""){
-                if(password ==confirmPassword){
-                  setErrorField2(false);
-                }
-                setErrorField2(true);
-              
-                reg()
-                e.preventDefault()
-              }
-            }}>
-              <div className="name">
-                <TextField 
-                type="text" 
-                placeholder='First Name'
-                label="First Name"
-                variant='outlined'
-                required
-                onChange={firstNameHandler} 
-                />
-                <TextField 
-                type="text" 
-                placeholder='Last Name' 
-                className='lastname'
-                label="Last Name"
-                variant='outlined'
-                required
-                onChange={lastNameHandler} 
-                />
-              </div>
-              <div className="other">
-              <TextField type="email" 
-              placeholder='Email' 
-              label="Email"
-              className='email'
-              variant='outlined'
-              required
-              onChange={emailHandler}
-              />
-              <TextField type="password" 
-              placeholder='Password' 
-              label="Password"
-              className='password'
-              variant='outlined'
-              required
-              onChange={passwordHandler}
-              inputProps= { {minLength: 8, maxLength: 16} } 
-              />
-               <TextField type="password" 
-              placeholder='confirm password'
-              label = "Confirm Password"
-              className='password'
-              variant='outlined'
-              required
-              inputProps= { {minLength: 8, maxLength: 16} } 
-              onChange={confirmPasswordHandler}
-              />
-            
-              <h4 style={{marginBottom:"0px"}}>Optional</h4>
-              <div className="count">
-              <TextField
-              sx={{scrollMarginBottom:"10px",width:"100%"}}
-               type="text" 
-              placeholder='Phone Number' 
-              className='hruser'
-              variant='outlined'
-              label="Phone Number"
-              onChange={phoneNumberHandler}
-              /> 
-               <InputLabel sx={{marginTop:"10px"}}>Country</InputLabel>
-              <Select  
-              sx={{width:"100%"}}
-              labelId="demo-simple-select-label"
-              id="demo-simple-select"
-              value={value}
-              label="country"
-              onChange={changeHandler}
-              options={options} >
-                 
-                </Select>  
-              
-              <InputLabel sx={{marginTop:"10px"}}>Gender</InputLabel>
-              <Select  
-              sx={{width:"100%"}}
-              labelId="demo-simple-select-label"
-              id="demo-simple-select"
-              value={gender}
-              label="gender"
-              onChange={genderHandler} 
-              options={options2}>
-            
-                </Select>              
-            
-          </div> 
-               <FormControlLabel  control={<Checkbox onChange={isUserHandler} />} label="Register as a Company Representetive" />
-             
-              </div>
-             
-        
-              <Button type="submit">Create Account</Button>
-              <hr className='line'></hr>
-              <p className='usegoogle'>You can also use google</p>
-               <GoogleLogin className='googlelogin' buttonText="Log in with Google"/> 
-            </form>
-          </div>
-      </div>
-    </section>
+    <div className="container" style={{marginTop:"3%"}}>
+       <div className="middle" style={{width:"50%",boxShadow:" 0px 2px 1px -1px rgb(0 0 0 / 20%), 0px 1px 1px 0px rgb(0 0 0 / 14%), 0px 1px 3px 0px rgb(0 0 0 / 12%)"
+       ,borderRadius: "1.125rem",
+     padding: "2%",
+}}>
+   
+       
+          <Stepperr/>
+       </div>
+   </div>
+ 
     <Footer/>
       </>
   )

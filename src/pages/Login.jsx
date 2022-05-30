@@ -5,7 +5,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import "../styles/Register.scss"
 import { InputLabel,MenuItem,TextField  } from '@mui/material';
 import countryList from 'react-select-country-list'
-import GoogleLogin from 'react-google-login';
+import PersonIcon from '@mui/icons-material/Person';
 import axios from 'axios';
 import { Button } from '@mui/material';
 import { Navigate } from 'react-router-dom';
@@ -19,7 +19,7 @@ import Stepper from '@mui/material/Stepper';
 import Step from '@mui/material/Step';
 import StepLabel from '@mui/material/StepLabel';
 import Typography from '@mui/material/Typography';
-
+import HttpsIcon from '@mui/icons-material/Https';
 function Login() {
   //let Navigate =useNavigate();
   const[email,setEmail]=React.useState("");
@@ -217,7 +217,7 @@ function Login() {
         }
 
       }else if(activeStep===3){
-        //route main menu
+
       }
       
     };
@@ -263,7 +263,7 @@ function Login() {
     <section className='body-register'>
       <div className="register-form" >
           <div className="register-form-body" >
-            <h1>Log In</h1>
+            <h1 style={{borderBottom: "6px solid #1976d2"}}>Log In</h1>
             <form
             onSubmit={(e)=>{
               if(email && password != ""){
@@ -276,17 +276,19 @@ function Login() {
               
                {errorField ? <Alert severity="error">E-mail and password doesn't match!</Alert> :  ""}
               <div className="other">
+            
               <TextField label="Email" onChange={emailHandler} type="email" placeholder='Email' className='email'/>
-              <TextField label="Password" onChange={passwordHandler}  inputProps= { {minLength: 8, maxLength: 16} }  type="password" placeholder='Password' className='password'/>
              
+             
+              <TextField label="Password" onChange={passwordHandler}  inputProps= { {minLength: 8, maxLength: 16} }  type="password" placeholder='Password' className='password'/>
+            
               </div>
               
               <Button variant='outlined' type="submit">Login</Button>
              
               <hr className='line'></hr>
             </form>
-            <p className='usegoogle'>You can also use google</p>
-              <GoogleLogin className='googlelogin' buttonText="Log in with Google"/>
+       
             <Button   onClick={handleOpen} sx={{marginTop:"10%"}} >Forgot Password?</Button>
             <Modal
             open={open}
@@ -310,6 +312,7 @@ function Login() {
         })}
       </Stepper>
       {activeStep === steps.length ? (
+      
         <React.Fragment>
           <Typography sx={{ mt: 2, mb: 1 }}>
             All steps completed - you&apos;re finished...
@@ -328,7 +331,7 @@ function Login() {
               <TextField style={{marginTop:"20px",marginLeft:"20px"}} onChange={controlInput}  id="outlined-basic" label="upper number" variant="outlined" />
             </React.Fragment>
           ):""}
-          {emptyField3 ? <Alert severity="error">Password is cannot be shorter than 8 digit</Alert> :  ""}
+          {emptyField3 ? <Alert severity="error">Password  cannot be shorter than 8 digit</Alert> :  ""}
           {activeStep === 2 ?( 
           <TextField type= {"password"} style={{marginTop:"20px",marginLeft:"20px"}}   inputProps={{ minLength:8,maxLength: 16 }}  onChange={passwordInput} id="outlined-basic" label="new password" variant="outlined" />
           ):""}

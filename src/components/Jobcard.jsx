@@ -15,7 +15,7 @@ function Jobcard(Categoryex) {
         component="img"
         alt="green iguana"
         height="140"
-        image="/static/images/cards/contemplative-reptile.jpg"
+        image={Categoryex.image}
       />
       <CardContent>
         <Typography gutterBottom variant="h5" component="div">

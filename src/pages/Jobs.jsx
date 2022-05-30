@@ -15,6 +15,7 @@ import AddIcon from '@mui/icons-material/Add';
 import "../styles/SideBar.scss"
 import { useNavigate } from 'react-router-dom';
 import { useParams } from 'react-router-dom';
+import Unauthorized from '../components/Unauthorized';
 function Jobs(props) {
     const[job,setJob]=React.useState([]);
     const [getJob, setGetJob] = React.useState("");
@@ -68,7 +69,7 @@ const getApplicantsforJob=async (Id)=>{
           customBodyRender: (value, tableMeta, updateValue) => {
             return (
               <>
-             {value.slice(3,16)}
+             {value.slice(0,16)}
               </>
             );
           }
@@ -120,6 +121,7 @@ const getApplicantsforJob=async (Id)=>{
     
   return (
     <>
+      {decoded.userRole=="hr" ?<>
       <Navbar/>
    <SideBar/>
    <div className="container" >
@@ -140,6 +142,7 @@ const getApplicantsforJob=async (Id)=>{
     />
     </Box>
    </div>
+      </>  :<Unauthorized/>}
     </>
   )
 }

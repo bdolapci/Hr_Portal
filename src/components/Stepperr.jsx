@@ -17,14 +17,32 @@ import { renderToString } from "react-dom/server";
 import jsPDF from "jspdf";
 import jwt_decode from "jwt-decode";
 import { useNavigate } from 'react-router-dom';
-const steps = ['Enter your information  ', 'Upload Files',"Overview", 'Finish'];
+import LinkedInIcon from '@mui/icons-material/LinkedIn';
+import GitHubIcon from '@mui/icons-material/GitHub';
+import  { useState, useMemo } from 'react'
+import Navbar from "../components/Navbar";
+import "../styles/Navbar.scss"
+import { InputLabel } from '@mui/material';
+import { Link } from 'react-router-dom';
+import "../styles/Register.scss"
+import Select from 'react-select';
+import countryList from 'react-select-country-list'
+import GoogleLogin from 'react-google-login';
+import Footer from '../components/Footer';
+import Checkbox from '@mui/material/Checkbox';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import CssBaseline from '@mui/material/CssBaseline';
+import { useParams } from "react-router-dom";
+
+const steps = ['Enter your information  ','Education Background' ,'Job Experience',"Overview"];
 
 function Stepperr() {
 
+  const {id} = useParams();
   
-  const [firsName, setFirstName] = React.useState("");
+  const [firstName, setFirstName] = React.useState("");
   const [lastName, setLastName] = React.useState("");
-  const [expectedSalary, setExpectedSalary] = React.useState("");
+  const [email,setEmail]  = React.useState("");
   const [schoolName, setSchoolName] = React.useState("");
   const [schoolName2, setSchoolName2] = React.useState("");
   const [schoolName3, setSchoolName3] = React.useState("");
@@ -49,17 +67,21 @@ function Stepperr() {
   const [yearsOfExperience,setYearsOfExperience]=React.useState("");
   const [yearsOfExperience2,setYearsOfExperience2]=React.useState("");
   const [yearsOfExperience3,setYearsOfExperience3]=React.useState("");
-  const [anythingelse,setAnythingElse]=React.useState("");
+  
+  const [linkedin,setLinkedin]=React.useState("");
+  const [github,setGithub]=React.useState("");
+  const [website,setWebsite]=React.useState("");
 
+  const emailHandler = (e) => {
+    setEmail(e.target.value);
+  };
   const firstNameHandler = (e) => {
     setFirstName(e.target.value);
   };
   const lastNameHandler = (e) => {
     setLastName(e.target.value);
   };
-  const expectedSalaryHandler = (e) => {
-    setExpectedSalary(e.target.value);
-  };
+ 
   const schoolNameHandler = (e) => {
     setSchoolName(e.target.value);
   };
@@ -132,8 +154,15 @@ function Stepperr() {
   const yearsOfExperienceHandler3 = (e) => {
     setYearsOfExperience3(e.target.value);
   };
-  const anythingElseHandler = (e) => {
-    setAnythingElse(e.target.value);
+  
+  const linkedinHandler = (e) => {
+    setLinkedin(e.target.value);
+  };
+  const githubHandler = (e) => {
+    setGithub(e.target.value);
+  };
+  const websiteHandler = (e) => {
+    setWebsite(e.target.value);
   };
 
 
@@ -150,18 +179,14 @@ function Stepperr() {
 
   const [activeStep, setActiveStep] = React.useState(0);
   const [skipped, setSkipped] = React.useState(new Set());
-
-  const isStepOptional = (step) => {
-    return step === 1;
-  };
-  const Input = styled('input')({
-    display: 'none',
-  });
   const isStepSkipped = (step) => {
     return skipped.has(step);
   };
 
+  const [emptyalert, setEmptyalert] = React.useState(false);
+
   const handleNext = () => {
+
     let newSkipped = skipped; 
     if (isStepSkipped(activeStep)) {
       newSkipped = new Set(newSkipped.values());
@@ -170,42 +195,48 @@ function Stepperr() {
 
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
     setSkipped(newSkipped);
+    setEmptyAlertError(false);
+    setPasswordAlert(false);
+    setPasswordAlert2(false);
+    setEmailAlert(false);
   };
 
   const handleBack = () => {
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
   };
 
+  
   const anotherJob=()=>{
     return(
       <>
      
           {jobs.length==1 ?   
           <>
+          <Typography sx={{marginLeft:"5%",border:"1px solid black",width:"25px",borderRadius:"100%"}} > 3</Typography>
              <Box sx={{justifyContent:"space-between",marginBottom:"5%"}}>
            <TextField
           
-          id="standard-required"
+          id="outlined-required"
           label="Company Name"
           sx={{marginRight:"2%"}}
           onChange={companyNameHandler3 }
-          variant="standard"
+          variant="outlined"
         />
         <TextField
           
-          id="standard-required"
+          id="outlined-required"
           label="Job Title"
           onChange={jobTitleHandler3 }
           sx={{marginRight:"2%"}}
-          variant="standard"
+          variant="outlined"
         />
          <TextField
           
           onChange={yearsOfExperienceHandler3 }
-          id="standard-number"
+          id="outlined-number"
           type={'number'}
           label="Years of Experience"
-          variant="standard"
+          variant="outlined"
         />
         </Box>
         <TextField
@@ -214,35 +245,37 @@ function Stepperr() {
               rows={5}
               sx={{width:"400px"}}
           
-          id="standard-required"
+          id="outlined-required"
           label="Work Description"
          
         />
           </> :
           <>
+          <Typography sx={{marginLeft:"5%",border:"1px solid black",width:"25px",borderRadius:"100%"}} > 2</Typography>
           <Box sx={{justifyContent:"space-between",marginBottom:"5%"}}>
+
         <TextField
         
-        id="standard-required"
+        id="outlined-required"
         label="Company Name"
         sx={{marginRight:"2%"}}
         onChange={companyNameHandler2 }
-        variant="standard"
+        variant="outlined"
         />
          <TextField
           
           onChange={jobTitleHandler2 }
-          id="standard-required"
+          id="outlined-required"
           label="Job Title"
           sx={{marginRight:"2%"}}
-          variant="standard"
+          variant="outlined"
         />
          <TextField
           
           onChange={yearsOfExperienceHandler2 }
-          id="standard-required"
+          id="outlined-required"
           label="Years of Experience"
-          variant="standard"
+          variant="outlined"
 
         />
         </Box>
@@ -252,22 +285,15 @@ function Stepperr() {
               rows={5}
               sx={{width:"400px"}}
           
-          id="standard-required"
+          id="outlined-required"
           label="Work Description"
          
         />
         </>
         }
-           
-                 
-        
-             
-              
       </>
     )
   }
-  const [alertapplication, setAlertapplication] = React.useState(false);
-  
   const anotherEducation=()=>{
     
     return(
@@ -275,31 +301,33 @@ function Stepperr() {
      
         {education.length==1 ?
         <>
+        <Typography sx={{marginLeft:"5%",border:"1px solid black",width:"25px",borderRadius:"100%"}} > 3</Typography>
          <Box sx={{justifyContent:"space-between",marginBottom:"5%"}}>
           <TextField
     
-    id="standard-required"
+    id="outlined-required"
     label="School Name"
     sx={{marginRight:"2%"}}
-    variant="standard"
+    variant="outlined"
     onChange={schoolNameHandler3 }
   />
            <TextField
     
-    id="standard-required"
+    id="outlined-required"
     label="Degree"
     sx={{marginRight:"2%"}}
-    variant="standard"
+    variant="outlined"
     onChange={degreeHandler3 }
   />
    <TextField
-    
-    id="standard-required"
+    type={'number'}
+    id="outlined-number"
     label="GPA"
   onChange={gpaHandler3 }
-    variant="standard"
+    variant="outlined"
   />
        </Box>
+       <Typography>Graduation Date</Typography>
     <LocalizationProvider dateAdapter={AdapterDateFns}>
                 <DatePicker
                 label="Date"
@@ -309,39 +337,41 @@ function Stepperr() {
                   setEducationdate3(newValue3);
                
                }}
-                disablePast={true}
+              
                renderInput={(params) => <TextField {...params} />}
                 />
             </LocalizationProvider>
          
           </>: 
           <>
+          <Typography sx={{marginLeft:"5%",border:"1px solid black",width:"25px",borderRadius:"100%"}} > 2</Typography>
              <Box sx={{justifyContent:"space-between",marginBottom:"5%"}}>
             <TextField
     
     onChange={schoolNameHandler2 }
-    id="standard-required"
+    id="outlined-required"
     label="School Name"
     sx={{marginRight:"2%"}}
-    variant="standard"
+    variant="outlined"
   />
            <TextField
     
     onChange={degreeHandler2 }
-    id="standard-required"
+    id="outlined-required"
     label="Degree"
     sx={{marginRight:"2%"}}
-    variant="standard"
+    variant="outlined"
   />
    <TextField
-    
+    type={'number'}
     onChange={gpaHandler2 }
-    id="standard-required"
+    id="outlined-number"
     label="GPA" 
   
-    variant="standard"
+    variant="outlined"
   />
     </Box>
+    <Typography>Graduation Date</Typography>
     <LocalizationProvider dateAdapter={AdapterDateFns}>
                 <DatePicker
                  label="Date"
@@ -351,7 +381,7 @@ function Stepperr() {
                    setEducationdate2(newValue2);
                     console.log(newValue2)
                 }}
-                 disablePast={true}
+                
                 renderInput={(params) => <TextField {...params} />}
                 />
             </LocalizationProvider>
@@ -366,52 +396,93 @@ function Stepperr() {
   }
   const nav = useNavigate();
 
-  const sendApplication=async(event)=>{
-    const rand = Math.floor(Math.random() * 10000000);
-    const doc = new jsPDF();
-    const data = await document.querySelector("#pdf");
-    const str =decoded.id+"_"+rand.toString()+".pdf";
-    
-   doc.html(data).then(()=>{
-    var blobPdf= new Blob([doc.html(data),doc.output('blob')], {type: 'application/pdf'});
-    var filer = new File([blobPdf], str, {type: 'application/pdf'});
-    const formData=new FormData();
-    formData.append("hi",filer)
-    try {
-      const res= axios.post("https://localhost:44361/api/Home/UploadFile",formData)
-      console.log("burada")
-      setAlert1(true)
-      setTimeout(() => {
-        setAlert1(false);
-        
-      }, 4000); 
-      
-      } catch (error) {
-        setAlert1(false);
-      console.log(error)
-    }
-   })
 
-  }
   const [count, setCount] = React.useState(0);
-  
-  const sendLast =async()=>{
-    sendApplication();
-    uploadFile();
-    setCount(count+1);
-  }
 
-  const filecounter=0;
-  const handleSend = async() => {
-    const rand = Math.floor(Math.random() * 10000000);
-    const doc = new jsPDF();
-    const data = await document.querySelector("#pdf");
-    const str =decoded.id+"_"+rand.toString()+".pdf";
-    doc.html(data).then(() => {
-      doc.save(str);  
-    });
-    // Navigate("/")
-  };
+
+  const[password,setPassword]=React.useState("");
+  const[isUser,setIsUser]=React.useState("");
+  const[confirmPassword,setConfirmPassword]=React.useState("");
+  const[country,setCountry]=React.useState("");
+  const [gender,setGender] =React.useState("");
+  const [phoneNumber,setPhoneNumber]=React.useState("");
+
+  const [errorField,setErrorField] = React.useState(false);
+  const [errorField2,setErrorField2] = React.useState(false);
+  const [cheked ,setCheked] = React.useState(false);
+  
+  function passwordHandler(e){
+    setPassword(e.target.value);
+  }
+  function countryHandler(e){
+    setCountry(e.target.value);
+  }
+  function genderHandler(e){
+    setGender(e);
+  }
+  function phoneNumberHandler(e){
+    setPhoneNumber(e.target.value);
+  }
+ 
+  function isUserHandler(e){
+    if(cheked==false){
+      setIsUser("hr");
+    }else{
+      setIsUser("user");
+    }
+    setCheked(e.target.checked)
+  }
+  function confirmPasswordHandler(e){
+    setConfirmPassword(e.target.value);
+  }
+  const navigate = useNavigate();
+  const [value, setValue] = useState('')
+  const options = useMemo(() => countryList().getData(), [])
+
+  const changeHandler = value => {
+    setValue(value)
+  }
+const options2=[
+ { value: "Female",label:"Female"},
+ {value :"Male",label:"Male"},
+ {value:"No Answer",label:"No Answer"}
+]
+console.log(value)
+  async function reg(){
+    try {
+      const response =await axios.post(
+        "https://localhost:44361/api/Home/register",
+        {
+          firstName:`${firstName}`,
+          lastName:`${lastName}`,
+          email:`${email}`,
+          Passwords: `${password}`,
+          confirmPassword : `${confirmPassword}`,
+          userRole: `${isUser}`,
+          country: `${value.label}`,
+          gender: `${gender.value}`,
+          phoneNumber:`${phoneNumber}`,
+          isEmailValid:0,
+          education:`${schoolName},${schoolName2},${schoolName3},${degree},${degree2},${degree3},${gpa},${gpa2},${gpa3},${educationdate},${educationdate2},${educationdate3},`,
+          experience:`${companyName},${companyName2},${companyName3},${jobTitle},${jobTitle2},${jobTitle3},${jobDescription},${jobDescription2},${jobDescription3},${yearsOfExperience},${yearsOfExperience2},${yearsOfExperience3},`,
+          linkedin:`${linkedin}`,
+          facebook:`${github}`,
+          website:`${website}`,
+          
+        }
+      )
+      console.log("geldi")
+        navigate("/")
+    } catch (error) {
+      if(error.response.status==409){
+        setErrorField(true);
+      }
+    }
+  }
+  React.useEffect(() => {
+    setIsUser("user");
+  }, [])
+
   const [jobs,setJobs]=React.useState([]);
 
   const [education,setEducation]=React.useState([]);
@@ -422,111 +493,15 @@ function Stepperr() {
     setJobs([...jobs,anotherJob()])
   }
 
-  const [file,setFile]=React.useState();
-  const [fileName,setFileName]=React.useState();
-  const saveFile=(event)=>{
-    setFile(event.target.files[0])
-    setFileName(event.target.files[0].name)
-  }
-  const [file2,setFile2]=React.useState();
-  const [fileName2,setFileName2]=React.useState();
-  const saveFile2=(event)=>{
-    setFile2(event.target.files[0])
-    setFileName2(event.target.files[0].name)
-  }
-  const [file3,setFile3]=React.useState();
-  const [fileName3,setFileName3]=React.useState();
-  const saveFile3=(event)=>{
-    setFile3(event.target.files[0])
-    setFileName3(event.target.files[0].name)
-  }
-  const [file4,setFile4]=React.useState();
-  const [fileName4,setFileName4]=React.useState();
-  const saveFile4=(event)=>{
-    setFile4(event.target.files[0])
-    setFileName4(event.target.files[0].name)
-  }
-
+  const [emptyalerterror,setEmptyAlertError]=React.useState(false);
   const [alert1,setAlert1]=React.useState(false);
-  const uploadFile =async (event)=>{
-    const nameoffile=decoded.id+"_"+fileName
-    const formData=new FormData();
-    formData.append("formFile",file,nameoffile)
-try {
-  const res=await axios.post("https://localhost:44361/api/Home/UploadFile",formData)
-  console.log(res);
-  setAlert1(true)
-  setTimeout(() => {
-    setAlert1(false);
-  }, 4000); 
-
-} catch (error) {
-    setAlert1(false);
-  console.log(error)
-}
-  const nameoffile2=decoded.id+"_"+fileName2
-  const formData2=new FormData();
-  if(file2!==undefined){
-    formData2.append("formFile",file2,nameoffile2)
- 
-  
-  try {
-  const res=await axios.post("https://localhost:44361/api/Home/UploadFile",formData2)
-  console.log(res);
-  setAlert1(true)
-  setTimeout(() => {
-  setAlert1(false);
-  }, 4000); 
-
-  } catch (error) {
-  setAlert1(false);
-  console.log(error)
-  }
-}
-    const nameoffile3=decoded.id+"_"+fileName3
-    const formData3=new FormData();
-    if(file3!==undefined){
-      formData3.append("formFile",file3,nameoffile3)
-
-
-    try {
-    const res=await axios.post("https://localhost:44361/api/Home/UploadFile",formData3)
-    console.log(res);
-    setAlert1(true)
-    setTimeout(() => {
-    setAlert1(false);
-    }, 4000); 
-
-    } catch (error) {
-    setAlert1(false);
-    console.log(error)
-    }
-    }
-    const nameoffile4=decoded.id+"_"+fileName4
-    const formData4=new FormData();
-    if(file4!==undefined){
-      formData4.append("formFile",file4,nameoffile4)
-
-
-    try {
-    const res=await axios.post("https://localhost:44361/api/Home/UploadFile",formData4)
-    console.log(res);
-    setAlert1(true)
-    setTimeout(() => {
-    setAlert1(false);
-    }, 4000); 
-
-    } catch (error) {
-    setAlert1(false);
-    console.log(error)
-    }
-    }
-  }
-
-
-
+  const [passwordalert,setPasswordAlert]=React.useState(false);
+  const [passwordalert2,setPasswordAlert2]=React.useState(false);
+  const [emailalert,setEmailAlert]=React.useState(false);
   return (
     <Box sx={{ width: '100%' }}>
+         {isUser=="user"?  <h1>Register as a Employee to work for <br></br> Worldwide Clients</h1>: 
+             <h1>Register as a Client to hire  <br></br> Top Employees</h1> }
       <Stepper activeStep={activeStep}>
         {steps.map((label, index) => {
           const stepProps = {};
@@ -541,69 +516,207 @@ try {
             </Step>
           );
         })}
+        
       </Stepper>
+      <form onSubmit={(e)=>{
+              if((firstName && lastName && email && password && confirmPassword) != ""){
+                if(password ==confirmPassword){
+                  setErrorField2(false);
+                }
+                else if (password != confirmPassword){
+                  setErrorField2(true);
+                }
+                if(errorField2==true || errorField==true){
+                  setTimeout(() => window.location.reload(), 3000);
+
+                }
+              
+                reg()
+                e.preventDefault()
+              }
+            }}>
+              {emptyalerterror ? 
+                <Alert sx={{marginBottom:"3%",marginTop:"3%"}} severity="error">Please fill all the required fields</Alert>
+             :null}
+              {emailalert ? 
+                <Alert sx={{marginBottom:"3%",marginTop:"3%"}} severity="error">This is not a valid email</Alert>
+             :null}
+             {passwordalert ? 
+                <Alert sx={{marginBottom:"3%",marginTop:"3%"}} severity="error">Passwords do not match</Alert>
+             :null}
+               {passwordalert2 ? 
+                <Alert sx={{marginBottom:"3%",marginTop:"3%"}} severity="error">Password length must be at least 8 digit</Alert>
+             :null}
+                {errorField ? <Alert sx={{marginBottom:"3%",marginTop:"3%"}} severity="error">This email already exists(Refreshing the page in 3s)</Alert> :  ""}
+            {errorField2 ? <Alert sx={{marginBottom:"3%"}} severity="error">Passwords do not match(Refreshing the page in 3s)</Alert> :  ""}
       {activeStep === steps.length ? (
         ""
       ) : (
         <React.Fragment>
            {activeStep === 0 ?( 
              <>
-             <h3>Initial Informations</h3>
-           
-              <Box sx={{justifyContent:"space-between",}}>
+            <h3>Initial Informations</h3>
+        
+                        
+            <Box>
+            <div className="name">
+                <TextField 
+                type="text" 
+                placeholder='First Name'
+                label="First Name"
+                variant='outlined'
+                required
+                sx={{marginRight:"2%"}}
+                onChange={firstNameHandler} 
+                />
+                <TextField 
+                type="text" 
+                placeholder='Last Name' 
+                className='lastname'
+                label="Last Name"
+                variant='outlined'
+                required
+                onChange={lastNameHandler} 
+                />
+              </div>
+            </Box>
+              <div style={{display:"flex",flexDirection:"column",justifyContent:"center",alignItems:"center"}} className="other">
+              <TextField type="email" 
+              placeholder='Email' 
+              label="Email"
+              className='email'
+              variant='outlined'
+              sx={{marginTop:"3%",width:"50%"}}
+              required
+              onChange={emailHandler}
+              />
+              <TextField type="password" 
+              placeholder='Password' 
+              label="Password"
+              className='password'
+              variant='outlined'
+              required
+              sx={{marginTop:"3%",width:"50%"}}
+              onChange={passwordHandler}
+              inputProps= { {minLength: 8, maxLength: 16} } 
+              />
+               <TextField type="password" 
+              placeholder='confirm password'
+              label = "Confirm Password"
+              className='password'
+              variant='outlined'
+              required
+              sx={{marginTop:"3%",width:"50%"}}
+              inputProps= { {minLength: 8, maxLength: 16} } 
+              onChange={confirmPasswordHandler}
+              />
+            
+              <h4 style={{marginBottom:"0px"}}>Optional</h4>
+              
               <TextField
-          required
-          id="standard-required"
-          label="First Name"
-            sx={{marginRight:"2%"}}
-          variant="standard"
-          onChange={firstNameHandler}
+              sx={{scrollMarginBottom:"10px",width:"50%"}}
+              
+              placeholder='Phone Number' 
+              className='hruser'
+              type="number"
+              variant='outlined'
+              label="Phone Number"
+              onChange={phoneNumberHandler}
+              /> 
+                    
+              
+              
+              <LinkedInIcon sx={{marginLeft:"44%"}}/>
+              <TextField
+          
+          id="outlined-required"
+          label="Linkedin "
+            sx={{marginBottom:"2%",width:"50%"}}
+          variant="outlined"
+          onChange={linkedinHandler}
         />
+        <GitHubIcon sx={{marginLeft:"44%"}}/>
                  <TextField
-          required
-          id="standard-required"
-          label="Last Name"
-          onChange={lastNameHandler}
-          variant="standard"
+          
+          id="outlined-required"
+       
+          label="Github"
+          onChange={githubHandler}
+          variant="outlined"
+          sx={{marginBottom:"2%",width:"50%"}}
         />
-              </Box>
-              
-              <TextField
-               onChange={expectedSalaryHandler}
-          required
-          id="standard-required"
-          label="Expected Salary"
-          variant="standard"
+        <Typography>If you have an website you can also write it</Typography>
+        <TextField
+          
+          id="outlined-required"
+          sx={{width:"50%"}}
+          label="Website"
+          onChange={websiteHandler}
+          variant="outlined"
         />
+               <InputLabel sx={{marginTop:"10px"}}>Country</InputLabel>
+             <div style={{width:"50%"}} className="t">
+             <Select  
+              sx={{width:"50%"}}
+              labelId="demo-simple-select-label"
+              id="demo-simple-select"
+              value={value}
+              label="country"
+              onChange={changeHandler}
+              options={options} >
+                 
+                </Select>  
               
+              <InputLabel sx={{marginTop:"10px"}}>Gender</InputLabel>
+              <Select  
+               sx={{width:"50%"}}
+              labelId="demo-simple-select-label"
+              id="demo-simple-select"
+              value={gender}
+              label="gender"
+              onChange={genderHandler} 
+              options={options2}>
+            
+                </Select>     </div>   
+       
+               <FormControlLabel  control={<Checkbox onChange={isUserHandler} />} label="Register as a Company Representetive" />
+             
+              </div>
+             </>
+          ):""}
+          {activeStep === 1 ?( 
+            <>
+          
             <h3 style={{marginTop:"10%"}}>Education</h3>
+            <Typography sx={{marginLeft:"5%",border:"1px solid black",width:"25px",borderRadius:"100%"}} > 1</Typography>
             <Box sx={{justifyContent:"space-between",marginBottom:"5%"}}>
               <TextField
-          required
+          
           onChange={schoolNameHandler}
-          id="standard-required"
+          id="outlined-required"
           label="School Name"
           sx={{marginRight:"2%"}}
-          variant="standard"
+          variant="outlined"
         />
                  <TextField
-          required
+          
           onChange={degreeHandler}
-          id="standard-required"
+          id="outlined-required"
           label="Degree"
           sx={{marginRight:"2%"}}
-          variant="standard"
+          variant="outlined"
         />
         <TextField
-          required
-          id="standard-required"
+          
+          id="outlined-number"
           label="GPA"
+          type={'number'}
           onChange={gpaHandler}
-          variant="standard"
+          variant="outlined"
         />
       
               </Box>
-             
+              <Typography>Graduation Date</Typography>
               <LocalizationProvider dateAdapter={AdapterDateFns}>
                       <DatePicker
                         label="Date"
@@ -613,7 +726,7 @@ try {
                            setEducationdate(newValue);
                         
                         }}
-                         disablePast={true}
+                         
                         renderInput={(params) => <TextField {...params} />}
                       />
                   </LocalizationProvider>
@@ -622,31 +735,42 @@ try {
                     {education}
                   </div>
                   {education.length<2?<Button onClick={addeducationlist}>Add Education</Button>:null}
-                  
-            <h3  style={{marginTop:"10%"}}>Work Experience</h3>
 
+            </>
+          ):""}
+          {activeStep === 3 ?(
+            <>
+            
+           
+          
+            </> 
+          ):""}
+          {activeStep === 2 ?(
+            <>
+                <h3  style={{marginTop:"10%"}}>Work Experience</h3>
+            <Typography sx={{marginLeft:"5%",border:"1px solid black",width:"25px",borderRadius:"100%"}} > 1</Typography>
             <Box sx={{justifyContent:"space-between",marginBottom:"5%"}}>
               <TextField
           
-          id="standard-required"
+          id="outlined-required"
           label="Company Name"
           onChange={companyNameHandler}
           sx={{marginRight:"2%"}}
-          variant="standard"
+          variant="outlined"
         />
                  <TextField
           
-          id="standard-required"
+          id="outlined-required"
           label="Job Title"
           onChange={jobTitleHandler}
           sx={{marginRight:"2%"}}
-          variant="standard"
+          variant="outlined"
         />
          <TextField
           
-          id="standard-required"
+          id="outlined-required"
           label="Years of Experience"
-          variant="standard"
+          variant="outlined"
           onChange={yearsOfExperienceHandler}
         />
               </Box>
@@ -656,111 +780,36 @@ try {
               rows={5}
               sx={{width:"400px"}}
           
-          id="standard-required"
+          id="outlined-required"
           label="Work Description"
          
         />
    <br/>
    <div>{jobs} </div>
     {jobs.length<2?<Button onClick={addjoblist}>Add Job</Button>:null}
-                 
-
-              
-             
-             </>
-          ):""}
-          {activeStep === 1 ?( 
-            <>
-              {alert1 ? <Alert severity="success">Upload Successfull</Alert> :  ""}
-               <div style={{display:"flex",flexDirection:"column", marginTop:"4%",marginBottom:"4%"}} className="uploads">
-                 <label>Please upload the files that wanted in Job Description</label>
-                 <label>You can upload up to 4 files</label>
-                
-            <div className="divupload" style={{marginTop:"4%",display:"flex",justifyContent:"center",flexDirection:"column",alignItems:"center"}}>
-            <input style={{
-                          display: "inline-block",
-                          background:" linear-gradient(top, #f9f9f9, #e3e3e3)",
-                          border: "1px solid #999",
-                          borderRadius: "3px",
-                          padding:" 5px 8px",
-                          outline: "none",
-                          whiteSpace: "nowrap",
-                          cursor: "pointer",
-                          textShadow: "1px 1px #fff",
-                          fontWeight: "700",
-                          fontSize: "10pt",
-                          marginBottom:"3%"
-  }} type="file" multiple onChange={saveFile}/>
-  <input style={{
-                          display: "inline-block",
-                          background:" linear-gradient(top, #f9f9f9, #e3e3e3)",
-                          border: "1px solid #999",
-                          borderRadius: "3px",
-                          padding:" 5px 8px",
-                          outline: "none",
-                          whiteSpace: "nowrap",
-                          cursor: "pointer",
-                          textShadow: "1px 1px #fff",
-                          fontWeight: "700",
-                          fontSize: "10pt",
-                          marginBottom:"3%"
-  }} type="file" multiple onChange={saveFile2}/>
-   <input style={{
-                          display: "inline-block",
-                          background:" linear-gradient(top, #f9f9f9, #e3e3e3)",
-                          border: "1px solid #999",
-                          borderRadius: "3px",
-                          padding:" 5px 8px",
-                          outline: "none",
-                          whiteSpace: "nowrap",
-                          cursor: "pointer",
-                          textShadow: "1px 1px #fff",
-                          fontWeight: "700",
-                          fontSize: "10pt",
-                          marginBottom:"3%"
-  }} type="file" multiple onChange={saveFile3}/>
-   <input style={{
-                          display: "inline-block",
-                          background:" linear-gradient(top, #f9f9f9, #e3e3e3)",
-                          border: "1px solid #999",
-                          borderRadius: "3px",
-                          padding:" 5px 8px",
-                          outline: "none",
-                          whiteSpace: "nowrap",
-                          cursor: "pointer",
-                          textShadow: "1px 1px #fff",
-                          fontWeight: "700",
-                          fontSize: "10pt",
-  }} type="file" multiple onChange={saveFile4}/>
-  
-            </div>
-          
- 
-               </div>
-            </>
-          ):""}
-          {activeStep === 2 ?(
-            <>
             
-            <Typography sx={{marginTop:"5%",marginBottom:"2%  "}}>If there is anything else you want to add you can write it down below</Typography>
-          <TextField      onChange={anythingElseHandler} style={{marginTop:"20px",marginLeft:"20px",width:"600px"}} multiline rows={8  }   id="outlined-basic"  variant="outlined" />
-          
-            </> 
-          ):""}
-          {activeStep === 3 ?(
-            <>
-            <h3>Overview</h3>
+            </>) : ""}
+            {activeStep === 3 ?(
+              <>
+              <h3>Overview</h3>
             {alert1 ? <Alert severity="success">Upload Successfull</Alert> :  ""}
              <div id="pdf">
              <Typography>
-             {firsName.length>0 ?"First Name :"+firsName : ""}
+             {firstName.length>0 ?"First Name :"+firstName : ""}
           </Typography>
           <Typography>
              {lastName.length>0 ?"Last Name :"+lastName : ""}
           </Typography>
           <Typography>
-             {expectedSalary.length>0 ?"Expected Salary :"+expectedSalary : ""}
+             {linkedin.length>0 ?"Linkedin  :"+linkedin : ""}
           </Typography>
+          <Typography>
+             {github.length>0 ?"Github  :"+github : ""}
+          </Typography>
+          <Typography>
+             {website.length>0 ?"Website  :"+website : ""}
+          </Typography>
+        
           <Typography>
              {schoolName.length>0 ?"School Name :"+schoolName : ""}
           </Typography>
@@ -834,16 +883,11 @@ try {
           <Typography>
              {jobDescription3.length>0 ?"Job Description :"+jobDescription3 : ""}
           </Typography>
-          <Typography>
-             {anythingelse.length>0 ?"Extra :"+anythingelse : ""}
-          </Typography>
           </div>
-         <div style={{display:"flex",flexDirection:"column"}} className="senadpp">
-         <Button onClick={handleSend}>Download as Pdf</Button> 
-          <Button onClick={sendLast}>Send Application</Button> 
-         </div>
-            </>) : ""}
 
+       
+              </>
+            ):""}
          
           <Box sx={{ display: 'flex', flexDirection: 'row', pt: 2 }}>
             <Button
@@ -861,19 +905,37 @@ try {
           
             </>
             }
-              
-              
             </>
             :
             <>
-             <Button onClick={handleNext}>
-              Next
-             </Button>
+            {firstName==="" || lastName ==="" || email ==="" || password==="" || confirmPassword===""  ?<Button onClick={()=>{
+              setTimeout(()=>{
+                setEmptyAlertError(false)
+                
+              },2000)
+              setEmptyAlertError(true)
+            }}>Next</Button>:
+            !email.includes("@") && !email.includes(".com") ? <Button onClick={()=>{
+              setEmailAlert(true)
+            }}>Next</Button>:
+             password !== confirmPassword ?<Button  onClick={()=>{
+              setPasswordAlert(true)
+            }}>Next</Button>  :
+              password.length<8 && confirmPassword.length<8 ?<Button  onClick={()=>{
+                setPasswordAlert2(true)
+              }}>Next</Button>  :
+            <Button onClick={handleNext}>Next</Button>
+            } 
+            
+            
             </>}
           
           </Box>
         </React.Fragment>
       )}
+      {activeStep === steps.length-1 ?<Button type="submit">Register</Button>:""}
+   
+      </form>
     </Box>
   );
 }

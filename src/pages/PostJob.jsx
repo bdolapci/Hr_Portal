@@ -19,6 +19,7 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import jwt_decode from "jwt-decode";
 import Navbar from '../components/Navbar';
 import SideBar from '../components/SideBar';
+import Unauthorized from '../components/Unauthorized';
 function PostJob() {
 
   const nav = useNavigate();
@@ -95,7 +96,8 @@ const dat=new Date().toISOString()
   });
   return (
     <>
-    <Navbar/>
+   {decoded.userRole =="hr" ? <>
+   <Navbar/>
     <SideBar/>
      <section >
       <div className="formpart" 
@@ -237,6 +239,7 @@ const dat=new Date().toISOString()
                 </div>
                 
                 </section>
+   </> : <Unauthorized/>}
 
     </>
   )
