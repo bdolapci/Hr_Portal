@@ -20,6 +20,7 @@ import jwt_decode from "jwt-decode";
 import Navbar from '../components/Navbar';
 import SideBar from '../components/SideBar';
 import Unauthorized from '../components/Unauthorized';
+import banner from "../pictures/banner.jpg"
 function PostJob() {
 
   const nav = useNavigate();
@@ -197,23 +198,6 @@ const dat=new Date().toISOString()
                           fontWeight: "700",
                           fontSize: "10pt",
                         }} type="file" onChange={saveFile}/>
-             {/* <input 
-             style={{
-              display: "inline-block",
-              background:" linear-gradient(top, #f9f9f9, #e3e3e3)",
-              border: "1px solid #999",
-              borderRadius: "3px",
-              padding:" 5px 8px",
-              outline: "none",
-              whiteSpace: "nowrap",
-              cursor: "pointer",
-              textShadow: "1px 1px #fff",
-              fontWeight: "700",
-              fontSize: "10pt",
-              marginLeft:"3%"
-            }}
-            
-            type="button" value="upload" onClick={uploadFile}/>    */}
             </div>
                 
                 </div>
@@ -223,8 +207,10 @@ const dat=new Date().toISOString()
                   </Typography>
                 <TextField 
                 multiline 
+             
+
                 rows={10}
-                variant="filled"sx={{ marginBottom:"2%",width:"80%"}}
+                variant="filled"sx={{ marginBottom:"2%",width:"90%"}}
                 label="Description"
                 placeholder="Description"
                 onChange={descriptionHandler}
@@ -232,7 +218,7 @@ const dat=new Date().toISOString()
                 </div>
                 </div>
                 <div style={{marginTop:"5%",justifyContent:"center",aligItems:"center",textAlign:"center"}}  className="postdiv">
-
+               
                 <Button type="submit">Post Job</Button>
                 </div>
             </form>

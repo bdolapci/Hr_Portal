@@ -448,6 +448,8 @@ const options2=[
  {value:"No Answer",label:"No Answer"}
 ]
 console.log(value)
+const newDate =new Date();
+
   async function reg(){
     try {
       const response =await axios.post(
@@ -462,12 +464,13 @@ console.log(value)
           country: `${value.label}`,
           gender: `${gender.value}`,
           phoneNumber:`${phoneNumber}`,
-          isEmailValid:0,
+          regDate:newDate,
           education:`${schoolName},${schoolName2},${schoolName3},${degree},${degree2},${degree3},${gpa},${gpa2},${gpa3},${educationdate},${educationdate2},${educationdate3},`,
           experience:`${companyName},${companyName2},${companyName3},${jobTitle},${jobTitle2},${jobTitle3},${jobDescription},${jobDescription2},${jobDescription3},${yearsOfExperience},${yearsOfExperience2},${yearsOfExperience3},`,
           linkedin:`${linkedin}`,
           facebook:`${github}`,
           website:`${website}`,
+          isCompanyVerified:false,
           
         }
       )
@@ -645,7 +648,7 @@ console.log(value)
           variant="outlined"
           sx={{marginBottom:"2%",width:"50%"}}
         />
-        <Typography>If you have an website you can also write it</Typography>
+        <Typography>If you have a website you can also write it</Typography>
         <TextField
           
           id="outlined-required"

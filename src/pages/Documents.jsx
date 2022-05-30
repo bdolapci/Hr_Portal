@@ -14,6 +14,7 @@ import FileDownloadIcon from '@mui/icons-material/FileDownload';
 import axios from 'axios';
 import jwt_decode  from 'jwt-decode';
 import NotFound from '../components/NotFound';
+import jsPDF from "jspdf";
 function Documents() {
     let { id } = useParams();
     let { jobid } = useParams();
@@ -60,6 +61,29 @@ function Documents() {
           console.log(error)
         }
           }
+          // const viewfile=async(name)=>{
+          //   try {
+          //     const res=await axios.get(`https://localhost:44361/api/Home/downloadFile/${name}`,{
+          //       responseType: 'blob',
+          //     })
+          //     const readder = new FileReader();
+          //    readder.onload = function(e) {
+          //       var contents = e.target.result;
+          //       var w = window.open();
+          //       w.document.write(contents);
+          //     };
+          //     readder.readAsText(res.data);
+          //     const text=await new Response(res.data).text();
+          //     console.log(res.data,"")
+          //     const doc = new jsPDF();
+          //     doc.text(10,20,text,{ maxWidth:200 })
+          //     doc.output('dataurlnewwindow');
+        
+          //   } catch (error) {
+               
+          //     console.log(error)
+          //   }
+          // }
           const [getJob,setGetJob]=React.useState('')
           const getsinglejob =async()=>{
             try {
@@ -72,7 +96,7 @@ function Documents() {
           React.useEffect(()=>{
             getsinglejob()
           },[])
-          console.log(getJob)
+          
   return (
     <>
       {decoded.userRole=="hr"  ? <>
@@ -82,7 +106,7 @@ function Documents() {
           <h1>
             Uploaded Files
           </h1>
-         <Typography sx={{    boxShadow: "0px 2px 4px -1px rgb(0 0 0 / 20%), 0px 4px 5px 0px rgb(0 0 0 / 14%), 0px 1px 10px 0px rgb(0 0 0 / 12%) !important"}}>
+         <Typography sx={{boxShadow: "rgb(0 0 0 / 16%) 0px 1px 4px",borderRadius:"1.125rem",padding:"20px"}}>
            {getFiles ? getFiles.map((item,index)=>{
             
               return(
@@ -90,6 +114,7 @@ function Documents() {
                 <Box>
               
                 <Button onClick={()=>downloadFile(item.Name)}> <FileDownloadIcon></FileDownloadIcon>{item.Name}</Button>
+                {/* <Button onClick={()=>viewfile(item.Name)}> <RemoveRedEyeIcon></RemoveRedEyeIcon>{item.Name}</Button> */}
                 </Box>:""
               )
             })

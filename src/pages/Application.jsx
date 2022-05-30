@@ -25,6 +25,7 @@ import jsPDF from "jspdf";
 import { useParams } from 'react-router-dom';
 import { Alert } from '@mui/material';
 import NotFound from '../components/NotFound';
+import Footer from '../components/Footer';
 function Application() {
   const {id} = useParams();
   const navigate = useNavigate();
@@ -415,6 +416,7 @@ try {
        
         }
       }
+     
   return (
    <>
   {singleJob && user ? <>  <Navbar/>
@@ -424,7 +426,7 @@ try {
      padding: "2%",
 }}>
        <h1 style={{marginBottom:"10%"}}>
-                  Job Name:Jr Software Engineer
+                  Job Name:{singleJob.Name}
               </h1>
               {alert1 ? <Alert severity="success">Upload Successfull(You will be redirected to the main page in5s)</Alert> :  ""}
                <div style={{display:"flex",flexDirection:"column", marginTop:"4%",marginBottom:"4%"}} className="uploads">
@@ -469,7 +471,9 @@ try {
                </div>
           
        </div>
-   </div></> : <NotFound/>}
+   </div>
+   <Footer/>
+   </> : <NotFound/>}
    </>
   )
 }

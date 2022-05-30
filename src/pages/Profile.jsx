@@ -638,6 +638,15 @@ React.useEffect(()=>{
     {
       name:"isAccepted",
       label:"Accepted/Rejected",
+      options: {
+        customBodyRender: (value, tableMeta, updateValue) => {
+          return (
+            <>
+            <Typography >{value==0 ? "Waiting" : value==1 ? "Approved" : "Rejected"}</Typography>
+            </>
+          );
+        }
+      }
     },
   ]
   var formData =new FormData();
@@ -725,7 +734,7 @@ React.useEffect(()=>{
 
      
         <div className="pp">
-          {profile.photo =="" ?  <img src={"https://hrportal.blob.core.windows.net/uploadfile/banner.jpg"} alt="banner"></img>: 
+          {profile.photo =="banner.jpg" ?  <img src={banner} alt="banner"></img>: 
            <img src={"https://hrportal.blob.core.windows.net/uploadfile/"+profile.photo} alt="banner"></img> }
         {profile.Userid == decoded.id ?
         <Button 
@@ -819,7 +828,7 @@ React.useEffect(()=>{
                             />
                             <Box>                            
                             <TextField 
-                            label="Facebook"
+                            label="Github"
                             sx={{marginRight:"3%"}}
                             onChange={facebookHandler}
                             defaultValue={profile.Facebook}

@@ -53,7 +53,7 @@ function Register() {
   function phoneNumberHandler(e){
     setPhoneNumber(e.target.value);
   }
-  console.log(isUser,cheked)
+
   function isUserHandler(e){
     if(cheked==false){
       setIsUser("hr");
@@ -91,7 +91,8 @@ const options2=[
           country: `${value}`,
           gender: `${gender}`,
           phoneNumber:`${phoneNumber}`,
-          isEmailValid:0
+          isEmailValid:0,
+          isCompanyVerified:false
         }
       );
       navigate("/");
@@ -123,7 +124,7 @@ const options2=[
 
       </ul>
     </header>
-    <div className="container" style={{marginTop:"3%"}}>
+    <div className="container" style={{marginTop:"3%",minHeight:"90vh"}}>
        <div className="middle" style={{width:"50%",boxShadow:" 0px 2px 1px -1px rgb(0 0 0 / 20%), 0px 1px 1px 0px rgb(0 0 0 / 14%), 0px 1px 3px 0px rgb(0 0 0 / 12%)"
        ,borderRadius: "1.125rem",
      padding: "2%",
@@ -134,7 +135,10 @@ const options2=[
        </div>
    </div>
  
-    <Footer/>
+   <div style={{color:"white",background: "rgb(21, 101, 192)",bottom:"0",height:"2rem",width:"100%", boxShadow:" 0px 2px 4px -1px rgb(0 0 0 / 20%), 0px 4px 5px 0px rgb(0 0 0 / 14%), 0px 1px 10px 0px rgb(0 0 0 / 12%)"}}>
+        <div className="mid"  style={{justifyContent:"center",textAlign:"center",alignItems:"center",marginTop:"10px"}}>2022 HrPortal. All rights reserved
+  </div>
+    </div>
       </>
   )
 }

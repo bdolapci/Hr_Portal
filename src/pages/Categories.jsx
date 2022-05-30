@@ -1,4 +1,5 @@
 import React from 'react'
+import Footer from '../components/Footer'
 import Jobcard from '../components/Jobcard'
 import Navbar from '../components/Navbar'
 import accounting from "../pictures/banner.jpg"
@@ -35,9 +36,9 @@ function Categories() {
     
   return (
     <>
-    {console.log(Categoryex.title)}
+    
     <Navbar/>
-    <h1 style={{textAlign:"center",marginTop:"5%",fontSize:"64px"}}>Categories</h1>
+    <h1 style={{textAlign:"center",marginTop:"5%",fontSize:"64px",letterSpacing:"3px"}}>Categories</h1>
    <div style={gridstyle} className="grid">
     {Categoryex.title.map((title,index)=>{
         return(
@@ -47,6 +48,7 @@ function Categories() {
  
   
    </div>
+   <Footer/>
     </>
   )
 }

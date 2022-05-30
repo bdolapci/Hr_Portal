@@ -22,7 +22,6 @@ import Categories from "./pages/Categories";
 import Documents from "./pages/Documents";
 import JobInfo from "./pages/JobInfo";
 function App() {
-  
   // var token = localStorage.getItem("User");
   // var decoded = jwt_decode(token);
   return (
@@ -32,7 +31,6 @@ function App() {
           <Route exact path='/' element={<Home />} />
           <Route path='/register' element={<Register />} />
           <Route path='/login' element={<Login />} />
-          <Route path='/jobinfo/:id' element={<JobInfo />} />
           <Route path='/profile/:id' element={<Profile />} />
           <Route path='/adminpanel/users' element={<AdminPanelUsers />}></Route>
           <Route path='/adminpanel/hr' element={<AdminPanelHR />}></Route>
@@ -40,12 +38,18 @@ function App() {
           <Route path='/adminPanel' element={<AdminPanel />}></Route>
           <Route path='/application/:id' element={<Application />}></Route>
           <Route path='/categories' element={<Categories />}></Route>
-
+          <Route path='/jobinfo/:id' element={<JobInfo />} />
           {/* <Route path='/hrpanel' element={<HrPanel />}></Route> */}
           <Route path='/oneuser' element={<OneUser />}></Route>
           <Route path='hrPanel/jobs/Postjob' element={<PostJob />}></Route>
-          <Route path='/hrPanel/applicants/:id'element={<Applicants />}></Route>
-          <Route path='/hrPanel/applicants/:jobid/documents/:id'element={<Documents />}></Route>
+          <Route
+            path='/hrPanel/applicants/:id'
+            element={<Applicants />}
+          ></Route>
+          <Route
+            path='/hrPanel/applicants/:jobid/documents/:id'
+            element={<Documents />}
+          ></Route>
           <Route path='/hrPanel/home' element={<HrPanelHome />}></Route>
           <Route path='/hrPanel/jobs' element={<Jobs />}></Route>
           <Route path='/hrPanel/jobs/EditJob/:id' element={<EditJob />}></Route>

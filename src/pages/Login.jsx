@@ -24,6 +24,7 @@ function Login() {
   //let Navigate =useNavigate();
   const[email,setEmail]=React.useState("");
   const[password,setPassword]=React.useState("");
+  const [errorField2, setErrorField2] = React.useState(false);
   const [errorField,setErrorField] = React.useState(false);
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
@@ -79,7 +80,7 @@ function Login() {
               Navigate("/hrPanel/home");
               }
           },);
-        }else{
+        }else if(decoded.userRole=="user"){
           setTimeout(function(){
             if(errorField === true || localStorage.getItem("User") !=null ){
               Navigate("/");
@@ -88,7 +89,15 @@ function Login() {
         }
         Navigate("/");
     } catch (error) {
-      setErrorField(true);
+     
+      if(error.response.status == 404){
+        setTimeout(()=>{ setErrorField2(false)},5000)
+        setErrorField2(true);
+      }
+      else{
+          setTimeout(()=>{ setErrorField(false)},5000)
+        setErrorField(true);
+      }
       console.log(error);
     }
   }
@@ -254,7 +263,7 @@ function Login() {
        <p> Dont Have an account? </p>
           
           <Link to="/register">
-          <button>Register</button>
+          <Button variant='outlined'>Register</Button>
           </Link>
         </li>
 
@@ -275,6 +284,7 @@ function Login() {
             >
               
                {errorField ? <Alert severity="error">E-mail and password doesn't match!</Alert> :  ""}
+               {errorField2 ? <Alert severity="error">It seems like your company account <br/> is not verified yet.</Alert> :  ""}
               <div className="other">
             
               <TextField label="Email" onChange={emailHandler} type="email" placeholder='Email' className='email'/>
@@ -358,7 +368,10 @@ function Login() {
           </div>
       </div>
     </section>
-    <Footer/>
+    <div style={{position:"fixed",color:"white",background: "rgb(21, 101, 192)",bottom:"0",height:"2rem",width:"100%", boxShadow:" 0px 2px 4px -1px rgb(0 0 0 / 20%), 0px 4px 5px 0px rgb(0 0 0 / 14%), 0px 1px 10px 0px rgb(0 0 0 / 12%)"}}>
+        <div className="mid"  style={{justifyContent:"center",textAlign:"center",alignItems:"center",marginTop:"10px"}}>2022 HrPortal. All rights reserved
+  </div>
+    </div>
       </>
   )
 }

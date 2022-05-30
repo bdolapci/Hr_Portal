@@ -24,7 +24,7 @@ function AdminPanelHr() {
       var decoded = jwt_decode(token);
 
 const [hr,setHr]=React.useState([]);
-
+const [companyverify,setCompanyverify]=React.useState();
   useEffect(()=>{
     axios.get("https://localhost:44361/api/Home",{
     }).then((res)=>{
@@ -65,6 +65,25 @@ const [hr,setHr]=React.useState([]);
         alert(error)
     }
 }
+const verify=async(Id)=>{
+  try {
+    const res=await axios.post(`${"https://localhost:44361/api/Home/VerifyCompany"}`,{           
+      id:Id,
+      userRole: "user",
+      email:"a",
+      firstName:"as",
+      lastName:"vc",
+      Passwords:"cz",
+      isCompanyVerified:true,          
+})
+  if(res.data.isCompanyVerified==true){
+    setCompanyverify("Verified")
+  }
+  window.location.reload(true);
+  } catch (error) {
+    console.log(error)
+  }
+}
 const columns = [
   {
     name:"firstName",
@@ -100,6 +119,43 @@ const columns = [
           <>
           <Button onClick={()=>makeUser(value)}><RemoveRedEyeIcon/></Button>
           </>
+        );
+      }
+    }
+  },
+  {
+    name: "Id",
+    label:"Status",
+    options: {
+      customBodyRender: (value, tableMeta, updateValue) => {
+        return (
+          <>
+          {hr.map((x,i)=>{
+            if(hr[i].Id==value){
+              
+              if(hr[i].isCompanyVerified==true){
+                
+                return(
+                  <>
+                  <Button >
+                  Verified
+                  </Button>
+                  </>
+                )
+              }
+              else{
+                return(
+                  <>
+                  <Button onClick={()=>{verify(value)}} >
+                  Not Verified
+                  </Button>
+                  </>
+                )
+              }
+            }
+          })}
+          </>
+                
         );
       }
     }

@@ -123,7 +123,7 @@ function EditJob() {
       const editJobDescription =async()=>{
         try {
           const res=await axios.post(
-            `https://localhost:44361/api/Home/Jobs/EditJobDesciption`,
+            `https://localhost:44361/api/Home/Jobs/EditJobDescription`,
           {
             Id: `${id}`,
             UserId:decoded.id,
@@ -321,7 +321,7 @@ onChange={NameHandler}
               multiline 
               rows={10}
               defaultValue={getJob.description}
-              variant="filled"sx={{ marginBottom:"2%",width:"80%"}}
+              variant="filled"sx={{ marginBottom:"2%",width:"90%"}}
               
               placeholder="Description"
               onChange={descriptionHandler}
