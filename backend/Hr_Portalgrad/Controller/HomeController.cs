@@ -465,7 +465,7 @@ namespace HR_Portalgrad.Controller
         [HttpPost("SendSuccess")]
         public async Task<string> SendSuccessMail([FromBody] MailRequest request,int id)
         {
-            return await _mailService.SendEmailSuccess(request, id);
+            return await _mailService.SendEmailSuccess(request, id,request.Body);
         }
 
         [HttpGet("downloadFile/{name?}")]

@@ -9,6 +9,7 @@ using MimeKit.Text;
 using System;
 using System.IO;
 using System.Linq;
+
 using System.Threading.Tasks;
 
 namespace HR_Portalgrad.Services.EmailReporsitories
@@ -43,7 +44,7 @@ namespace HR_Portalgrad.Services.EmailReporsitories
             return otpcode;
         }
 
-        public async Task<string> SendEmailSuccess(MailRequest mailRequest,int id)
+        public async Task<string> SendEmailSuccess(MailRequest mailRequest,int id,string body)
         {
             var us = new Jobs { Id = id };
             var email = new MimeMessage();
@@ -51,15 +52,14 @@ namespace HR_Portalgrad.Services.EmailReporsitories
             email.To.Add(MailboxAddress.Parse(mailRequest.ToEmail));
             email.Subject = mailRequest.Subject;
             var builder = new BodyBuilder();
-            string msg = "Your application was successfull ";
-            builder.HtmlBody = msg;
+            builder.HtmlBody = body;
             email.Body = builder.ToMessageBody();
             using var smtp = new SmtpClient();
             smtp.Connect(_mailSettings.Host, _mailSettings.Port, SecureSocketOptions.StartTls);
             smtp.Authenticate(_mailSettings.Mail, _mailSettings.Password);
             await smtp.SendAsync(email);
             smtp.Disconnect(true);
-            return msg;
+            return body;
         }
 
        
