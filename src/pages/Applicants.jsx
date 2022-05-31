@@ -140,17 +140,22 @@ function Applicants() {
     })
   }  
   const [job,setJob]=React.useState([]);
+  
   useEffect(()=>{
     axios.get("https://localhost:44361/api/Home/Jobs",{
     }).then((res)=>{ 
+        for(let i=0;i<res.data.length;i++){
+          if(res.data[i].Id==id){
+            setJob(res.data[i])
+          }
+        }
       
-        setJob(res.data);
     })
    
  
 },[]);
-
-
+  console.log(job)
+  
   useEffect(()=>{
     combined();
    
@@ -165,6 +170,12 @@ function Applicants() {
       Jobsid:id,
       isAccepted:1
      },)
+     const res2 =await axios.post(`https://localhost:44361/api/Home/SendSuccess`,
+     {
+       ToEmail:`${"barandolapc@gmail.com"}`,
+       Subject:"Information about our application",
+       Body:"We are happy to inform you that you have been accepted to the job"+job.Name+"\n" +"Hr for the Job will contact you soon"
+     })
      window.location.reload(true);
      console.log(res)
    } catch (error) {
@@ -178,6 +189,12 @@ function Applicants() {
       Jobsid:id,
       isAccepted:2
       },)
+      const res2 =await axios.post(`https://localhost:44361/api/Home/SendSuccess`,
+      {
+        ToEmail:`${"barandolapc@gmail.com"}`,
+        Subject:"Information about our application",
+        Body:"We regret to inform you that you have not been selected for the job:"+job.Name+"\n" +" We wish you successfull carreer",
+      })
       window.location.reload(true);
       console.log(res)
     } catch (error) {

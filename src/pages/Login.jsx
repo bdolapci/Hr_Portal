@@ -263,7 +263,7 @@ function Login() {
        <p> Dont Have an account? </p>
           
           <Link to="/register">
-          <Button variant='outlined'>Register</Button>
+          <Button variant='contained'>Register</Button>
           </Link>
         </li>
 

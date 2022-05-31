@@ -1,3 +1,4 @@
+import { Typography } from '@mui/material'
 import React from 'react'
 import Footer from '../components/Footer'
 import Jobcard from '../components/Jobcard'
@@ -38,7 +39,7 @@ function Categories() {
     <>
     
     <Navbar/>
-    <h1 style={{textAlign:"center",marginTop:"5%",fontSize:"64px",letterSpacing:"3px"}}>Categories</h1>
+    <Typography style={{textAlign:"center",marginTop:"5%",fontSize:"84px",letterSpacing:"3px",color:"rgb(25, 118, 210)"}}>Categories</Typography>
    <div style={gridstyle} className="grid">
     {Categoryex.title.map((title,index)=>{
         return(

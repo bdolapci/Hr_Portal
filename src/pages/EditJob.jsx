@@ -21,6 +21,7 @@ import jwt_decode  from 'jwt-decode';
 import { useEffect } from 'react';
 import Unauthorized from '../components/Unauthorized';
 import NotFound from '../components/NotFound';
+import Spinner from '../components/Spinner';
 
 
 function EditJob() {
@@ -34,6 +35,8 @@ function EditJob() {
     const [photo,setPhoto]=React.useState('')
     const [date,setDate]=React.useState(null)
     const [getJob,setGetJob]=React.useState('')
+    const [isLoading, setIsLoading] = React.useState(false);
+    const [isHide, setIsHide] = React.useState(true);
     function NameHandler(e){
         setName(e.target.value);
       }
@@ -58,15 +61,19 @@ function EditJob() {
         const nameoffile=id+"_"+fileName
         const [alert1,setAlert1]=React.useState(false);
         const getsinglejob =async()=>{
+          setIsLoading(true);
           try {
             const res =await axios.get("https://localhost:44361/api/Home/Jobs/"+id)
             setGetJob(res.data)
+            setIsLoading(false);
           } catch (error) {
             console.log(error)
           }
         }
         React.useEffect(()=>{
+          setIsLoading(true);
           getsinglejob()
+          setIsLoading(false);
         },[])
        
         const uploadFile =async (event)=>{
@@ -174,56 +181,57 @@ function EditJob() {
       const Input = styled('input')({
         display: 'none',
       });
-
+      setTimeout(()=>setIsHide(false),500)
      
   return (
    <>
   {decoded.userRole=="hr" && getJob.UserId ==decoded.id ?<>
   <Navbar/>
    <SideBar/>
+   {isLoading ? <Spinner/> :
    <section >
-      <div className="formpart" 
-      style={{border:"0px ",
-      margin:"auto"
-      ,width:"70%",
-      borderRadius:"1.125rem",
-      boxShadow: "0px 2px 4px -1px rgb(0 0 0 / 20%), 0px 4px 5px 0px rgb(0 0 0 / 14%), 0px 1px 10px 0px rgb(0 0 0 / 12%) ",
-      padding:"4%"
-      }}>
-        <h1 style={{textAlign:"center"}}>Edit Job</h1>
-            <form onSubmit={(e)=>{
-              if(name!=''){
-                editJobName()
-              } 
-              if(date!=null){
-                editJobDate()
-              } 
-              if(description!=''){
-              editJobDescription()
-              } 
-              if(category!=''){
-                editJobCategory()
-              }
-              if (file!=''){
-                uploadFile()
-                editJobPhoto()
-              }
-              
-              e.preventDefault()
-              
-            }}>
-             <div className="contain" style={{display:"flex"}}>
+   <div className="formpart" 
+   style={{border:"0px ",
+   margin:"auto"
+   ,width:"70%",
+   borderRadius:"1.125rem",
+   boxShadow: "0px 2px 4px -1px rgb(0 0 0 / 20%), 0px 4px 5px 0px rgb(0 0 0 / 14%), 0px 1px 10px 0px rgb(0 0 0 / 12%) ",
+   padding:"4%"
+   }}>
+     <h1 style={{textAlign:"center"}}>Edit Job</h1>
+         <form onSubmit={(e)=>{
+           if(name!=''){
+             editJobName()
+           } 
+           if(date!=null){
+             editJobDate()
+           } 
+           if(description!=''){
+           editJobDescription()
+           } 
+           if(category!=''){
+             editJobCategory()
+           }
+           if (file!=''){
+             uploadFile()
+             editJobPhoto()
+           }
+           
+           e.preventDefault()
+           
+         }}>
+          <div className="contain" style={{display:"flex"}}>
 
-            
+         
 <div style={{justifyContent:'center',
 display:'flex',
 flexDirection:"column",
 alignItems:"center",
 textAlign:"center",
 width:"70%"}} >
-  <Typography>
-    Job Name
-  </Typography>
+<Typography>
+ Job Name
+</Typography>
 <TextField 
 // multiline  
 defaultValue={getJob.Name}
@@ -236,107 +244,90 @@ onChange={NameHandler}
 ></TextField>
 <Box sx={{ marginTop:"0",marginBottom:"2%",width:"40%"}}>
 <Typography>
-    Job Deadline
-  </Typography>
-  <LocalizationProvider dateAdapter={AdapterDateFns}>
-      <DatePicker
-        label="Date"
-        value={date}
-        format="DD-MM-YYYY"
+ Job Deadline
+</Typography>
+<LocalizationProvider dateAdapter={AdapterDateFns}>
+   <DatePicker
+     label="Date"
+     value={date}
+     format="DD-MM-YYYY"
 
-        onChange={(newValue) => {
-          setDate(newValue);
-          console.log(newValue);
-        }}
-         disablePast={true}
-        renderInput={(params) => <TextField {...params} />}
-      />
-  </LocalizationProvider>
+     onChange={(newValue) => {
+       setDate(newValue);
+       console.log(newValue);
+     }}
+      disablePast={true}
+     renderInput={(params) => <TextField {...params} />}
+   />
+</LocalizationProvider>
 </Box>
 
 <Box sx={{width:"100%","marginBottom":"2%",marginTop:"0"}}>
 <Typography>
-    Chose the Category
-  </Typography>
+ Chose the Category
+</Typography>
 <FormControl sx={{width:"20%"}}>
 <InputLabel id="demo-simple-select-label">Category</InputLabel>
- <Select
-    labelId="demo-simple-select-label"
-    id="demo-simple-select"
-    sx={{color:"black"}}
-    value={category}
-    label="Category"
-    onChange={categoryHandler}
-    
-    >
-    <MenuItem value={"Software"}>Software</MenuItem>
-    <MenuItem value={20}>20</MenuItem>
-    <MenuItem value={30}>Thirty</MenuItem>
+<Select
+ labelId="demo-simple-select-label"
+ id="demo-simple-select"
+ sx={{color:"black"}}
+ value={category}
+ label="Category"
+ onChange={categoryHandler}
+ 
+ >
+ <MenuItem value={"Software"}>Software</MenuItem>
+ <MenuItem value={20}>20</MenuItem>
+ <MenuItem value={30}>Thirty</MenuItem>
 </Select>
-    </FormControl>
-      </Box>
-      <Typography>
-    Pick a photo
-  </Typography>
-  <div className="photoupload" style={{display:"flex",flexDirection:"row"}}>
+ </FormControl>
+   </Box>
+   <Typography>
+ Pick a photo
+</Typography>
+<div className="photoupload" style={{display:"flex",flexDirection:"row"}}>
 
-  <input style={{
-    display: "inline-block",
-    background:" linear-gradient(top, #f9f9f9, #e3e3e3)",
-    border: "1px solid #999",
-          borderRadius: "3px",
-          padding:" 5px 8px",
-          outline: "none",
-          whiteSpace: "nowrap",
-          cursor: "pointer",
-          textShadow: "1px 1px #fff",
-          fontWeight: "700",
-          fontSize: "10pt",
-        }} type="file" onChange={saveFile}/>
-              {/* <input 
-              style={{
-              display: "inline-block",
-              background:" linear-gradient(top, #f9f9f9, #e3e3e3)",
-              border: "1px solid #999",
-              borderRadius: "3px",
-              padding:" 5px 8px",
-              outline: "none",
-              whiteSpace: "nowrap",
-              cursor: "pointer",
-              textShadow: "1px 1px #fff",
-              fontWeight: "700",
-              fontSize: "10pt",
-              marginLeft:"3%"
-              }}
+<input style={{
+ display: "inline-block",
+ background:" linear-gradient(top, #f9f9f9, #e3e3e3)",
+ border: "1px solid #999",
+       borderRadius: "3px",
+       padding:" 5px 8px",
+       outline: "none",
+       whiteSpace: "nowrap",
+       cursor: "pointer",
+       textShadow: "1px 1px #fff",
+       fontWeight: "700",
+       fontSize: "10pt",
+     }} type="file" onChange={saveFile}/>
+           </div>
 
-              type="button" value="upload" onClick={uploadFile}/>    */}
-              </div>
+           </div>
+           <div style={{width:"30%"}} className="multi">
+           <Typography>
+               Job Description
+             </Typography>
+           <TextField 
+           multiline 
+           rows={10}
+           defaultValue={getJob.description}
+           variant="filled"sx={{ marginBottom:"2%",width:"90%"}}
+           
+           placeholder="Description"
+           onChange={descriptionHandler}
+           ></TextField>
+           </div>
+           </div>
+           <div style={{marginTop:"5%",justifyContent:"center",aligItems:"center",textAlign:"center"}}  className="postdiv">
 
-              </div>
-              <div style={{width:"30%"}} className="multi">
-              <Typography>
-                  Job Description
-                </Typography>
-              <TextField 
-              multiline 
-              rows={10}
-              defaultValue={getJob.description}
-              variant="filled"sx={{ marginBottom:"2%",width:"90%"}}
-              
-              placeholder="Description"
-              onChange={descriptionHandler}
-              ></TextField>
-              </div>
-              </div>
-              <div style={{marginTop:"5%",justifyContent:"center",aligItems:"center",textAlign:"center"}}  className="postdiv">
-
-              <Button type="submit">Edit Job</Button>
-              </div>
-                              
-            </form>
-                </div>
-                </section>
-  </> : <NotFound/>}
+           <Button type="submit">Edit Job</Button>
+           </div>
+                           
+         </form>
+             </div>
+             </section>}
+  </> :isLoading ? <Spinner/> : !isHide ? <NotFound/>  :<Spinner/>}
    </>
     
   )

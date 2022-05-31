@@ -199,13 +199,25 @@ function Stepperr() {
     setPasswordAlert(false);
     setPasswordAlert2(false);
     setEmailAlert(false);
+    setErrorField(false);
   };
 
   const handleBack = () => {
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
   };
+  let emaila=[]
+  const [getalluser, setGetalluser] = React.useState([]);
+  React.useEffect(()=>{
+    axios.get(`https://localhost:44361/api/Home`)
+    .then(res=>{
+      for(var i=0;i<res.data.length;i++){
+        emaila.push(res.data[i].email)
+      }
+      setGetalluser(emaila);
+    }
+    )
+  },[])
 
-  
   const anotherJob=()=>{
     return(
       <>
@@ -215,7 +227,7 @@ function Stepperr() {
           <Typography sx={{marginLeft:"5%",border:"1px solid black",width:"25px",borderRadius:"100%"}} > 3</Typography>
              <Box sx={{justifyContent:"space-between",marginBottom:"5%"}}>
            <TextField
-          
+          defaultValue={companyName3}
           id="outlined-required"
           label="Company Name"
           sx={{marginRight:"2%"}}
@@ -223,7 +235,7 @@ function Stepperr() {
           variant="outlined"
         />
         <TextField
-          
+          defaultValue={jobTitle3}
           id="outlined-required"
           label="Job Title"
           onChange={jobTitleHandler3 }
@@ -231,7 +243,7 @@ function Stepperr() {
           variant="outlined"
         />
          <TextField
-          
+          defaultValue={yearsOfExperience3}
           onChange={yearsOfExperienceHandler3 }
           id="outlined-number"
           type={'number'}
@@ -240,6 +252,7 @@ function Stepperr() {
         />
         </Box>
         <TextField
+          defaultValue={jobDescription3}
               multiline
               onChange={jobDescriptionHandler3 }
               rows={5}
@@ -255,7 +268,7 @@ function Stepperr() {
           <Box sx={{justifyContent:"space-between",marginBottom:"5%"}}>
 
         <TextField
-        
+        defaultValue={companyName2}
         id="outlined-required"
         label="Company Name"
         sx={{marginRight:"2%"}}
@@ -263,7 +276,7 @@ function Stepperr() {
         variant="outlined"
         />
          <TextField
-          
+          defaultValue={jobTitle2}
           onChange={jobTitleHandler2 }
           id="outlined-required"
           label="Job Title"
@@ -271,7 +284,7 @@ function Stepperr() {
           variant="outlined"
         />
          <TextField
-          
+          defaultValue={yearsOfExperience2}
           onChange={yearsOfExperienceHandler2 }
           id="outlined-required"
           label="Years of Experience"
@@ -280,6 +293,7 @@ function Stepperr() {
         />
         </Box>
         <TextField
+          defaultValue={jobDescription2}
               multiline
               onChange={jobDescriptionHandler2}
               rows={5}
@@ -304,7 +318,7 @@ function Stepperr() {
         <Typography sx={{marginLeft:"5%",border:"1px solid black",width:"25px",borderRadius:"100%"}} > 3</Typography>
          <Box sx={{justifyContent:"space-between",marginBottom:"5%"}}>
           <TextField
-    
+    defaultValue={schoolName3}
     id="outlined-required"
     label="School Name"
     sx={{marginRight:"2%"}}
@@ -312,7 +326,7 @@ function Stepperr() {
     onChange={schoolNameHandler3 }
   />
            <TextField
-    
+    defaultValue={degree3}
     id="outlined-required"
     label="Degree"
     sx={{marginRight:"2%"}}
@@ -320,6 +334,7 @@ function Stepperr() {
     onChange={degreeHandler3 }
   />
    <TextField
+    defaultValue={gpa3}
     type={'number'}
     id="outlined-number"
     label="GPA"
@@ -347,7 +362,7 @@ function Stepperr() {
           <Typography sx={{marginLeft:"5%",border:"1px solid black",width:"25px",borderRadius:"100%"}} > 2</Typography>
              <Box sx={{justifyContent:"space-between",marginBottom:"5%"}}>
             <TextField
-    
+    defaultValue={schoolName2}
     onChange={schoolNameHandler2 }
     id="outlined-required"
     label="School Name"
@@ -355,7 +370,7 @@ function Stepperr() {
     variant="outlined"
   />
            <TextField
-    
+    defaultValue={degree2}
     onChange={degreeHandler2 }
     id="outlined-required"
     label="Degree"
@@ -363,6 +378,7 @@ function Stepperr() {
     variant="outlined"
   />
    <TextField
+    defaultValue={gpa2}
     type={'number'}
     onChange={gpaHandler2 }
     id="outlined-number"
@@ -447,7 +463,7 @@ const options2=[
  {value :"Male",label:"Male"},
  {value:"No Answer",label:"No Answer"}
 ]
-console.log(value)
+
 const newDate =new Date();
 
   async function reg(){
@@ -477,9 +493,7 @@ const newDate =new Date();
       console.log("geldi")
         navigate("/")
     } catch (error) {
-      if(error.response.status==409){
-        setErrorField(true);
-      }
+      console.log(error)
     }
   }
   React.useEffect(() => {
@@ -503,8 +517,8 @@ const newDate =new Date();
   const [emailalert,setEmailAlert]=React.useState(false);
   return (
     <Box sx={{ width: '100%' }}>
-         {isUser=="user"?  <h1>Register as a Employee to work for <br></br> Worldwide Clients</h1>: 
-             <h1>Register as a Client to hire  <br></br> Top Employees</h1> }
+         {isUser=="user"?  <Typography variant="h4" sx={{marginBottom:"2%"}}>Register as an <span style={{color:"rgb(25, 118, 210)"}}>Employee</span> to work for <br></br> Worldwide <span style={{color:"rgb(25, 118, 210)"}}>Clients</span></Typography>: 
+             <Typography variant="h4" sx={{marginBottom:"2%"}}>Register as a <span style={{color:"rgb(25, 118, 210)"}}>Client</span> to hire  <br></br> Top <span style={{color:"rgb(25, 118, 210)"}}>Employees</span></Typography> }
       <Stepper activeStep={activeStep}>
         {steps.map((label, index) => {
           const stepProps = {};
@@ -529,7 +543,7 @@ const newDate =new Date();
                 else if (password != confirmPassword){
                   setErrorField2(true);
                 }
-                if(errorField2==true || errorField==true){
+                if(errorField2==true ){
                   setTimeout(() => window.location.reload(), 3000);
 
                 }
@@ -550,7 +564,7 @@ const newDate =new Date();
                {passwordalert2 ? 
                 <Alert sx={{marginBottom:"3%",marginTop:"3%"}} severity="error">Password length must be at least 8 digit</Alert>
              :null}
-                {errorField ? <Alert sx={{marginBottom:"3%",marginTop:"3%"}} severity="error">This email already exists(Refreshing the page in 3s)</Alert> :  ""}
+                {errorField ? <Alert sx={{marginBottom:"3%",marginTop:"3%"}} severity="error">This email already exists</Alert> :  ""}
             {errorField2 ? <Alert sx={{marginBottom:"3%"}} severity="error">Passwords do not match(Refreshing the page in 3s)</Alert> :  ""}
       {activeStep === steps.length ? (
         ""
@@ -569,6 +583,7 @@ const newDate =new Date();
                 label="First Name"
                 variant='outlined'
                 required
+                defaultValue={firstName}
                 sx={{marginRight:"2%"}}
                 onChange={firstNameHandler} 
                 />
@@ -577,6 +592,7 @@ const newDate =new Date();
                 placeholder='Last Name' 
                 className='lastname'
                 label="Last Name"
+                defaultValue={lastName}
                 variant='outlined'
                 required
                 onChange={lastNameHandler} 
@@ -591,6 +607,7 @@ const newDate =new Date();
               variant='outlined'
               sx={{marginTop:"3%",width:"50%"}}
               required
+              defaultValue={email}
               onChange={emailHandler}
               />
               <TextField type="password" 
@@ -599,6 +616,7 @@ const newDate =new Date();
               className='password'
               variant='outlined'
               required
+              defaultValue={password}
               sx={{marginTop:"3%",width:"50%"}}
               onChange={passwordHandler}
               inputProps= { {minLength: 8, maxLength: 16} } 
@@ -609,6 +627,7 @@ const newDate =new Date();
               className='password'
               variant='outlined'
               required
+              defaultValue={confirmPassword}
               sx={{marginTop:"3%",width:"50%"}}
               inputProps= { {minLength: 8, maxLength: 16} } 
               onChange={confirmPasswordHandler}
@@ -618,7 +637,7 @@ const newDate =new Date();
               
               <TextField
               sx={{scrollMarginBottom:"10px",width:"50%"}}
-              
+              defaultValue={phoneNumber}
               placeholder='Phone Number' 
               className='hruser'
               type="number"
@@ -631,7 +650,7 @@ const newDate =new Date();
               
               <LinkedInIcon sx={{marginLeft:"44%"}}/>
               <TextField
-          
+          defaultValue={linkedin}
           id="outlined-required"
           label="Linkedin "
             sx={{marginBottom:"2%",width:"50%"}}
@@ -642,7 +661,7 @@ const newDate =new Date();
                  <TextField
           
           id="outlined-required"
-       
+          defaultValue={github}
           label="Github"
           onChange={githubHandler}
           variant="outlined"
@@ -654,6 +673,7 @@ const newDate =new Date();
           id="outlined-required"
           sx={{width:"50%"}}
           label="Website"
+          defaultValue={website}
           onChange={websiteHandler}
           variant="outlined"
         />
@@ -677,6 +697,7 @@ const newDate =new Date();
               id="demo-simple-select"
               value={gender}
               label="gender"
+              
               onChange={genderHandler} 
               options={options2}>
             
@@ -694,7 +715,7 @@ const newDate =new Date();
             <Typography sx={{marginLeft:"5%",border:"1px solid black",width:"25px",borderRadius:"100%"}} > 1</Typography>
             <Box sx={{justifyContent:"space-between",marginBottom:"5%"}}>
               <TextField
-          
+          defaultValue={schoolName}
           onChange={schoolNameHandler}
           id="outlined-required"
           label="School Name"
@@ -702,7 +723,7 @@ const newDate =new Date();
           variant="outlined"
         />
                  <TextField
-          
+          defaultValue={degree}
           onChange={degreeHandler}
           id="outlined-required"
           label="Degree"
@@ -710,7 +731,7 @@ const newDate =new Date();
           variant="outlined"
         />
         <TextField
-          
+          defaultValue={gpa}
           id="outlined-number"
           label="GPA"
           type={'number'}
@@ -754,7 +775,7 @@ const newDate =new Date();
             <Typography sx={{marginLeft:"5%",border:"1px solid black",width:"25px",borderRadius:"100%"}} > 1</Typography>
             <Box sx={{justifyContent:"space-between",marginBottom:"5%"}}>
               <TextField
-          
+          defaultValue={companyName}
           id="outlined-required"
           label="Company Name"
           onChange={companyNameHandler}
@@ -762,7 +783,7 @@ const newDate =new Date();
           variant="outlined"
         />
                  <TextField
-          
+          defaultValue={jobTitle}
           id="outlined-required"
           label="Job Title"
           onChange={jobTitleHandler}
@@ -770,7 +791,7 @@ const newDate =new Date();
           variant="outlined"
         />
          <TextField
-          
+          defaultValue={yearsOfExperience}
           id="outlined-required"
           label="Years of Experience"
           variant="outlined"
@@ -778,6 +799,7 @@ const newDate =new Date();
         />
               </Box>
               <TextField
+                defaultValue={jobDescription}
                    onChange={jobDescriptionHandler}
               multiline
               rows={5}
@@ -794,9 +816,10 @@ const newDate =new Date();
             </>) : ""}
             {activeStep === 3 ?(
               <>
-              <h3>Overview</h3>
+              <Typography variant="h4" style={{marginTop:"2%",marginBottom:"2%",color:"rgb(25, 118, 210)"}}>Overview</Typography>
             {alert1 ? <Alert severity="success">Upload Successfull</Alert> :  ""}
              <div id="pdf">
+               <Typography variant="h6" sx={{color:"rgb(25, 118, 210)"}}>Initial Informations</Typography>
              <Typography>
              {firstName.length>0 ?"First Name :"+firstName : ""}
           </Typography>
@@ -812,7 +835,7 @@ const newDate =new Date();
           <Typography>
              {website.length>0 ?"Website  :"+website : ""}
           </Typography>
-        
+          <Typography sx={{marginTop:"2%",marginBottom:"1%",color:"rgb(25, 118, 210)"}} variant="h6">Educational Background</Typography>
           <Typography>
              {schoolName.length>0 ?"School Name :"+schoolName : ""}
           </Typography>
@@ -849,42 +872,42 @@ const newDate =new Date();
           <Typography>
              {educationdate3 ?"Education Date:"+educationdate3: ""}
           </Typography>
-            
+          <Typography sx={{marginTop:"2%",marginBottom:"1%",color:"rgb(25, 118, 210)"}} variant="h6">Experience</Typography>
           <Typography>
-             {companyName.length>0 ?"Company Name :"+companyName : ""}
+             {companyName.length>0 ?"Company Name:"+companyName : ""}
           </Typography>
           <Typography>
-             {jobTitle.length>0 ?"Job Title :"+jobTitle : ""}
+             {jobTitle.length>0 ?"Job Title:"+jobTitle : ""}
           </Typography>
           <Typography>
-             {yearsOfExperience.length>0 ?"Years of Experience :"+yearsOfExperience : ""}
+             {yearsOfExperience.length>0 ?"Years of Experience:"+yearsOfExperience : ""}
+          </Typography>
+          <Typography sx={{whiteSpace:"pre-wrap"}}>
+             {jobDescription.length>0 ?"Job Description:"+jobDescription : ""}
           </Typography>
           <Typography>
-             {jobDescription.length>0 ?"Job Description :"+jobDescription : ""}
+             {companyName2.length>0 ?"Company Name:"+companyName2 : ""}
           </Typography>
           <Typography>
-             {companyName2.length>0 ?"Company Name :"+companyName2 : ""}
+             {jobTitle2.length>0 ?"Job Title:"+jobTitle2 : ""}
           </Typography>
           <Typography>
-             {jobTitle2.length>0 ?"Job Title :"+jobTitle2 : ""}
+             {yearsOfExperience2.length>0 ?"Years of Experience:"+yearsOfExperience2 : ""}
+          </Typography>
+          <Typography sx={{whiteSpace:"pre-wrap"}}>
+             {jobDescription2.length>0 ?"Job Description:"+jobDescription2 : ""}
           </Typography>
           <Typography>
-             {yearsOfExperience2.length>0 ?"Years of Experience :"+yearsOfExperience2 : ""}
+             {companyName3.length>0 ?"Company Name:"+companyName3 : ""}
           </Typography>
           <Typography>
-             {jobDescription2.length>0 ?"Job Description :"+jobDescription2 : ""}
+             {jobTitle3.length>0 ?"Job Title:"+jobTitle3 : ""}
           </Typography>
           <Typography>
-             {companyName3.length>0 ?"Company Name :"+companyName3 : ""}
+             {yearsOfExperience3.length>0 ?"Years of Experience:"+yearsOfExperience3 : ""}
           </Typography>
-          <Typography>
-             {jobTitle3.length>0 ?"Job Title :"+jobTitle3 : ""}
-          </Typography>
-          <Typography>
-             {yearsOfExperience3.length>0 ?"Years of Experience :"+yearsOfExperience3 : ""}
-          </Typography>
-          <Typography>
-             {jobDescription3.length>0 ?"Job Description :"+jobDescription3 : ""}
+          <Typography sx={{whiteSpace:"pre-wrap"}}>
+             {jobDescription3.length>0 ?"Job Description:"+jobDescription3 : ""}
           </Typography>
           </div>
 
@@ -927,6 +950,9 @@ const newDate =new Date();
               password.length<8 && confirmPassword.length<8 ?<Button  onClick={()=>{
                 setPasswordAlert2(true)
               }}>Next</Button>  :
+              getalluser.includes(email) ?<Button  onClick={()=>{
+                setErrorField(true)
+              }}>Next</Button> :
             <Button onClick={handleNext}>Next</Button>
             } 
             

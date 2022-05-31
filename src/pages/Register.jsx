@@ -118,7 +118,7 @@ const options2=[
        <p> Already Have an account? </p>
           
           <Link to="/login">
-          <button>Log In</button>
+          <Button variant='contained'>Log In</Button>
           </Link>
         </li>
 

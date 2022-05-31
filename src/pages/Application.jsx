@@ -5,28 +5,18 @@ import axios from 'axios'
 import { TextField } from '@mui/material';
 import Box from '@mui/material/Box';
 import { useNavigate } from 'react-router-dom';
-import MenuItem from '@mui/material/MenuItem';
-import FormControl from '@mui/material/FormControl';
-import Select from '@mui/material/Select';
-import IconButton from '@mui/material/IconButton';
-import PhotoCamera from '@mui/icons-material/PhotoCamera';
-import Stack from '@mui/material/Stack';
-import InputLabel from '@mui/material/InputLabel';
 import { styled } from '@mui/material/styles';
-import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import jwt_decode from "jwt-decode";
 import Navbar from '../components/Navbar';
-import SideBar from '../components/SideBar';
-import Stepper from '../components/Stepperr';
-import { renderToString } from "react-dom/server";
 import jsPDF from "jspdf";
 import { useParams } from 'react-router-dom';
 import { Alert } from '@mui/material';
 import NotFound from '../components/NotFound';
 import Footer from '../components/Footer';
+import Spinner from '../components/Spinner';
 function Application() {
+  const [isLoading, setIsLoading] = React.useState(false);
+  const [isHide, setIsHide] = React.useState(true);
   const {id} = useParams();
   const navigate = useNavigate();
   const stylediv={
@@ -234,44 +224,55 @@ try {
   const [profileInfo,setProfileInfo]=React.useState()
   const [singleJob,setSingleJob]=React.useState()
   const getuserInfo =async ()=>{
+    setIsLoading(true)
     try {
       const res=await axios.get("https://localhost:44361/api/Home/User/"+decoded.id)
       setUserInfo(res.data)
+      setIsLoading(false)
     } catch (error) {
       console.log(error)
     }
   }
   const getprofileInfo =async ()=>{
+    setIsLoading(true)
     try {
       const res=await axios.get("https://localhost:44361/api/Home/ProfileSingle/"+decoded.id)
       setProfileInfo(res.data)
+      setIsLoading(false)
     } catch (error) {
       console.log(error)
     }
   }
   const getSingleJob =async ()=>{
+    setIsLoading(true)
     try {
       const res=await axios.get("https://localhost:44361/api/Home/Jobs/"+id)
       setSingleJob(res.data)
+      setIsLoading(false)
     } catch (error) {
       console.log(error)
     }
   }
   React.useEffect(()=>{
+    setIsLoading(true)
     getuserInfo()
     getprofileInfo()
     getSingleJob()
+    setIsLoading(false)
   },[])
   console.log(singleJob)
   const handleSend = async() => {
     const rand = Math.floor(Math.random() * 10000000);
     const doc = new jsPDF();
 
-    const data =  'First Name: ' + userInfo.firstName + '\n' +
+    const data = 
+    'Initial Informations'+'\n'+ '\n'+
+    'First Name: ' + userInfo.firstName + '\n' +
     'Last Name: ' + userInfo.lastName + '\n' +
     'Gender:' + userInfo.gender + '\n' + 
     'Linkedin:' + profileInfo.Linkedin + '\n' + 
     'Certifications:' +profileInfo.certification + '\n' + '\n'+
+    'Educational Background'+'\n'+ '\n'+
     'Education 1'+ '\n'+
     'School Name:'+profileInfo.education.split(",")[0] + '\n' + 
     'Degree:'+profileInfo.education.split(",")[3] + '\n' + 
@@ -287,6 +288,7 @@ try {
     'Degree3:'+profileInfo.education.split(",")[5] + '\n' + 
     'Gpa3:'+profileInfo.education.split(",")[8] + '\n' + 
     'Graduation Day3:'+profileInfo.education.split(",")[11].slice(3,15) + '\n' + '\n'+
+    'Experience'+'\n'+ '\n'+
     'Experience: 1' + '\n'+
     'Company Name:'+profileInfo.experience.split(",")[0] + '\n' + 
     'Job Title:'+profileInfo.experience.split(",")[3] + '\n' + 
@@ -326,11 +328,14 @@ try {
     const rand = Math.floor(Math.random() * 10000000);
     const doc = new jsPDF();
     
-    const data =  'First Name: ' + userInfo.firstName + '\n' +
+    const data =  
+    'Initial Informations'+'\n'+ '\n'+
+    'First Name: ' + userInfo.firstName + '\n' +
     'Last Name: ' + userInfo.lastName + '\n' +
     'Gender:' + userInfo.gender + '\n' + 
     'Linkedin:' + profileInfo.Linkedin + '\n' + 
     'Certifications:' +profileInfo.certification + '\n' + '\n'+
+    'Educational Background'+'\n'+ '\n'+
     'Education 1'+ '\n'+
     'School Name:'+profileInfo.education.split(",")[0] + '\n' + 
     'Degree:'+profileInfo.education.split(",")[3] + '\n' + 
@@ -346,6 +351,7 @@ try {
     'Degree3:'+profileInfo.education.split(",")[5] + '\n' + 
     'Gpa3:'+profileInfo.education.split(",")[8] + '\n' + 
     'Graduation Day3:'+profileInfo.education.split(",")[11].slice(3,15) + '\n' + '\n'+
+    'Experiences'+'\n'+ '\n'+'\n'+
     'Experience: 1' + '\n'+
     'Company Name:'+profileInfo.experience.split(",")[0] + '\n' + 
     'Job Title:'+profileInfo.experience.split(",")[3] + '\n' + 
@@ -362,12 +368,12 @@ try {
     'Job Description3:'+profileInfo.experience.split(",")[8] + '\n' + 
     'Worked on year3:'+profileInfo.experience.split(",")[11] + '\n' + 
     'Expected Salary:' +expectedSalary + '\n' +
-    'Anything Else:' +anythingelse + '\n' 
+    'Anything Else:' +anythingelse + '\n'   
  
     const str =decoded.id+"_"+id+"_"+rand.toString()+".pdf";
-    doc.text(10,20,data.split("Experience: 1")[0],{ maxWidth:200 })
+    doc.text(10,20,data.split("Experiences")[0],{ maxWidth:200 })
    doc.addPage()
-    doc.text(10,20,data.split("Experience: 1")[1],{ maxWidth:200 })
+    doc.text(10,20,data.split("Experiences")[1],{ maxWidth:200  })
     
     var blobPdf= new Blob([doc.output('blob')], {type: 'application/pdf'});
     var filer = new File([blobPdf], str, {type: 'application/pdf'});
@@ -416,64 +422,66 @@ try {
        
         }
       }
-     
+     setTimeout(()=>setIsHide(false),500)
   return (
    <>
   {singleJob && user ? <>  <Navbar/>
-   <div className="container" style={{marginTop:"3%"}}>
-       <div className="middle" style={{width:"50%",boxShadow:" 0px 2px 1px -1px rgb(0 0 0 / 20%), 0px 1px 1px 0px rgb(0 0 0 / 14%), 0px 1px 3px 0px rgb(0 0 0 / 12%)"
-       ,borderRadius: "1.125rem",
-     padding: "2%",
+  {isLoading? <Spinner/>:
+     <div className="container" style={{marginTop:"3%"}}>
+     <div className="middle" style={{width:"50%",boxShadow:" 0px 2px 1px -1px rgb(0 0 0 / 20%), 0px 1px 1px 0px rgb(0 0 0 / 14%), 0px 1px 3px 0px rgb(0 0 0 / 12%)"
+     ,borderRadius: "1.125rem",
+   padding: "2%",
 }}>
-       <h1 style={{marginBottom:"10%"}}>
-                  Job Name:{singleJob.Name}
-              </h1>
-              {alert1 ? <Alert severity="success">Upload Successfull(You will be redirected to the main page in5s)</Alert> :  ""}
-               <div style={{display:"flex",flexDirection:"column", marginTop:"4%",marginBottom:"4%"}} className="uploads">
-  <div className="leftpart" style={{display:"flex",flexDirection:"column",alignItems:"center"}}>
-    <label >Please answer this question only if it is wanted in job description</label>
-  <TextField
-               onChange={expectedSalaryHandler}
+     <h1 style={{marginBottom:"10%"}}>
+                Job Name:{singleJob.Name}
+            </h1>
+            {alert1 ? <Alert severity="success">Upload Successfull(You will be redirected to the main page in5s)</Alert> :  ""}
+             <div style={{display:"flex",flexDirection:"column", marginTop:"4%",marginBottom:"4%"}} className="uploads">
+<div className="leftpart" style={{display:"flex",flexDirection:"column",alignItems:"center"}}>
+  <label >Please answer this question only if it is wanted in job description</label>
+<TextField
+             onChange={expectedSalaryHandler}
+        
+        sx={{width:"40%",marginBottom:"3%",marginTop:"1%"}}
+        id="outlined-required"
+        label="Expected Salary"
+        variant="outlined"
+      />
+      <label>You can write anything else your employee wants</label>
+             <TextField
+             onChange={anythingElseHandler}
+             inputProps={{ maxLength: 500 }}
+        multiline
+        rows={8}
+        sx={{width:"60%",marginTop:"2%"}}
+        id="outlined-required"
+        label="Anything Else"
+        variant="outlined"
+      />
+</div>
+               <label style={{marginTop:"4%"}}>Please upload the files that wanted in Job Description</label>
+               <label>You can upload up to 4 files</label>
+          <div className="divupload" style={{marginTop:"4%",display:"flex",justifyContent:"center",flexDirection:"column",alignItems:"center"}}>         
+          <input style={stylediv} type="file"  onChange={saveFile}/>
+<input style={stylediv} type="file"  onChange={saveFile2}/>
+ <input style={stylediv} type="file"  onChange={saveFile3}/>
+ <input style={stylediv} type="file"  onChange={saveFile4}/>
+         <div style={{display:"flex",flexDirection:"column"}} className="senadpp">
           
-          sx={{width:"40%",marginBottom:"3%",marginTop:"1%"}}
-          id="outlined-required"
-          label="Expected Salary"
-          variant="outlined"
-        />
-        <label>You can write anything else your employee wants</label>
-               <TextField
-               onChange={anythingElseHandler}
-          
-          multiline
-          rows={8}
-          sx={{width:"60%",marginTop:"2%"}}
-          id="outlined-required"
-          label="Anything Else"
-          variant="outlined"
-        />
-  </div>
-                 <label style={{marginTop:"4%"}}>Please upload the files that wanted in Job Description</label>
-                 <label>You can upload up to 4 files</label>
-            <div className="divupload" style={{marginTop:"4%",display:"flex",justifyContent:"center",flexDirection:"column",alignItems:"center"}}>         
-            <input style={stylediv} type="file"  onChange={saveFile}/>
-  <input style={stylediv} type="file"  onChange={saveFile2}/>
-   <input style={stylediv} type="file"  onChange={saveFile3}/>
-   <input style={stylediv} type="file"  onChange={saveFile4}/>
-           <div style={{display:"flex",flexDirection:"column"}} className="senadpp">
-            
-         <Button onClick={handleSend}>Download as Pdf</Button> 
-          <Button onClick={sendLast}>Send Application</Button> 
-         
-         </div>
-            </div>
-          
- 
-               </div>
-          
+       <Button onClick={handleSend}>Download as Pdf</Button> 
+        <Button onClick={sendLast}>Send Application</Button> 
+       
        </div>
-   </div>
+          </div>
+        
+
+             </div>
+        
+     </div>
+ </div> }
+
    <Footer/>
-   </> : <NotFound/>}
+   </> : isLoading ? <Spinner/> : !isHide ? <NotFound/>  :<Spinner/>}
    </>
   )
 }
