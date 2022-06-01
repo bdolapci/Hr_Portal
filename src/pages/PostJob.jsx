@@ -29,8 +29,10 @@ function PostJob() {
 const [description,setDescription]=React.useState('')
 const [category,setCategory]=React.useState('')
 const [photo,setPhoto]=React.useState('')
-var token=localStorage.getItem("User");
-var decoded = jwt_decode(token);
+if(JSON.parse(localStorage.getItem("User")) !== null){
+  var token=localStorage.getItem("User");
+  var decoded = jwt_decode(token);
+ }
 function NameHandler(e){
   setName(e.target.value);
 }
@@ -103,9 +105,15 @@ const postJob =async()=>{
     console.log(error)
   }
 }
+console.log(photo)
+const dat=new Date().toISOString()
+
+  const Input = styled('input')({
+    display: 'none',
+  });
   return (
-    <>
-   {decoded.userRole =="hr" ? <>
+    <div style={{backgroundColor:"rgb(248, 248, 248)",minHeight:"100vh"}}>
+   {JSON.parse(localStorage.getItem("User")) !== null ?decoded.userRole =="hr" ? <>
    <Navbar/>
     <SideBar/>
      <section >
@@ -115,9 +123,10 @@ const postJob =async()=>{
       ,width:"70%",
       borderRadius:"1.125rem",
       boxShadow: "0px 2px 4px -1px rgb(0 0 0 / 20%), 0px 4px 5px 0px rgb(0 0 0 / 14%), 0px 1px 10px 0px rgb(0 0 0 / 12%) ",
-      padding:"3%"
+      padding:"3%",
+      backgroundColor:"white"
       }}>
-          <h1 style={{textAlign:"center"}}>Post Job</h1>
+          <Typography variant='h4' style={{textAlign:"center",marginBottom:"3%",color:"rgb(25, 118, 210)"}}>Post Job</Typography>
             <form  onSubmit={(e)=>{
               
               postJob()
@@ -133,21 +142,21 @@ const postJob =async()=>{
                 flexDirection:"column",
                 alignItems:"center",
                 textAlign:"center",
-                width:"70%"}} >
+                width:"60%"}} >
                   <Typography>
                     Job Name
                   </Typography>
                 <TextField 
                // multiline  
                variant="filled"
-               sx={{ marginBottom:"2%",width:"40%"}}
+               sx={{ marginBottom:"2%",width:"50%"}}
                label="Name"
                multiline
                required
                placeholder="Name"
                onChange={NameHandler}
                ></TextField>
-                <Box sx={{ marginTop:"0",marginBottom:"2%",width:"40%"}}>
+                <Box sx={{ marginTop:"0",marginBottom:"2%",width:"50%"}}>
                 <Typography>
                     Job Deadline
                   </Typography>
@@ -171,7 +180,7 @@ const postJob =async()=>{
                 <Typography>
                     Chose the Category
                   </Typography>
-                <FormControl sx={{width:"20%"}}>
+                <FormControl sx={{width:"30%"}}>
                 <InputLabel id="demo-simple-select-label">Category</InputLabel>
                  <Select
                     labelId="demo-simple-select-label"
@@ -227,15 +236,15 @@ const postJob =async()=>{
                 </div>
                 <div style={{marginTop:"5%",justifyContent:"center",aligItems:"center",textAlign:"center"}}  className="postdiv">
                
-                <Button type="submit">Post Job</Button>
+                <Button variant='contained' type="submit">Post Job</Button>
                 </div>
             </form>
                 </div>
                 
                 </section>
-   </> : <Unauthorized/>}
+   </> : <Unauthorized/>:<Unauthorized/>}
 
-    </>
+    </div>
   )
 }
 

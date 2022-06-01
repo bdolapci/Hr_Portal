@@ -15,11 +15,14 @@ import axios from 'axios';
 import jwt_decode  from 'jwt-decode';
 import NotFound from '../components/NotFound';
 import jsPDF from "jspdf";
+import Unauthorized from '../components/Unauthorized';
 function Documents() {
     let { id } = useParams();
     let { jobid } = useParams();
-    var token=localStorage.getItem("User");
-    var decoded = jwt_decode(token);
+    if(JSON.parse(localStorage.getItem("User")) !== null){
+      var token=localStorage.getItem("User");
+      var decoded = jwt_decode(token);
+     }
     const options = {
         filterType: 'checkbox',
         selectableRows: "none",
@@ -98,20 +101,20 @@ function Documents() {
           },[])
           
   return (
-    <>
-      {decoded.userRole=="hr"  ? <>
+    <div style={{backgroundColor:"rgb(248, 248, 248)",minHeight:"100vh"}}>
+      {JSON.parse(localStorage.getItem("User")) !== null ?decoded.userRole=="hr"  ? <>
       <Navbar />
         <SideBar />
         <div className='container'style={{margin:"auto",width:"80%",marginTop:"10rem"}} >
           <h1>
             Uploaded Files
           </h1>
-         <Typography sx={{boxShadow: "rgb(0 0 0 / 16%) 0px 1px 4px",borderRadius:"1.125rem",padding:"20px"}}>
+         <Box sx={{boxShadow: "rgb(0 0 0 / 16%) 0px 1px 4px",borderRadius:"1.125rem",padding:"20px",backgroundColor:"white  "}}>
            {getFiles ? getFiles.map((item,index)=>{
             
               return(
                 item.Name.split("_")[0]==id && item.Name.split("_")[1]==jobid ? 
-                <Box>
+                <Box >
               
                 <Button onClick={()=>downloadFile(item.Name)}> <FileDownloadIcon></FileDownloadIcon>{item.Name}</Button>
                 {/* <Button onClick={()=>viewfile(item.Name)}> <RemoveRedEyeIcon></RemoveRedEyeIcon>{item.Name}</Button> */}
@@ -119,11 +122,11 @@ function Documents() {
               )
             })
            :""}
-         </Typography>
-        <Button href='http://localhost:3000/hrPanel/jobs' sx={{"border":"0.5px solid gray,",marginTop:"5%"}}>Go Back</Button>
+         </Box>
+        <Button variant='contained' href='http://localhost:3000/hrPanel/jobs' sx={{"border":"0.5px solid gray,",marginTop:"5%"}}>Go Back</Button>
     </div>
-      </>: <NotFound/>}
-    </>
+      </>: <NotFound/>:<Unauthorized/>}
+    </div>
   )
 }
 

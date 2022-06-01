@@ -253,7 +253,7 @@ function Login() {
     };
  
   return (
-      <>
+      <div style={{backgroundColor:"rgb(248, 248, 248)",minHeight:"100vh"}}>
     <header className='header'>
       <div className="logo">
         <Link to="/">HR Portal</Link>
@@ -271,7 +271,7 @@ function Login() {
     </header>
     <section className='body-register'>
       <div className="register-form" >
-          <div className="register-form-body" >
+          <div className="register-form-body" style={{backgrounColor:"white"}} >
             <h1 style={{borderBottom: "6px solid #1976d2"}}>Log In</h1>
             <form
             onSubmit={(e)=>{
@@ -372,7 +372,7 @@ function Login() {
         <div className="mid"  style={{justifyContent:"center",textAlign:"center",alignItems:"center",marginTop:"10px"}}>2022 HrPortal. All rights reserved
   </div>
     </div>
-      </>
+      </div>
   )
 }
 

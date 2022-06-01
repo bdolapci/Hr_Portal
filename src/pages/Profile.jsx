@@ -31,6 +31,7 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import { useLocation } from 'react-router-dom'
+import Unauthorized from '../components/Unauthorized'
 function Profile() {
   
   const [open, setOpen] = useState(false);
@@ -63,8 +64,10 @@ function Profile() {
   const[job,setJob]=React.useState([]);
   const[profile,setProfile]=React.useState("");
   const[user,setUser]=React.useState([]);
-  var token=localStorage.getItem("User");
+  if(JSON.parse(localStorage.getItem("User")) !== null){
+    var token=localStorage.getItem("User");
     var decoded = jwt_decode(token);
+   }
 
   React.useEffect(()=>{
     
@@ -681,9 +684,10 @@ React.useEffect(()=>{
   const [value, setValue] = useState('')
   const options3 = useMemo(() => countryList().getData(), [])
   return (
-    <>
+    <div style={{backgroundColor:"rgb(248, 248, 248) !important",minHeight:"100vh " }}>
+   
+    {JSON.parse(localStorage.getItem("User")) ? <>
     <Navbar/>
-    
     <div className="page">
         <div className="topside">
         <img src={banner} alt="banner" />
@@ -697,14 +701,14 @@ React.useEffect(()=>{
       style={{    position: "relative",
         right: "4rem"}}
       className="set">
-        {profile.Userid == decoded.id ? <Button 
+        {JSON.parse(localStorage.getItem("User")) ? profile.Userid == decoded.id ? <Button 
         onClick={handleOpenit}
         sx={{    
           top: "-50px",
           position: "relative"}}>
         <SettingsIcon />
         
-       </Button> : "" }
+       </Button> : "" :<Unauthorized/>}
        <Modal
             open={openit}
             onClose={handleCloseit}
@@ -736,7 +740,7 @@ React.useEffect(()=>{
         <div className="pp">
           {profile.photo =="banner.jpg" ?  <img src={banner} alt="banner"></img>: 
            <img src={"https://hrportal.blob.core.windows.net/uploadfile/"+profile.photo} alt="banner"></img> }
-        {profile.Userid == decoded.id ?
+        {JSON.parse(localStorage.getItem("User"))? profile.Userid == decoded.id ?
         <Button 
         onClick={handleOpen}
         sx={{    
@@ -744,7 +748,7 @@ React.useEffect(()=>{
           position: "relative"}}>
         <SettingsIcon />
         
-       </Button> : "" }
+       </Button> : "":<Unauthorized/> }
        <Modal
             open={open}
             onClose={handleClose}
@@ -922,8 +926,8 @@ React.useEffect(()=>{
             
         </div>
           <div style={{justifyContent:"center",alignItems:"center",textAlign:"center",marginBottom:""}} className="changepassword">
-          {profile.Userid == decoded.id ?
-            <Button onClick={handleOpench} variant="contained">Change Password</Button> : "" }
+          {JSON.parse(localStorage.getItem("User")) ?profile.Userid == decoded.id ?
+            <Button onClick={handleOpench} variant="contained">Change Password</Button> : "" : <Unauthorized/> }
             <Modal
             open={opench}
             onClose={handleClosech}
@@ -996,7 +1000,7 @@ React.useEffect(()=>{
         <div className="experience" >
         <h3 style={{margin:"10px"}}>Education</h3>
         <hr/>
-        {profile.Userid == decoded.id ?
+        {JSON.parse(localStorage.getItem("User")) ?profile.Userid == decoded.id ?
         <Button   
         onClick={handleOpenex}
         sx={{    
@@ -1005,7 +1009,7 @@ React.useEffect(()=>{
           position: "relative"}}>
         <SettingsIcon />
         
-       </Button> : "" }
+       </Button> : "" :<Unauthorized/>}
           <Box sx={{display:"flex",flexDirection:"row",justifyContent:"space-around",marginTop:"0px"}}>
           <div  style={{display:"flex",flexDirection:"column"}}>
              <h4 style={{marginTop:"0px"}}>First Education</h4>
@@ -1187,7 +1191,7 @@ React.useEffect(()=>{
           <div className="experience" >
         <h3 style={{margin:"10px"}}>Experience</h3>
         <hr/>
-        {profile.Userid == decoded.id ?
+        {JSON.parse(localStorage.getItem("User")) ?profile.Userid == decoded.id ?
         <Button 
         onClick={handleOpened}
         sx={{    
@@ -1196,7 +1200,7 @@ React.useEffect(()=>{
           position: "relative"}}>
         <SettingsIcon />
         
-       </Button> : "" }
+       </Button> : "" :<Unauthorized/> }
        <Box sx={{display:"flex",flexDirection:"row",justifyContent:"space-around",marginTop:"0px"}}>
           <div  style={{display:"flex",flexDirection:"column"}}>
              <h4 style={{marginTop:"0px"}}>First Job</h4>
@@ -1376,7 +1380,9 @@ React.useEffect(()=>{
         
     </div>
     <Footer/>
-    </>
+    </> :<Unauthorized/>}
+  
+    </div>
   )
 }
 

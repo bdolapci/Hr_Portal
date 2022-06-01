@@ -107,7 +107,7 @@ const options2=[
   }, [])
   const label = { inputProps: { 'aria-label': 'Checkbox demo' } }
   return (
-      <>
+      <div style={{backgroundColor:"rgb(248, 248, 248)",minHeight:"100vh"}}>
       <CssBaseline />
     <header className='header'>
       <div className="logo">
@@ -127,7 +127,7 @@ const options2=[
     <div className="container" style={{marginTop:"3%",minHeight:"90vh"}}>
        <div className="middle" style={{width:"50%",boxShadow:" 0px 2px 1px -1px rgb(0 0 0 / 20%), 0px 1px 1px 0px rgb(0 0 0 / 14%), 0px 1px 3px 0px rgb(0 0 0 / 12%)"
        ,borderRadius: "1.125rem",
-     padding: "2%",
+     padding: "2%",backgroundColor:"white",marginBottom:"3%"
 }}>
    
        
@@ -139,7 +139,7 @@ const options2=[
         <div className="mid"  style={{justifyContent:"center",textAlign:"center",alignItems:"center",marginTop:"10px"}}>2022 HrPortal. All rights reserved
   </div>
     </div>
-      </>
+      </div>
   )
 }
 

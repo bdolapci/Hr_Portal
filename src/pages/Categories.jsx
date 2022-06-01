@@ -20,7 +20,7 @@ function Categories() {
     const Categoryex={
         "title":["Accounting","Customer Service","Analytics&Data Science","Design&Illustration","Engineering","Web&Software Development","Law&Legal","Marketing","Writing&Translation","Architecture"],
         "image":["https://hrportal.blob.core.windows.net/uploadfile/accounting.jpg","https://hrportal.blob.core.windows.net/uploadfile/Costumer-Service.png","https://hrportal.blob.core.windows.net/uploadfile/web-sitesi-analizi.png",
-        "https://hrportal.blob.core.windows.net/uploadfile/Graphic-Design-Vector-Illustration.jpg.crdownload","https://hrportal.blob.core.windows.net/uploadfile/Engineer's Mindset.jpg","https://hrportal.blob.core.windows.net/uploadfile/Web-Development.jpg",
+        "https://hrportal.blob.core.windows.net/uploadfile/Graphic-Design-Vector-Illustration.jpg","https://hrportal.blob.core.windows.net/uploadfile/Engineer's Mindset.jpg","https://hrportal.blob.core.windows.net/uploadfile/Web-Development.jpg",
         "https://hrportal.blob.core.windows.net/uploadfile/indir.jpg","https://hrportal.blob.core.windows.net/uploadfile/marketing-manager.jpg","https://hrportal.blob.core.windows.net/uploadfile/the-industries-require-written-translation-.jpg",
         "https://hrportal.blob.core.windows.net/uploadfile/istockphoto-476190573-1024x1024.jpg"],
         "description":["You can find Hr,Accounting,Consulting jobs in this category",
@@ -36,7 +36,7 @@ function Categories() {
     }
     
   return (
-    <>
+    <div style={{backgroundColor:"rgb(248, 248, 248)"}}>
     
     <Navbar/>
     <Typography style={{textAlign:"center",marginTop:"5%",fontSize:"84px",letterSpacing:"3px",color:"rgb(25, 118, 210)"}}>Categories</Typography>
@@ -50,7 +50,7 @@ function Categories() {
   
    </div>
    <Footer/>
-    </>
+    </div>
   )
 }
 

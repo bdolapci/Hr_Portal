@@ -8,8 +8,10 @@ import axios from 'axios';
 import {AreaChart, Area,CartesianGrid,BarChart,XAxis,YAxis,Legend,Tooltip,Bar,PieChart,Pie,Cell, ResponsiveContainer} from 'recharts';
 import Box from '@mui/material/Box';
 function AdminPanel() {
-  var token=localStorage.getItem("User");
-  var decoded = jwt_decode(token);
+  if(JSON.parse(localStorage.getItem("User")) !== null){
+    var token=localStorage.getItem("User");
+    var decoded = jwt_decode(token);
+   }
   const [regusers,setRegusers]=React.useState([]);
 const [numberofusers,setNumberofusers]=React.useState(0);
 const [companyrepresetetives,setCompanyrepresetetives]=React.useState(0);
@@ -148,14 +150,14 @@ const renderCustomizedLabel = ({ cx, cy, midAngle, innerRadius, outerRadius, per
   ]
   return (
     <>
-    {decoded.userRole=="admin" ? 
-    <>
+    {JSON.parse(localStorage.getItem("User")) !== null ?decoded.userRole=="admin" ? 
+    <div style={{backgroundColor:"rgb(248, 248, 248)"}}>
         <Navbar/>
     <SideBar/>
     <div className="container" >
     <h1 style={{color:"rgb(25, 118, 210)"}}>Welcome to your Panel</h1>
     <div className="all">
-      <Box sx={{boxShadow: "rgb(0 0 0 / 16%) 0px 1px 4px",borderRadius:"1.125rem"}}>
+      <Box sx={{boxShadow: "rgb(0 0 0 / 16%) 0px 1px 4px",borderRadius:"1.125rem",backgroundColor:"white"}}>
         <Typography>Number of registered users over time(Yearly)</Typography>
        
 
@@ -181,7 +183,7 @@ const renderCustomizedLabel = ({ cx, cy, midAngle, innerRadius, outerRadius, per
       </Box>
     <div className="informations" style={{display:"flex",flexDirection:"row"}}>
     <Box sx={{display:"flex",flexDirection:"row",marginBottom:"4%"}}>
-       <Box sx={{boxShadow: "rgb(0 0 0 / 16%) 0px 1px 4px",borderRadius:"1.125rem"}}>
+       <Box sx={{boxShadow: "rgb(0 0 0 / 16%) 0px 1px 4px",borderRadius:"1.125rem",backgroundColor:"white"}}>
        <Typography>Number of Registered Users in the System</Typography>
      <BarChart width={730} height={250} data={data}>
       <XAxis dataKey="name" />
@@ -193,7 +195,7 @@ const renderCustomizedLabel = ({ cx, cy, midAngle, innerRadius, outerRadius, per
       
     </BarChart>
        </Box>
-      <Box sx={{boxShadow: "rgb(0 0 0 / 16%) 0px 1px 4px",marginLeft:"2%",borderRadius:"1.125rem"}}>
+      <Box sx={{boxShadow: "rgb(0 0 0 / 16%) 0px 1px 4px",marginLeft:"2%",borderRadius:"1.125rem",backgroundColor:"white"}}>
       <Typography>Total Jobs Chart</Typography>
       <div className="conpie" style={{display:"flex",justifyContent:"center"}}>
       
@@ -214,7 +216,7 @@ const renderCustomizedLabel = ({ cx, cy, midAngle, innerRadius, outerRadius, per
     </div>
     </div>
     </div>
-    </> : <Unauthorized/>}
+    </div> : <Unauthorized/>:<Unauthorized/>}
 
     
     </>

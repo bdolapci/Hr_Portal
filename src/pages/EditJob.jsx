@@ -27,8 +27,10 @@ import Spinner from '../components/Spinner';
 function EditJob() {
     const { id } = useParams();
     const nav = useNavigate();
-    var token=localStorage.getItem("User");
-    var decoded = jwt_decode(token);
+    if(JSON.parse(localStorage.getItem("User")) !== null){
+      var token=localStorage.getItem("User");
+      var decoded = jwt_decode(token);
+     }
     const [name,setName]=React.useState("")
     const [description,setDescription]=React.useState('')
     const [category,setCategory]=React.useState('')
@@ -184,8 +186,8 @@ function EditJob() {
       setTimeout(()=>setIsHide(false),500)
      
   return (
-   <>
-  {decoded.userRole=="hr" && getJob.UserId ==decoded.id ?<>
+   <div style={{backgroundColor:"rgb(248, 248, 248)",minHeight:"100vh"}}>
+  { JSON.parse(localStorage.getItem("User")) !== null ?decoded.userRole=="hr" && getJob.UserId ==decoded.id ?<>
   <Navbar/>
    <SideBar/>
    {isLoading ? <Spinner/> :
@@ -196,9 +198,10 @@ function EditJob() {
    ,width:"70%",
    borderRadius:"1.125rem",
    boxShadow: "0px 2px 4px -1px rgb(0 0 0 / 20%), 0px 4px 5px 0px rgb(0 0 0 / 14%), 0px 1px 10px 0px rgb(0 0 0 / 12%) ",
-   padding:"4%"
+   padding:"4%",
+   backgroundColor:"white"
    }}>
-     <h1 style={{textAlign:"center"}}>Edit Job</h1>
+     <Typography variant='h4' style={{textAlign:"center",marginBottom:"2%",color:"rgb(25, 118, 210)"}}>Edit Job</Typography>
          <form onSubmit={(e)=>{
            if(name!=''){
              editJobName()
@@ -228,7 +231,7 @@ display:'flex',
 flexDirection:"column",
 alignItems:"center",
 textAlign:"center",
-width:"70%"}} >
+width:"60%"}} >
 <Typography>
  Job Name
 </Typography>
@@ -242,7 +245,7 @@ multiline
 placeholder="Name"
 onChange={NameHandler}
 ></TextField>
-<Box sx={{ marginTop:"0",marginBottom:"2%",width:"40%"}}>
+<Box sx={{ marginTop:"0",marginBottom:"2%",width:"50%"}}>
 <Typography>
  Job Deadline
 </Typography>
@@ -266,7 +269,7 @@ onChange={NameHandler}
 <Typography>
  Chose the Category
 </Typography>
-<FormControl sx={{width:"20%"}}>
+<FormControl sx={{width:"30%"}}>
 <InputLabel id="demo-simple-select-label">Category</InputLabel>
 <Select
  labelId="demo-simple-select-label"
@@ -321,14 +324,14 @@ onChange={NameHandler}
            </div>
            <div style={{marginTop:"5%",justifyContent:"center",aligItems:"center",textAlign:"center"}}  className="postdiv">
 
-           <Button type="submit">Edit Job</Button>
+           <Button variant='contained' type="submit">Edit Job</Button>
            </div>
                            
          </form>
              </div>
              </section>}
-  </> :isLoading ? <Spinner/> : !isHide ? <NotFound/>  :<Spinner/>}
-   </>
+  </> :isLoading ? <Spinner/> : !isHide ? <NotFound/>  :<Spinner/>:<Unauthorized/>}
+   </div>
     
   )
 }

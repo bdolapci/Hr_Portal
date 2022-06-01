@@ -23,9 +23,12 @@ import { useParams } from "react-router-dom";
 import Unauthorized from '../components/Unauthorized';
 import jwt_decode  from 'jwt-decode';
 import NotFound from '../components/NotFound';
+import Modal from '@mui/material/Modal';
 function Applicants() {
-  var token=localStorage.getItem("User");
-  var decoded = jwt_decode(token);
+  if(JSON.parse(localStorage.getItem("User")) !== null){
+    var token=localStorage.getItem("User");
+    var decoded = jwt_decode(token);
+   }
   function TabPanel(props) {
     const { children, value, index, ...other } = props;
   
@@ -71,49 +74,6 @@ function Applicants() {
   const[rejecteduser,setRejectedUser]=React.useState("");
   const[userIdhold,setUserIdhold]=React.useState("");
 
-
-  // const fetchData =()=>{
-  //   const usertable="https://localhost:44361/api/Home"
-  //   const applicanttable ="https://localhost:44361/api/Home/Applicants"
-
-  //   const getUsers=axios.get(usertable)
-  //   const getapplicants =axios.get(applicanttable)
-  //   axios.all([getUsers,getapplicants]).then(
-  //     axios.spread((...responses) => {
-  //       const userdata = responses[0].data
-  //       const applicantdata = responses[1].data
-        
-  //       let k=[]
-  //       let l=[]
-  //       let m=[]
-  //       let s=[]
-
-  //       // eslint-disable-next-line no-lone-blocks
-  //       for(let i=0;i<applicantdata.length;i++){{
-  //         for(let j=0;j<userdata.length;j++){
-  //         if(userdata[j].Id==applicantdata[i].UserId &&applicantdata[i].Jobsid==id){
-  //           if(applicantdata[i].isAccepted=="0"){
-  //             k.push(userdata[j])
-  //           }
-  //           else if(applicantdata[i].isAccepted=="1"){
-  //             l.push(userdata[j])
-  //           }
-  //           else{
-  //             m.push(userdata[j])
-  //           }
-           
-  //         } }
-  //       }}
-        
-  //       setUser(k)
-  //       setAcceptedUser(l)
-  //       setRejectedUser(m)
-
-        
-  //     })
-  //   )
-  // }
-
   const combined =async()=>{
      axios.get(`https://localhost:44361/api/Home/UserApplicantJoin`,{
     }).then((res)=>{
@@ -154,28 +114,51 @@ function Applicants() {
    
  
 },[]);
-  console.log(job)
-  
+const style = {
+  position: 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  width: 400,
+  bgcolor: 'background.paper',
+  border: '2px solid #000',
+  boxShadow: 24,
+  p: 4,
+};
+const [open, setOpen] = React.useState(false);
+const [open2, setOpen2] = React.useState(false);
+const handleOpen = () => setOpen(true);
+const handleClose = () => setOpen(false);
+const handleOpen2 = () => setOpen2(true);
+const handleClose2 = () => setOpen2(false);
+
   useEffect(()=>{
     combined();
    
   },[]);
-
-
+  
+  const [singleApplicant,setSingleApplicant]=React.useState();
 
   const acceptuser=async(Id)=>{
+    handleOpen();
    try {
      const res =await axios.put(`https://localhost:44361/api/Home/AcceptApplicants/${Id}`,{
       Id:Id,
       Jobsid:id,
       isAccepted:1
      },)
-     const res2 =await axios.post(`https://localhost:44361/api/Home/SendSuccess`,
-     {
-       ToEmail:`${"barandolapc@gmail.com"}`,
-       Subject:"Information about our application",
-       Body:"We are happy to inform you that you have been accepted to the job"+job.Name+"\n" +"Hr for the Job will contact you soon"
-     })
+     for(let i=0;i<user.length;i++){
+      if(user && user[i].Id==Id){
+      await setSingleApplicant(user[i].email)
+      }
+    }
+    console.log(singleApplicant)
+    const res2 = await axios.post(`https://localhost:44361/api/Home/SendSuccess`,
+    {
+      ToEmail:`${singleApplicant}`,
+      Subject:"Information about our application",
+      Body:"We are happy to inform you that you have been accepted to the job"+job.Name+"\n" +"Hr for the Job will contact you soon"
+    })
      window.location.reload(true);
      console.log(res)
    } catch (error) {
@@ -183,15 +166,21 @@ function Applicants() {
    }
   }
   const rejectuser=async(Id)=>{
+    handleOpen2();
     try {
       const res =await axios.put(`https://localhost:44361/api/Home/AcceptApplicants/${Id}`,{
       Id:Id,  
       Jobsid:id,
       isAccepted:2
       },)
+      for(let i=0;i<user.length;i++){
+        if(user && user[i].Id==Id){
+        await setSingleApplicant(user[i].email)
+        }
+      }
       const res2 =await axios.post(`https://localhost:44361/api/Home/SendSuccess`,
       {
-        ToEmail:`${"barandolapc@gmail.com"}`,
+        ToEmail:`${singleApplicant}`,
         Subject:"Information about our application",
         Body:"We regret to inform you that you have not been selected for the job:"+job.Name+"\n" +" We wish you successfull carreer",
       })
@@ -256,11 +245,38 @@ function Applicants() {
       label: "Accept/Reject Applicants",
       options: {
         customBodyRender: (value, tableMeta, updateValue) => {
-
+          
           return (
             <>
             <Button onClick={()=>acceptuser(value)} ><DoneIcon/></Button>
             <Button onClick={()=>rejectuser(value)}><CancelIcon/></Button>
+           
+      <Modal
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box sx={style}>
+          <Typography id="modal-modal-title" variant="h6" component="h2">
+            Are you certain you want to accept this applicant?
+          </Typography>
+         <Button sx={{marginTop:"2rem"}} variant='contained' onClick={()=>acceptuser(value)}>Approve</Button>
+        </Box>
+      </Modal>
+      <Modal
+        open={open2}
+        onClose={handleClose2}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box sx={style}>
+          <Typography id="modal-modal-title" variant="h6" component="h2">
+            Are you certain you want to reject this applicant?
+          </Typography>
+         <Button sx={{marginTop:"2rem"}} variant='contained' onClick={()=>rejectuser(value)}>Approve</Button>
+        </Box>
+      </Modal>
             </>
           );
         }
@@ -320,8 +336,8 @@ function Applicants() {
   };
 
   return (
- <>
-    {decoded.userRole =="hr" ? <>
+ <div style={{backgroundColor:"rgb(248, 248, 248)",minHeight:"100vh"}} >
+    {JSON.parse(localStorage.getItem("User")) !== null ?decoded.userRole =="hr" ? <>
     <Navbar/>
     <Sidebar/>
     <div className='container'style={{margin:"auto",width:"80%"}} >
@@ -372,8 +388,8 @@ function Applicants() {
      
         <Button href='http://localhost:3000/hrPanel/jobs' sx={{"border":"0.5px solid gray"}}>Go Back</Button>
     </div>
-    </>:<NotFound/>}
- </>
+    </>:<NotFound/> :<Unauthorized/>}
+ </div>
   )
 }
 
