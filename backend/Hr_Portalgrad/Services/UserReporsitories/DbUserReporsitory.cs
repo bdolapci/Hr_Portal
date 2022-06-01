@@ -94,7 +94,31 @@ namespace HR_Portalgrad.Services.UserReporsitories
 
             await _context.SaveChangesAsync();
             return us;
-        }   
+        }
+        public async Task<IEnumerable> GetSingleUserApplicant(int id)
+        {
+
+            var us = await (from p in _context.Users
+                            join p2 in _context.Applicants
+                            on p.Id equals p2.UserId
+                            where id == p2.Id
+                            select new
+                            {
+                                p.email,
+                                p.userRole,
+                                p.firstName,
+                                p.lastName,
+                                p2.isAccepted,
+                                p2.Jobsid,
+                                p2.Id,
+                                p2.UserId,
+                                p2.ProfileId
+                            }).ToListAsync();
+
+
+            await _context.SaveChangesAsync();
+            return us;
+        }
         public async Task<IEnumerable> GetUserProfile()
         {
             var us = await (from p in _context.Users

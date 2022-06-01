@@ -188,6 +188,12 @@ namespace HR_Portalgrad.Controller
 
             return await _userReporsitory.GetApplicantsbyUser();
         }
+        [HttpGet("UserApplicantJoin/{id?}")]
+        public async Task<IEnumerable> UserApplicantJoinSingle(int id)
+        {
+
+            return await _userReporsitory.GetSingleUserApplicant(id);
+        }
         [HttpGet("ProfileUserJoin")]
         public async Task<IEnumerable> ProfileUserJoin()
         {

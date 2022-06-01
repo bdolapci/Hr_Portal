@@ -26,6 +26,7 @@ namespace HR_Portalgrad.Services.UserReporsitories
         Task<User> RemoveUser(int id);
 
         Task <IEnumerable> GetApplicantsbyUser();
+        Task<IEnumerable> GetSingleUserApplicant(int id);
         Task<IEnumerable> GetUserProfile();
         Task<User> ChangePassword(int id, string Passwords, string firstName, string lastName, string userRole, string email);
         Task<User> EditUserCountry(int id, string firstName, string lastName, string email, string Passwords, string userRole, string country);
