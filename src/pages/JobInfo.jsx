@@ -78,7 +78,7 @@ function JobInfo(){
             <Navbar />
         {isLoading ? <Spinner /> :
          <div className="main" style={{justifyContent:"center",alignItems:"center",textAlign:"center",marginTop:"5%",minHeight:"50rem"}}>
-         <div className="middle" style={{justifyContent:"center",textAlign:"center",display:"flex",flexDirection:"row",margin:"5%"}}>
+          <div className="middle" style={{justifyContent:"center",textAlign:"center",display:"flex",flexDirection:"row",margin:"5%"}}>
              <div className="leftpart" style={{padding:"2%",display:"flex",flexDirection:"column",width:"50%",boxShadow:"rgb(0 0 0 / 16%) 0px 1px 4px",borderRadius:"1.125rem",minHeight:"50rem"}} >
                  <div className="titlecategory">
                      <h1 style={{color:"rgb(25, 118, 210)"}}>{job.Name}</h1>
@@ -92,7 +92,7 @@ function JobInfo(){
              </div>
              <div className="rightpart" style={{width:"20%",boxShadow:"rgb(0 0 0 / 16%) 0px 1px 4px",marginLeft:"5%",borderRadius:"1.125rem",height:"35rem"}}>
             {job.photo=="" ? <img src={banner} style={{maxWidth:"250px",marginTop:"5%"}} alt="empty"/> :
-             <img style={{maxWidth:"250px",marginTop:"5%"}} src={"https://hrportal.blob.core.windows.net/uploadfile/"+job.photo} alt="banner"></img>}
+             <img style={{maxWidth:"250px", maxHeight:"200px",marginTop:"5%"}} src={"https://hrportal.blob.core.windows.net/uploadfile/"+job.photo} alt="banner"></img>}
                   <h3 style={{color:"rgb(25, 118, 210)"}}>Category <br/><span style={{fontWeight:"normal",color:"black"}}>{job.category}</span></h3>
                  <h3 style={{color:"rgb(25, 118, 210)"}}>HR Name <br/><span style={{fontWeight:"normal",color:"black"}}> {user.firstName} {user.lastName} </span></h3>
                  <h3 style={{color:"rgb(25, 118, 210)"}}>HR Email <br/> <span style={{fontWeight:"normal",color:"black"}}>{user.email}</span></h3>

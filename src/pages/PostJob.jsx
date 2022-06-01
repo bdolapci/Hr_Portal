@@ -73,28 +73,36 @@ console.log(error)
 const [value, setValue] = React.useState(null);
 const postJob =async()=>{
   try {
-    const res=await axios.post(
-      "https://localhost:44361/api/Home/Jobs",
-    {
-      UserId:decoded.id,
-      Name: `${name}`,
-      Date: `${value}`,
-      description: `${description}`,
-      category: `${category}`,
-      photo: `${nameoffile}`,
-    })
-    console.log(res)
-    console.log(res.data)
+    if(fileName==undefined){
+      const res=await axios.post(
+        "https://localhost:44361/api/Home/Jobs",
+      {
+        UserId:decoded.id,
+        Name: `${name}`,
+        Date: `${value}`,
+        description: `${description}`,
+        category: `${category}`,
+        photo: "",
+      })
+    }
+    else{
+      const res=await axios.post(
+        "https://localhost:44361/api/Home/Jobs",
+      {
+        UserId:decoded.id,
+        Name: `${name}`,
+        Date: `${value}`,
+        description: `${description}`,
+        category: `${category}`,
+        photo: `${nameoffile}`,
+      })
+    }
+
     nav("/hrPanel/home")
   } catch (error) {
     console.log(error)
   }
 }
-const dat=new Date().toISOString()
-
-  const Input = styled('input')({
-    display: 'none',
-  });
   return (
     <>
    {decoded.userRole =="hr" ? <>

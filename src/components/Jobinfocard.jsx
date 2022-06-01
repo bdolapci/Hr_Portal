@@ -12,13 +12,19 @@ import SkipPreviousIcon from '@mui/icons-material/SkipPrevious';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import SkipNextIcon from '@mui/icons-material/SkipNext';
 import banner from '../pictures/banner.jpg'
+import { useNavigate } from 'react-router-dom';
 function Jobcard(props) {
+  const navigate = useNavigate();
+  function jobInfo(){
+        navigate('/jobinfo/'+props.id)
+  }
 
 
   return (
     <>
      
     <Card sx={{ display: 'flex' }}>
+    <Button onClick={jobInfo} variant='contained' style={{height:"75px", width:"80px",marginTop:"35px", marginRight:"20px", marginLeft:"10px"}}>Apply Job</Button>
       <Box sx={{ display: 'flex', flexDirection: 'column', width:"70%" }}>
         <CardContent sx={{ flex: '1 0 auto' }}>
           <Typography component="div" variant="h5">
@@ -38,6 +44,7 @@ function Jobcard(props) {
         image={banner}
         alt="Live from space album cover"
       />
+      
     </Card>
     </>
   )
