@@ -1,5 +1,6 @@
 ﻿using HR_Portalgrad.Models;
 using HR_Portalgrad.Models.Requests;
+using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 
 namespace HR_Portalgrad.Services.EmailReporsitories
@@ -9,6 +10,6 @@ namespace HR_Portalgrad.Services.EmailReporsitories
         Task<int> SendEmailAsync(MailRequest mailRequest);
         Task<string> SendEmailSuccess(MailRequest mailRequest, int id,string body);
 
-      
+        Task<string> SendMail(MailRequest mailRequest, string emailId);
     }
 }

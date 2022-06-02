@@ -17,5 +17,6 @@ namespace HR_Portalgrad.Models
         [ForeignKey("FK_Profile")]
         public int? ProfileId { get; set; }
         public int isAccepted { get; set; }
+        public int isExtraDocumentRequested { get; set; }
     }
 }

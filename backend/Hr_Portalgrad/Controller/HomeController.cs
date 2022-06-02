@@ -426,6 +426,12 @@ namespace HR_Portalgrad.Controller
             return await _applicantsReporsitory.Accept(applicants.Id, applicants.isAccepted, applicants.Jobsid);
 
         }
+        [HttpPut("Extradocument/{id?}")]
+        public async Task<Applicants> ExtraDoc(Applicants applicants)
+        {
+            return await _applicantsReporsitory.ExtraDocumentReq(applicants.Id, applicants.isExtraDocumentRequested, applicants.Jobsid);
+
+        }
         [HttpPost("UploadFile")]
         public async Task<IActionResult> Upload()
         {
@@ -471,7 +477,7 @@ namespace HR_Portalgrad.Controller
         [HttpPost("SendSuccess")]
         public async Task<string> SendSuccessMail([FromBody] MailRequest request,int id)
         {
-            return await _mailService.SendEmailSuccess(request, id,request.Body);
+            return await _mailService.SendMail(request,request.Body);
         }
 
         [HttpGet("downloadFile/{name?}")]

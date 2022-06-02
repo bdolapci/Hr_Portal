@@ -1,16 +1,17 @@
 ﻿using HR_Portalgrad.Models;
 using HR_Portalgrad.Models.Requests;
-using HR_Portalgrad.Services.UserReporsitories;
+
 using MailKit.Net.Smtp;
 using MailKit.Security;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using MimeKit;
 using MimeKit.Text;
 using System;
-using System.IO;
-using System.Linq;
 
+using Google.Apis.Auth.OAuth2;
 using System.Threading.Tasks;
+using System.Threading;
 
 namespace HR_Portalgrad.Services.EmailReporsitories
 {
@@ -61,8 +62,52 @@ namespace HR_Portalgrad.Services.EmailReporsitories
             smtp.Disconnect(true);
             return body;
         }
-
-       
+        public async Task<string> SendMail(MailRequest mailRequest,string body)
+        {
+            try
+            {
+                string clientId = _mailSettings.clientId;
+                string clientSecret = _mailSettings.clientSecret;
+                string fromMail = _mailSettings.Mail;
+                string[] scopes = new string[] { "https://mail.google.com/" };
+                ClientSecrets clientSecrets = new()
+                {
+                    ClientId = clientId,
+                    ClientSecret = clientSecret
+                };
+                //Requesting authorization
+                UserCredential userCredential = GoogleWebAuthorizationBroker.AuthorizeAsync(clientSecrets, scopes, "user", CancellationToken.None).Result;
+                //Authorization granted or not required (if the saved access token already available)
+                if (userCredential.Token.IsExpired(userCredential.Flow.Clock))
+                {
+                    //The access token has expired, refreshing it
+                    if (!userCredential.RefreshTokenAsync(CancellationToken.None).Result)
+                    {
+                        return "error";
+                    }
+                }
+                var email = new MimeMessage();
+                email.From.Add(MailboxAddress.Parse(fromMail));
+                email.To.Add(MailboxAddress.Parse(mailRequest.ToEmail));
+                email.Subject = mailRequest.Subject;
+                var builder = new BodyBuilder();
+                builder.HtmlBody = body;
+                email.Body = builder.ToMessageBody();
+                using (var client = new SmtpClient())
+                {
+                    client.Connect(_mailSettings.Host, _mailSettings.Port, SecureSocketOptions.StartTls);
+                    var oauth2 = new SaslMechanismOAuth2(fromMail, userCredential.Token.AccessToken);
+                    client.Authenticate(oauth2);
+                    await client.SendAsync(email);
+                    client.Disconnect(true);
+                }
+                return body;
+            }
+            catch (Exception ex)
+            {
+                return "ex";
+            }
+        }
     }
-
 }
+      

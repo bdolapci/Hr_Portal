@@ -39,6 +39,14 @@ namespace HR_Portalgrad.Services.ApplicantsReporsitories
             await _context.SaveChangesAsync();
             return us;
         }
+        public async Task<Applicants> ExtraDocumentReq(int id, int isExtraDocumentRequested, int Jobsid)
+        {
+            var us = new Applicants { Id = id, isExtraDocumentRequested = isExtraDocumentRequested, Jobsid = Jobsid };
+            _context.Applicants.Attach(us);
+            _context.Entry(us).Property(x => x.isExtraDocumentRequested).IsModified = true;
+            await _context.SaveChangesAsync();
+            return us;
+        }
 
         public async Task<IEnumerable> GetAppliedJobs()
         {
@@ -53,7 +61,8 @@ namespace HR_Portalgrad.Services.ApplicantsReporsitories
                                p2.Jobsid,
                                p2.Id,
                                p2.UserId,
-                               p2.ProfileId
+                               p2.ProfileId,
+                               p2.isExtraDocumentRequested
                            }).ToListAsync();
             await _context.SaveChangesAsync();
             return us;

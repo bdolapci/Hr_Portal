@@ -11,6 +11,7 @@ namespace HR_Portalgrad.Services.ApplicantsReporsitories
         Task<Applicants> CreateApplicants(Applicants applicants);
 
         Task<Applicants> Accept(int id,int isAccepted,int Jobsid);
+        Task<Applicants> ExtraDocumentReq(int id, int isExtraDocumentRequested, int Jobsid);
         Task<IEnumerable> GetAppliedJobs();
     }
 }

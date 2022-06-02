@@ -132,7 +132,8 @@ namespace HR_Portalgrad.Services.UserReporsitories
                                 p.country,
                                 p.gender,
                                 p2.Id,
-                                p2.Userid
+                                p2.Userid,
+                                p.email
                             }).ToListAsync();
             await _context.SaveChangesAsync();
             return us;
@@ -235,5 +236,6 @@ namespace HR_Portalgrad.Services.UserReporsitories
             await _context.SaveChangesAsync();
             return user;
         }
+       
     }
 }
