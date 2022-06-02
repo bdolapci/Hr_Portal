@@ -83,7 +83,7 @@ function Home() {
         }
       }
       setJob(b)
-      console.log(a)
+     
       setIsLoading(false);
     }
     catch(error){
@@ -113,6 +113,17 @@ function Home() {
   const month = newDate.getMonth()+1;
   const day = newDate.getDate();
  // const job2 ={"Name":["deneme","deneme2"],}
+  const [input, setInput] = React.useState("")
+  const [output, setOutput] = React.useState(job)
+
+  React.useEffect(()=>{
+    setOutput([])
+    job.filter(val=>{
+      if(val.Name.toLowerCase().includes(input.toLowerCase())){
+        setOutput(output=>[...output,val])
+      }
+    })
+  },[input])
   
   return (
 
@@ -127,10 +138,20 @@ function Home() {
   placeholder="Search Job"
   id="outlined-basic"
   variant="outlined"
+  onChange={e=>setInput(e.target.value)}
 ></TextField></Box>
     <div style={gridstyle} className="grid">
-    {job.map((value,index)=>{
-      console.log(value.Date.slice(3,5),year)
+    {output.length>0 ?
+      output.map((value,index)=>{
+     if(value.Date.slice(9,13)>year || value.Date.slice(9,13)==year && value.Date.slice(3,5)>month || 
+     value.Date.slice(9,13)==year && value.Date.slice(3,5)==month && value.Date.slice(6,8)>day){
+       return(
+         <Jobinfocard key={index} id={value.Id} Name={value.Name} Category={value.category} photo={value.photo}/>
+       )
+     }
+ })
+     : job.map((value,index)=>{
+     
 
         if(value.Date.slice(9,13)>year || value.Date.slice(9,13)==year && value.Date.slice(3,5)>month || 
         value.Date.slice(9,13)==year && value.Date.slice(3,5)==month && value.Date.slice(6,8)>day){

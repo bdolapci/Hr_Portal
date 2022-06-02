@@ -7,7 +7,7 @@ import Tab from '@mui/material/Tab';
 import PropTypes from 'prop-types';
 import Typography from '@mui/material/Typography';
 import MUIDataTable from "mui-datatables";
-import { Button } from '@mui/material';
+import { Alert, Button } from '@mui/material';
 import { Box } from '@mui/material';
 import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
 import FileDownloadIcon from '@mui/icons-material/FileDownload';
@@ -19,6 +19,7 @@ import Unauthorized from '../components/Unauthorized';
 function Documents() {
     let { id } = useParams();
     let { jobid } = useParams();
+
     if(JSON.parse(localStorage.getItem("User")) !== null){
       var token=localStorage.getItem("User");
       var decoded = jwt_decode(token);
@@ -64,41 +65,44 @@ function Documents() {
           console.log(error)
         }
           }
-          // const viewfile=async(name)=>{
-          //   try {
-          //     const res=await axios.get(`https://localhost:44361/api/Home/downloadFile/${name}`,{
-          //       responseType: 'blob',
-          //     })
-          //     const readder = new FileReader();
-          //    readder.onload = function(e) {
-          //       var contents = e.target.result;
-          //       var w = window.open();
-          //       w.document.write(contents);
-          //     };
-          //     readder.readAsText(res.data);
-          //     const text=await new Response(res.data).text();
-          //     console.log(res.data,"")
-          //     const doc = new jsPDF();
-          //     doc.text(10,20,text,{ maxWidth:200 })
-          //     doc.output('dataurlnewwindow');
-        
-          //   } catch (error) {
-               
-          //     console.log(error)
-          //   }
-          // }
-          const [getJob,setGetJob]=React.useState('')
-          const getsinglejob =async()=>{
+          const [getSingleapplicant, setGetSingleapplicant] = React.useState("");
+
+        const getApplicant =async()=>{
+          try {
+            const res=await axios.get(`https://localhost:44361/api/Home/Applicants`,)
+            for(var i=0;i<res.data.length;i++){
+              if(res.data[i].UserId==id){
+                setGetSingleapplicant(res.data[i])
+              }
+            }
+            
+          } catch (error) {
+            console.log(error)
+          }
+        }
+        const [alertclosed, setAlertclosed] = React.useState(false);
+          React.useEffect(()=>{
+            getApplicant()
+          },[])
+
+          const isextraclose =async()=>{
+            
             try {
-              const res =await axios.get("https://localhost:44361/api/Home/Jobs/"+id)
-              setGetJob(res.data)
+              const res =await axios.put(`https://localhost:44361/api/Home/Extradocument/${getSingleapplicant.Id}`,{
+                Id:getSingleapplicant.Id,  
+                Jobsid:id,
+                isExtraDocumentRequested:0
+                },)
+               setTimeout(()=>{
+                  setAlertclosed(false)
+                  window.location.reload(true)
+               },2000)
+               setAlertclosed(true)
+              
             } catch (error) {
               console.log(error)
             }
           }
-          React.useEffect(()=>{
-            getsinglejob()
-          },[])
           
   return (
     <div style={{backgroundColor:"rgb(248, 248, 248)",minHeight:"100vh"}}>
@@ -106,9 +110,10 @@ function Documents() {
       <Navbar />
         <SideBar />
         <div className='container'style={{margin:"auto",width:"80%",marginTop:"10rem"}} >
-          <h1>
+         {alertclosed?<Alert severity='success'>Document upload to applicant closed successfully</Alert>:""} 
+          <Typography variant='h3' sx={{color:"rgb(25, 118, 210)"}}>
             Uploaded Files
-          </h1>
+          </Typography>
          <Box sx={{boxShadow: "rgb(0 0 0 / 16%) 0px 1px 4px",borderRadius:"1.125rem",padding:"20px",backgroundColor:"white  "}}>
            {getFiles ? getFiles.map((item,index)=>{
             
@@ -123,7 +128,9 @@ function Documents() {
             })
            :""}
          </Box>
-        <Button variant='contained' href='http://localhost:3000/hrPanel/jobs' sx={{"border":"0.5px solid gray,",marginTop:"5%"}}>Go Back</Button>
+       {getSingleapplicant.isExtraDocumentRequested==0? <Button disabled  variant='contained' sx={{"border":"0.5px solid gray,",marginTop:"5%"}}>Close Extra Document Upload</Button>:
+        <Button onClick={isextraclose} variant='contained' sx={{"border":"0.5px solid gray,",marginTop:"5%"}}>Close Extra Document Upload</Button>}
+        <Button variant='contained' href='http://localhost:3000/hrPanel/jobs' sx={{"border":"0.5px solid gray,",marginTop:"5%",marginBottom:"5%"}}>Go Back</Button>
     </div>
       </>: <NotFound/>:<Unauthorized/>}
     </div>

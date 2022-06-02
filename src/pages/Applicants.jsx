@@ -2,7 +2,7 @@ import React from 'react'
 import Navbar  from '../components/Navbar';
 import  Sidebar  from '../components/SideBar';
 import '../styles/Applicants.scss'
-import { TextField } from '@mui/material';
+import { Alert, TextField } from '@mui/material';
 import { Box } from '@mui/material';
 import OneUser from '../components/OneUser';
 import { useEffect } from 'react';
@@ -23,6 +23,7 @@ import { useParams } from "react-router-dom";
 import Unauthorized from '../components/Unauthorized';
 import jwt_decode  from 'jwt-decode';
 import NotFound from '../components/NotFound';
+import AddBoxIcon from '@mui/icons-material/AddBox';
 import Modal from '@mui/material/Modal';
 function Applicants() {
   if(JSON.parse(localStorage.getItem("User")) !== null){
@@ -70,9 +71,9 @@ function Applicants() {
   
   const[user,setUser]=React.useState([]);
 
-  const[accepteduser,setAcceptedUser]=React.useState("");
-  const[rejecteduser,setRejectedUser]=React.useState("");
-  const[userIdhold,setUserIdhold]=React.useState("");
+  const[accepteduser,setAcceptedUser]=React.useState([]);
+  const[rejecteduser,setRejectedUser]=React.useState([]);
+
 
   const combined =async()=>{
      axios.get(`https://localhost:44361/api/Home/UserApplicantJoin`,{
@@ -100,7 +101,6 @@ function Applicants() {
     })
   }  
   const [job,setJob]=React.useState([]);
-  
   useEffect(()=>{
     axios.get("https://localhost:44361/api/Home/Jobs",{
     }).then((res)=>{ 
@@ -111,9 +111,10 @@ function Applicants() {
         }
       
     })
-   
+
  
 },[]);
+
 const style = {
   position: 'absolute',
   top: '50%',
@@ -125,72 +126,106 @@ const style = {
   boxShadow: 24,
   p: 4,
 };
-const [open, setOpen] = React.useState(false);
-const [open2, setOpen2] = React.useState(false);
-const handleOpen = () => setOpen(true);
-const handleClose = () => setOpen(false);
-const handleOpen2 = () => setOpen2(true);
-const handleClose2 = () => setOpen2(false);
+
+const [open3, setOpen3] = React.useState(false);
+
+const handleOpen3 = () => setOpen3(true);
+const handleClose3 = () => setOpen3(false);
 
   useEffect(()=>{
     combined();
-   
+ 
   },[]);
-  
-  const [singleApplicant,setSingleApplicant]=React.useState();
 
+  const [message,setMessage]=React.useState("");
+  
+ 
   const acceptuser=async(Id)=>{
-    handleOpen();
-   try {
+   
+    let x;
+    for(let i=0;i<user.length;i++){
+      if(user && user[i].Id==Id){
+         x=user[i].email
+      }
+    }
+   try {  
      const res =await axios.put(`https://localhost:44361/api/Home/AcceptApplicants/${Id}`,{
       Id:Id,
       Jobsid:id,
       isAccepted:1
      },)
-     for(let i=0;i<user.length;i++){
-      if(user && user[i].Id==Id){
-      await setSingleApplicant(user[i].email)
-      }
-    }
-    console.log(singleApplicant)
+
     const res2 = await axios.post(`https://localhost:44361/api/Home/SendSuccess`,
     {
-      ToEmail:`${singleApplicant}`,
+     ToEmail:`${x}`,
       Subject:"Information about our application",
       Body:"We are happy to inform you that you have been accepted to the job"+job.Name+"\n" +"Hr for the Job will contact you soon"
     })
-     window.location.reload(true);
-     console.log(res)
+    window.location.reload(true);
+     
    } catch (error) {
      console.log(error)
    }
   }
   const rejectuser=async(Id)=>{
-    handleOpen2();
+    let y;
+    for(let i=0;i<user.length;i++){
+      if(user && user[i].Id==Id){
+      y=user[i].email
+      }
+    }
     try {
       const res =await axios.put(`https://localhost:44361/api/Home/AcceptApplicants/${Id}`,{
       Id:Id,  
       Jobsid:id,
       isAccepted:2
       },)
-      for(let i=0;i<user.length;i++){
-        if(user && user[i].Id==Id){
-        await setSingleApplicant(user[i].email)
-        }
-      }
+     
       const res2 =await axios.post(`https://localhost:44361/api/Home/SendSuccess`,
       {
-        ToEmail:`${singleApplicant}`,
+        ToEmail:`${y}`,
         Subject:"Information about our application",
         Body:"We regret to inform you that you have not been selected for the job:"+job.Name+"\n" +" We wish you successfull carreer",
       })
       window.location.reload(true);
-      console.log(res)
+    
     } catch (error) {
       console.log(error)
     }
    }
-  
+    const [extradocreqalert,setExtradocreqAlert]=React.useState(false);
+   
+   const requestExtraDocumentMail = async(Id)=>{
+    
+    let f;
+     for(let i=0;i<accepteduser.length;i++){
+      if(accepteduser[i].Id==Id){
+       f=accepteduser[i].email
+      }
+    }
+   
+     try {
+      const res =await axios.put(`https://localhost:44361/api/Home/Extradocument/${Id}`,{
+        Id:Id,  
+        Jobsid:id,
+        isExtraDocumentRequested:1
+        },)
+      const res2 =await axios.post(`https://localhost:44361/api/Home/SendSuccess`,
+      {
+        ToEmail:`${f}`,
+        Subject:"Extra Documents Requested for job "+job.Name,
+        Body:message,
+      })
+      setTimeout(()=>{
+        setExtradocreqAlert(false)
+        window.location.reload(true);
+      },3000)
+        setExtradocreqAlert(true)
+     } catch (error) {
+       console.log(error)
+     }
+   }
+ 
 
   const [value, setValue] = React.useState(0);
   
@@ -245,38 +280,12 @@ const handleClose2 = () => setOpen2(false);
       label: "Accept/Reject Applicants",
       options: {
         customBodyRender: (value, tableMeta, updateValue) => {
-          
+         
           return (
             <>
             <Button onClick={()=>acceptuser(value)} ><DoneIcon/></Button>
             <Button onClick={()=>rejectuser(value)}><CancelIcon/></Button>
-           
-      <Modal
-        open={open}
-        onClose={handleClose}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
-      >
-        <Box sx={style}>
-          <Typography id="modal-modal-title" variant="h6" component="h2">
-            Are you certain you want to accept this applicant?
-          </Typography>
-         <Button sx={{marginTop:"2rem"}} variant='contained' onClick={()=>acceptuser(value)}>Approve</Button>
-        </Box>
-      </Modal>
-      <Modal
-        open={open2}
-        onClose={handleClose2}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
-      >
-        <Box sx={style}>
-          <Typography id="modal-modal-title" variant="h6" component="h2">
-            Are you certain you want to reject this applicant?
-          </Typography>
-         <Button sx={{marginTop:"2rem"}} variant='contained' onClick={()=>rejectuser(value)}>Approve</Button>
-        </Box>
-      </Modal>
+        
             </>
           );
         }
@@ -325,6 +334,67 @@ const handleClose2 = () => setOpen2(false);
       }
     },
   ]
+  const columns3 = [
+    {
+      name:"firstName",
+      label:"First Name",
+    },
+    {
+      name:"lastName",
+      label:"Last Name",
+    },
+    {
+      name:"email",
+      label:"Email",
+    },
+    {
+      name: "ProfileId",
+      label:"Display Profile",
+      options: {
+        customBodyRender: (value, tableMeta, updateValue) => {
+          let a="/profile"+"/"+value
+          return (
+            <>
+            <Button href={a}><RemoveRedEyeIcon/></Button>
+            </>
+          );
+        }
+      }
+    },
+    {
+      name: "UserId",
+      label: "Display Documents",
+      options: {
+        customBodyRender: (value, tableMeta, updateValue) => {
+          let a="/hrPanel/applicants/"+id+"/documents/"+value
+          return (
+            <>
+            <Button href={a}><RemoveRedEyeIcon/></Button>
+            </>
+          );
+        }
+      }
+    },
+    {
+      name: "Id",
+      label: "Request Extra Documents",
+      options: {
+        customBodyRender: (value, tableMeta, updateValue) => {
+         
+          return (
+            <>
+            <Button variant='contained' onClick={ handleOpen3}>Create Mail</Button>
+            {message=="" ?
+             <Button disabled sx={{marginLeft:"1rem"}} variant='contained' onClick={()=>{requestExtraDocumentMail(value)}} >Send Mail(Closed)</Button>
+            : <Button sx={{marginLeft:"1rem"}} variant='contained' onClick={()=>{requestExtraDocumentMail(value)}} >Send Mail</Button>}
+           
+        
+            </>
+          );
+        }
+      }
+    },
+  ]
 
   const options = {
     filterType: 'checkbox',
@@ -346,7 +416,9 @@ const handleClose2 = () => setOpen2(false);
     <Tab label="Accepted" {...a11yProps(1)}/>
     <Tab label="Rejected" {...a11yProps(2)}/>
     </Tabs>
+    {extradocreqalert ? <Alert severity="success">Mail Sended Reloading Page in 3s</Alert> :""}
     <TabPanel value={value} index={0}>  
+
     <MUIDataTable
 
       title={<><Box>
@@ -368,7 +440,7 @@ const handleClose2 = () => setOpen2(false);
         </Box>
         </>}
         data={accepteduser}
-        columns={columns2}
+        columns={columns3}
         options={options}
         />
     </TabPanel>
@@ -385,6 +457,42 @@ const handleClose2 = () => setOpen2(false);
       options={options}
       />
     </TabPanel>
+    <Modal
+        open={open3}
+        onClose={handleClose3}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box sx={{
+            position: 'absolute',
+            top: '50%',
+            left: '50%',
+            transform: 'translate(-50%, -50%)',
+            width: 600,
+            bgcolor: 'background.paper',
+            border: '2px solid #000',
+            boxShadow: 24,
+            p: 4,
+            display: 'flex',
+            flexDirection: 'column',
+        }}>
+          <Typography id="modal-modal-title" variant="h6" component="h2" sx={{marginBottom:"5%"}}>
+            Request Extra Documents from Applicant
+          </Typography>
+          <TextField 
+          id="outlined-basic"
+          multiline
+          rows={8}
+          placeholder="message"
+          label="Write your message here"
+          onChange={(e)=>setMessage(e.target.value)}
+          value={message}
+          key="very_unique_key"
+          
+          />
+       
+        </Box>
+      </Modal>
      
         <Button href='http://localhost:3000/hrPanel/jobs' sx={{"border":"0.5px solid gray"}}>Go Back</Button>
     </div>

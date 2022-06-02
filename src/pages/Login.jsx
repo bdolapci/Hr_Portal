@@ -20,6 +20,8 @@ import Step from '@mui/material/Step';
 import StepLabel from '@mui/material/StepLabel';
 import Typography from '@mui/material/Typography';
 import HttpsIcon from '@mui/icons-material/Https';
+
+import "../styles/Login.scss"
 function Login() {
   //let Navigate =useNavigate();
   const[email,setEmail]=React.useState("");
@@ -270,6 +272,7 @@ function Login() {
       </ul>
     </header>
     <section className='body-register'>
+      
       <div className="register-form" >
           <div className="register-form-body" style={{backgrounColor:"white"}} >
             <h1 style={{borderBottom: "6px solid #1976d2"}}>Log In</h1>
