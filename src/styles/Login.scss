@@ -1,0 +1,182 @@
+header{
+    ul{
+        li{
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-direction: row;
+            p{
+                margin-right: 1rem;
+            }
+            button{
+                padding: 9px 20px 9px 20px;
+                border-radius: 1.125rem;
+                background-color: rgb(86, 136, 211);
+                color: white;
+            }
+            button:hover{
+                background-color: #5065c5;
+                cursor: pointer;
+            }
+        }
+    }
+}
+
+
+section{
+    min-height: 80vh;
+    .login-form{
+        justify-content: center;
+        display: flex;
+        align-items: center;
+       
+        .loginholder{
+           
+            margin-top: 5%;
+            margin-right: 10%;
+            margin-left: 10%;
+            box-shadow: rgb(149 157 165 / 20%) 0px 8px 24px;
+            width: 100%;
+            display: flex;
+            flex-direction: row;
+            background-color: white;
+
+            .images{
+                position: absolute;
+               
+                width: 38rem;
+                z-index: 0;
+                top: 49.5%;
+                left: 10%;
+            
+            }
+            .signinsvg{
+                position: absolute;
+    width: 35rem;
+    z-index: 0;
+    top: 40%;
+    left: 18%;
+
+            }
+        .leftpart{
+            width: 60%;
+            justify-content: center;
+            display: flex;
+            align-items: center;
+            flex-direction: column;
+            
+        }
+
+
+        .login-form-body{
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: rgba(0, 0, 0, 0.16) 0px 10px 36px 0px, rgba(0, 0, 0, 0.06) 0px 0px 0px 1px;
+            width: 40%;
+            margin-top: 5rem;
+            margin-bottom: 5rem;
+            margin-right: 5rem;
+            margin-left: 5rem;
+            border-radius: 1.125rem;
+            flex-direction: column;
+            
+            padding: 8%;
+            h1{
+                text-align: center;
+            }
+            form{
+                display: flex;
+                flex-direction: column;
+                width: 100%;
+                .name{
+                    .lastname{
+                        margin-left : 1rem;
+                    }
+                }
+
+                .other{
+                    display: flex;
+                    flex-direction: column;
+                    margin-top: 5%;
+
+                    .password{
+                        margin-top: 5%;
+                    }
+                    .count{
+                        margin-top: 5%;
+                        margin-bottom: 5%;
+                    }
+                }
+                .line{
+                    width: 100%;
+                    margin-top: 2rem;
+                }
+                .usegoogle{
+                    text-align: center;
+                }
+                .terms{
+                    display: flex;
+                    flex-direction: row;
+                    align-items: center;
+                    text-align: center;
+                    
+                    
+                }
+                .representetive{
+                    display: flex;
+                    flex-direction: row;
+                    align-items: center;
+                    text-align: center;
+                }
+                a{
+                    text-align: center;
+                    button{
+                        padding: 12px 60px 12px 60px;
+                        border-radius: 1.125rem;
+                        background-color: rgb(86, 136, 211);
+                        color: white;
+                    }
+                }
+                .googlelogin{
+                    background-color: #4285f4 !important;
+                    color: #fff !important;
+                    text-align: center !important;
+                    height: 40px !important;
+                    padding: 0 !important;
+                    display: flex !important;
+                    align-items: center !important;
+                    border-radius: 1.125rem !important;
+
+                }
+                button{
+                    margin-top: 5%;
+                    padding: 10px;
+                    margin-top: 2rem;
+                    box-shadow: rgb(25, 118, 210,0.27)0px 1px 1px, rgb(25, 118, 210,0.27) 0px 2px 2px, rgb(25, 118, 210,0.27) 0px 4px 4px, rgb(25, 118, 210,0.07) 0px 8px 8px, rgb(25, 118, 210,0.07) 0px 16px 16px;
+                    background-color: rgb(25, 118, 210);
+                    color: white;
+                    
+
+                    a{
+                        color: white;
+                        text-decoration: none;
+                    }
+                }
+                button:hover{
+                    background-color: #5065c5;
+                    cursor: pointer;
+                }
+                p{
+                    text-align: center;
+
+                    span{
+                        color: #5065c5;
+                    }
+                }
+            }
+
+        }
+    }
+    }
+}

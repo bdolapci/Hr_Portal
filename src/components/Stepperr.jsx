@@ -33,7 +33,8 @@ import Checkbox from '@mui/material/Checkbox';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import CssBaseline from '@mui/material/CssBaseline';
 import { useParams } from "react-router-dom";
-
+import employee from "../pictures/employee.svg";
+import client from "../pictures/client.svg";
 const steps = ['Enter your information  ','Education Background' ,'Job Experience',"Overview"];
 
 function Stepperr() {
@@ -243,6 +244,7 @@ function Stepperr() {
           variant="outlined"
         />
          <TextField
+          sx={{marginTop:"3%"}}
           defaultValue={yearsOfExperience3}
           onChange={yearsOfExperienceHandler3 }
           id="outlined-number"
@@ -284,6 +286,7 @@ function Stepperr() {
           variant="outlined"
         />
          <TextField
+         sx={{marginTop:"3%"}}
           defaultValue={yearsOfExperience2}
           onChange={yearsOfExperienceHandler2 }
           id="outlined-required"
@@ -334,6 +337,7 @@ function Stepperr() {
     onChange={degreeHandler3 }
   />
    <TextField
+    sx={{marginTop:"3%"}}
     defaultValue={gpa3}
     type={'number'}
     id="outlined-number"
@@ -378,6 +382,7 @@ function Stepperr() {
     variant="outlined"
   />
    <TextField
+   sx={{marginTop:"3%"}}
     defaultValue={gpa2}
     type={'number'}
     onChange={gpaHandler2 }
@@ -443,10 +448,14 @@ function Stepperr() {
   function isUserHandler(e){
     if(cheked==false){
       setIsUser("hr");
+      setStyle(middle2)
+
     }else{
       setIsUser("user");
+      setStyle(middle)
     }
     setCheked(e.target.checked)
+    
   }
   function confirmPasswordHandler(e){
     setConfirmPassword(e.target.value);
@@ -515,10 +524,47 @@ const newDate =new Date();
   const [passwordalert,setPasswordAlert]=React.useState(false);
   const [passwordalert2,setPasswordAlert2]=React.useState(false);
   const [emailalert,setEmailAlert]=React.useState(false);
+  
+  const middle ={
+    width:"90%",
+    boxShadow:" 0px 2px 1px -1px rgb(0 0 0 / 20%), 0px 1px 1px 0px rgb(0 0 0 / 14%), 0px 1px 3px 0px rgb(0 0 0 / 12%)"
+    ,borderRadius: "1.125rem",
+  padding: "2%",
+  backgroundColor:"white",
+  marginBottom:"3%",
+  display:"flex"
+  }
+  const middle2 ={
+   
+    width:"90%",
+    boxShadow:" 0px 2px 1px -1px rgb(0 0 0 / 20%), 0px 1px 1px 0px rgb(0 0 0 / 14%), 0px 1px 3px 0px rgb(0 0 0 / 12%)"
+    ,borderRadius: "1.125rem",
+  padding: "2%",
+  backgroundColor:"white",
+  marginBottom:"3%",
+  display:"flex",
+  flexDirection:"row-reverse"
+  }
+
+  const [style,setStyle]=React.useState(middle)
+ 
   return (
-    <Box sx={{ width: '100%' }}>
-         {isUser=="user"?  <Typography variant="h4" sx={{marginBottom:"2%"}}>Register as an <span style={{color:"rgb(25, 118, 210)"}}>Employee</span> to work for <br></br> Worldwide <span style={{color:"rgb(25, 118, 210)"}}>Clients</span></Typography>: 
-             <Typography variant="h4" sx={{marginBottom:"2%"}}>Register as a <span style={{color:"rgb(25, 118, 210)"}}>Client</span> to hire  <br></br> Top <span style={{color:"rgb(25, 118, 210)"}}>Employees</span></Typography> }
+   <>
+       <div  style={style}>
+      <div style={{width:"50%",display:"flex",justifyContent:"center",alignItems:"center",flexDirection:"column"}} className="leftpart"> 
+      {isUser=="user"?
+       <>
+        <Typography variant="h4" sx={{marginBottom:"10%"}}>Register as an <span style={{color:"rgb(25, 118, 210)"}}>Employee</span> to work for <br></br> Worldwide <span style={{color:"rgb(25, 118, 210)"}}>Clients</span></Typography>
+        <img style={{width: "90%"}} src={employee} alt="employee"/>
+       </>
+      :
+      <>
+      <Typography variant="h4" sx={{marginBottom:"10%"}}>Register as a <span style={{color:"rgb(25, 118, 210)"}}>Client</span> to hire  <br></br> Top <span style={{color:"rgb(25, 118, 210)"}}>Employees</span></Typography>
+      <img style={{width: "90%"}} src={client} alt="client"/>
+      </> }
+             </div>
+    <Box sx={{ width: '50%',  boxShadow: "rgb(149 157 165 / 20%) 0px 8px 24px",padding:"4%" }}>
+
       <Stepper activeStep={activeStep}>
         {steps.map((label, index) => {
           const stepProps = {};
@@ -572,6 +618,7 @@ const newDate =new Date();
         <React.Fragment>
            {activeStep === 0 ?( 
              <>
+             <FormControlLabel sx={{marginTop:"2%"}} control={<Checkbox onChange={isUserHandler} />} label="Register as a Company Representetive" />
             <h3>Initial Informations</h3>
         
                         
@@ -703,7 +750,7 @@ const newDate =new Date();
             
                 </Select>     </div>   
        
-               <FormControlLabel  control={<Checkbox onChange={isUserHandler} />} label="Register as a Company Representetive" />
+               
              
               </div>
              </>
@@ -731,6 +778,7 @@ const newDate =new Date();
           variant="outlined"
         />
         <TextField
+        sx={{marginTop:"3%"}}
           defaultValue={gpa}
           id="outlined-number"
           label="GPA"
@@ -791,6 +839,7 @@ const newDate =new Date();
           variant="outlined"
         />
          <TextField
+         sx={{marginTop:"3%"}}
           defaultValue={yearsOfExperience}
           id="outlined-required"
           label="Years of Experience"
@@ -966,6 +1015,12 @@ const newDate =new Date();
    
       </form>
     </Box>
+
+    
+   
+         
+       </div>
+   </>
   );
 }
 

@@ -7,7 +7,7 @@ function Spinner() {
   return (
     <div className="sweet-loading" style={{position:"fixed",
       top: 0, left: 0,
-      transform: "translate(calc(50vw - 50%), calc(50vh - 50%))",}}>
+      transform: "translate(calc(44vw - 50%), calc(40vh - 50%))",}}>
       <PuffLoader color={color} loading={loading}  size={150} />
     </div>
   )

@@ -2,7 +2,7 @@ import React from 'react'
 import  { useState, useMemo } from 'react'
 import "../styles/Navbar.scss"
 import { Link, useNavigate } from 'react-router-dom';
-import "../styles/Register.scss"
+import "../styles/Login.scss"
 import { InputLabel,MenuItem,TextField  } from '@mui/material';
 import countryList from 'react-select-country-list'
 import PersonIcon from '@mui/icons-material/Person';
@@ -20,6 +20,9 @@ import Step from '@mui/material/Step';
 import StepLabel from '@mui/material/StepLabel';
 import Typography from '@mui/material/Typography';
 import HttpsIcon from '@mui/icons-material/Https';
+import circle from '../pictures/circle.png';
+import "../styles/Login.scss"
+import signin from '../pictures/singin.jpg';
 function Login() {
   //let Navigate =useNavigate();
   const[email,setEmail]=React.useState("");
@@ -253,8 +256,8 @@ function Login() {
     };
  
   return (
-      <>
-    <header className='header'>
+      <div style={{backgroundColor:"rgb(248, 248, 248)",minHeight:"100vh"}}>
+    <header className='header' style={{margin:"0 auto 0 auto",width:"50%",borderRadius:"0 0 3rem 3rem"}}>
       <div className="logo">
         <Link to="/">HR Portal</Link>
       </div>
@@ -269,9 +272,18 @@ function Login() {
 
       </ul>
     </header>
-    <section className='body-register'>
-      <div className="register-form" >
-          <div className="register-form-body" >
+    <section className='body-login'>
+      
+      <div className="login-form" >
+      <div className="loginholder">
+        <img className='images' src={circle} alt="circle"/>
+       
+      <div className="leftpart" >
+       <Typography variant="h4" sx={{marginBottom:"29%",marginRight:"20%"}}>Login as an <span style={{color:"rgb(25, 118, 210)"}}>Employee</span> to work for <br></br> Worldwide <span style={{color:"rgb(25, 118, 210)"}}>Clients</span></Typography>
+       <img  className='signinsvg' src={signin} alt="signin" />
+             <Typography variant="h4" sx={{marginTop:"15%",marginLeft:"50%"}}>Login as a <span style={{color:"rgb(25, 118, 210)"}}>Client</span> to hire  <br></br> Top <span style={{color:"rgb(25, 118, 210)"}}>Employees</span></Typography> 
+      </div>
+      <div className="login-form-body" style={{backgrounColor:"white"}} >
             <h1 style={{borderBottom: "6px solid #1976d2"}}>Log In</h1>
             <form
             onSubmit={(e)=>{
@@ -367,12 +379,13 @@ function Login() {
             </Modal> 
           </div>
       </div>
+      </div>
     </section>
     <div style={{position:"fixed",color:"white",background: "rgb(21, 101, 192)",bottom:"0",height:"2rem",width:"100%", boxShadow:" 0px 2px 4px -1px rgb(0 0 0 / 20%), 0px 4px 5px 0px rgb(0 0 0 / 14%), 0px 1px 10px 0px rgb(0 0 0 / 12%)"}}>
         <div className="mid"  style={{justifyContent:"center",textAlign:"center",alignItems:"center",marginTop:"10px"}}>2022 HrPortal. All rights reserved
   </div>
     </div>
-      </>
+      </div>
   )
 }
 

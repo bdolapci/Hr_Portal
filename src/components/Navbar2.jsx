@@ -65,10 +65,10 @@ function Navbar() {
     logout();
   }
   return (
-    <header className='header' sx={{margin:"0px"}}>
-      <div className="logo">
+    <header className='header' style={{margin:"0 auto 0 auto",width:"50%",borderRadius:"0 0 3rem 3rem"}}>
+      <div  className="logo">
         <Link to="/">
-        <Typography variant='h6' sx={{color:"rgb(25, 118, 210)"}}>HR Portal</Typography>
+          <Typography variant='h6' sx={{color:"rgb(25, 118, 210)"}}>HR Portal</Typography>
         </Link>
       </div>
       <ul>

@@ -1,5 +1,5 @@
 import React from "react";
-import Navbar from "../components/Navbar";
+import Navbar2 from "../components/Navbar2";
 import SideBar from "../components/SideBar";
 import { Button, Link, TablePagination, TextField } from "@mui/material";
 import { Box } from "@mui/material";
@@ -18,152 +18,315 @@ import { useParams } from "react-router-dom";
 import Unauthorized from "../components/Unauthorized";
 import Jobinfocard from "../components/Jobinfocard";
 import Footer from "../components/Footer";
+import Spinner from '../components/Spinner';
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import InputLabel from "@mui/material/InputLabel";
 import { Card, CardContent, Typography } from "@mui/material";
-import Stack from "@mui/material/Stack";
-import Jobs from "./Jobs";
 
 function AllJobs() {
-  const [job, setJob] = React.useState([]);
-  const [category, setCategory] = React.useState("");
-  const [filteredJobs, setFilteredJobs] = React.useState([]);
-  const [searchJobs, setSearchJobs] = React.useState("");
+
+
+  const [isLoading, setIsLoading] = React.useState(false);
+  const [isHide, setIsHide] = React.useState(true);
+  const[job,setJob]=React.useState([]);
+  const [getJobInfo, setGetJobInfo] = React.useState("");
+  const [isRemote,setIsRemote]=React.useState("")
+  const [jobType,setJobtype]=React.useState("")
+  const [companyName,setCompanyName]=React.useState("")
+  const [experienceneed,setExperienceneed]=React.useState("")
+
+
+  function jobtypeHandler(e){
+    setJobtype(e.target.value);
+    }
+    function companyNameHandler(e){
+    setCompanyName(e.target.value);
+    }
+    function experienceneedHandler(e){
+    setExperienceneed(e.target.value);
+    }
+    function isRemoteHandler(e){
+    setIsRemote(e.target.value);
+    }
+
+
 
   let Navigate = useNavigate();
-  let a = [];
-  let b = [];
-  const deneme = async () => {
-    //get all jobs
-    try {
-      const res = await axios.get("https://localhost:44361/api/Home/Jobs");
-      for (var i = 0; i < res.data.length; i++) {
-        a.push(res.data[i]);
+  let a  =[]
+  let b = []
+  let c = []
+  const deneme = async()=>{
+    setIsLoading(true);
+    try{
+      const res = await axios.get("https://localhost:44361/api/Home/Jobs")
+      for(var i = 0; i<res.data.length; i++){
+          a.push(res.data[i])
       }
-      a.reverse();
-
-      for (var i = 0; i < a.length; i++) {
-        b.push(a[i]);
+      a.reverse()
+      if(a.length>=10){
+        for(var i = 0; i<10; i++){
+        b.push(a[i])
+    }}else{
+      for(var i = 0; i<a.length; i++){
+        b.push(a[i])
       }
-
-      setJob(b);
-      setFilteredJobs(b);
-    } catch (error) {
-      console.log(error);
+    } 
+      for(var i = 0; i<b.length; i++){
+        if(b[i].Date.includes("Jan")){
+          b[i].Date = b[i].Date.replace("Jan",1)
+        }
+        if(b[i].Date.includes("Feb")){
+          b[i].Date = b[i].Date.replace("Feb",2)
+        }
+        if(b[i].Date.includes("Mar")){
+          b[i].Date = b[i].Date.replace("Mar",3)
+        }
+        if(b[i].Date.includes("Apr")){
+          b[i].Date = b[i].Date.replace("Apr",4)
+        }
+        if(b[i].Date.includes("May")){
+          b[i].Date = b[i].Date.replace("May",5)
+        }
+        if(b[i].Date.includes("Jun")){
+          b[i].Date = b[i].Date.replace("Jun",6)
+        }
+        if(b[i].Date.includes("Jul")){
+          b[i].Date = b[i].Date.replace("Jul",7)
+        }
+        if(b[i].Date.includes("Aug")){
+          b[i].Date = b[i].Date.replace("Aug",8)
+        }
+        if(b[i].Date.includes("Sep")){
+          b[i].Date = b[i].Date.replace("Sep",9)
+        }
+        if(b[i].Date.includes("Oct")){
+          b[i].Date = b[i].Date.replace("Oct",10)
+        }
+        if(b[i].Date.includes("Nov")){
+          b[i].Date = b[i].Date.replace("Nov",11)
+        }
+        if(b[i].Date.includes("Dec")){
+          b[i].Date = b[i].Date.replace("Dec",12)
+        }
+      }
+      setJob(b)
+     
+      setIsLoading(false);
     }
-  };
-  useEffect(() => {
-    deneme();
-  }, []);
+    catch(error){
+      console.log(error)
 
-  const categoryHandler = (e) => {
-    //filter
-    setCategory(e.target.value);
-    if (e.target.value == null) {
-      setFilteredJobs(job);
-    } else {
-      let category = e.target.value;
-      let jobList;
-      if (category) {
-        let keyword = category.toLowerCase();
-        jobList = job.filter((item) =>
-          item.category.toLowerCase().includes(keyword)
-        );
-      } else {
-        jobList = job;
-      }
-      setFilteredJobs(jobList);
     }
-  };
+  }
+    useEffect(()=>{
+      deneme()
+    },[])
 
-  const searchHandler = (e) => {
-    //filter
-    setSearchJobs(e.target.value);
-    if (e.target.value == null) {
-      setFilteredJobs(job);
-    } else {
-      let search = e.target.value;
-      let jobList;
-      if (search) {
-        let keyword = search.toLowerCase();
-        jobList = job.filter((item) =>
-          item.Name.toLowerCase().includes(keyword)
-        );
-      } else {
-        jobList = job;
-      }
-      setFilteredJobs(jobList);
-    }
-  };
 
-  const gridstyle = {
-    display: "grid",
-    gridTemplateColumns: "400px 400px",
-    gridRow: " auto auto",
+
+  const newDate = new Date();
+  const year = newDate.getFullYear();
+  const month = newDate.getMonth()+1;
+  const day = newDate.getDate();
+ // const job2 ={"Name":["deneme","deneme2"],}
+  const [input, setInput] = React.useState("")
+
+  const [output, setOutput] = React.useState(job)
+
+ 
+  
+  // React.useEffect(()=>{
+  //   setOutput([])
+  
+  //   job.filter(val=>{
+  //     if(val.companyName && val.companyName.toLowerCase().includes(input.toLowerCase())){
+  //       setOutput(output=>[...output,val])
+  //     }
+    
+    
+  //   })
+  // },[input])
+
+ 
+  const gridstyle={
+    display:"grid",
+    gridRow:" auto auto",
     gridColumnGap: "20px",
     gridRowGap: "20px",
     justifyContent: "center",
-    marginTop: "6%",
-    marginBottom: "10%",
-  };
-
+    marginTop:"3%",
+    paddingBottom:"10%",
+    marginTop:"10%",
+    width:"80%"
+}
   return (
     <>
-      <Navbar />
-      <h1 style={{ textAlign: "center", marginTop: "5%", fontSize: "64px" }}>
-        Categories
-      </h1>
+      <div style={{
+        backgroundColor: "rgb(248 248 248)",minHeight:"100vh",display:"flex",minHeight:"100vh",flexDirection:"column",
+        justifyContent:"space-between"}}> 
 
-      <div style={gridstyle} className="grid">
+    <Navbar2/>
       
-      <TextField
-        id="search"
-        label="Search"
-        variant="outlined"
-        placeholder="Search"
-        onChange={(e) => searchHandler(e)}
-      />
-      <Box sx={{ width: "100%", marginBottom: "2%", marginTop: "0" }}>
-        <Typography>Choose the Category</Typography>
-        <FormControl sx={{ width: "20%" }}>
-          <InputLabel id="demo-simple-select-label">Category</InputLabel>
-          <Select
-            labelId="demo-simple-select-label"
-            id="demo-simple-select"
-            sx={{ color: "black" }}
-            value={category}
-            label="Category"
-            required
-            onChange={(e) => categoryHandler(e)}
-          >
-            <MenuItem value={null}>
-              <em>All</em>
-            </MenuItem>
+      <div className="containerall" style={{display:"flex",flexDirection:"row",justifyContent:"center",width:"60%",margin:"0 0 0 17%"}}>
+        
+    <Box sx={{marginTop:"8%",    alignItems: "center",
+    justifyContent: "center",
+    textAlign:"center",
+    height: "45rem",
+    width: "25%",
+    boxShadow:"0px 2px 4px -1px rgb(0 0 0 / 20%), 0px 4px 5px 0px rgb(0 0 0 / 14%), 0px 1px 10px 0px rgb(0 0 0 / 12%)",
+    padding:"2%",borderRadius:"1.125rem",display:"flex",flexDirection:"column"}}>
+         <Typography variant="h4" sx={{marginBottom:"1%",color:"rgb(25, 118, 210)"}}>Filtering</Typography>
+        <div style={{display:"flex",flexDirection:"column",width:"100%",textAlign:"start",justifyContent:"start"}}>
+        <Box sx={{display:"flex",flexDirection:"column"}}>  
+        <label>Company Name</label>
+        <TextField sx={{marginLeft:"1%"}} onChange={(e)=>{setInput(e.target.value)}}  ></TextField>
+        </Box>
 
-            <MenuItem value={"Software"}>Software</MenuItem>
-            <MenuItem value={"Asistan"}>Asistan</MenuItem>
-            <MenuItem value={"Stajyer"}>Stajyer</MenuItem>
-          </Select>
-        </FormControl>
+        <Box sx={{display:"flex",flexDirection:"column",marginLeft:"1%"}}>  
+        <label>Experience Type</label>
+        <TextField ></TextField>
+        </Box>
+      <Box sx={{display:"flex",flexDirection:"column",marginLeft:"1%"}}>
+        <label>Work Option</label>
+        <FormControl sx={{marginLeft:"1%"}}>
+                <InputLabel id="demo-simple-select-label">Work Option</InputLabel>
+                 <Select
+                    labelId="demo-simple-select-label"
+                    id="demo-simple-select"
+                    sx={{color:"black"}}
+                    value={isRemote}
+                    label="Work Option"
+                    required
+                    onChange={isRemoteHandler}
+
+                    
+                    >
+                    <MenuItem value={"Software"}>Remote</MenuItem>
+                    <MenuItem value={"Hybrid"}>Hybrid</MenuItem>
+                    <MenuItem value={"On Place"}>On Place</MenuItem>
+                </Select>
+                    </FormControl>
       </Box>
-      
-      
-        {filteredJobs.map((value, index) => {
-          return (
-            //dropdown
-            <>
-              <Jobinfocard
-                Name={value.Name}
-                photo={value.photo}
-                description={value.description}
-                id={value.Id}
-              />
-            </>
-          );
-        })}
+                  <Box sx={{display:"flex",flexDirection:"column",marginLeft:"1%"}}>
+        <label>Job Type</label>
+        <FormControl sx={{marginLeft:"1%"}}>
+                <InputLabel id="demo-simple-select-label">Job Type</InputLabel>
+                 <Select
+                    labelId="demo-simple-select-label"
+                    id="demo-simple-select"
+                    sx={{color:"black"}}
+                    value={jobType}
+                    label="Job Type"
+                    required
+                    onChange={jobtypeHandler}
+                    
+                    >
+                    <MenuItem value={"Full Time"}>Full Time</MenuItem>
+                    <MenuItem value={"Part Time"}>Part Time</MenuItem>
+                    <MenuItem value={"Internship"}>Internship</MenuItem>
+                    <MenuItem value={"Freelance"}>Freelance</MenuItem>
+                </Select>
+                    </FormControl>
+                  </Box>
+                  <Box sx={{display:"flex",flexDirection:"column",marginLeft:"1%"}}>
+        <label>Category</label>
+        <FormControl sx={{marginLeft:"1%"}}>
+                <InputLabel id="demo-simple-select-label">Category</InputLabel>
+                 <Select
+                    labelId="demo-simple-select-label"
+                    id="demo-simple-select"
+                    sx={{color:"black"}}
+                    value={jobType}
+                    label="Category"
+                    required
+                    onChange={jobtypeHandler}
+                    
+                    >
+                    <MenuItem value={"Accounting"}>Accounting</MenuItem>
+                    <MenuItem value={"Customer Service"}>Customer Service</MenuItem>
+                    <MenuItem value={"Analytics&Data Science"}>Analytics & Data Science</MenuItem>
+                    <MenuItem value={"Design&Illustration"}>Design&Illustration</MenuItem>
+                    <MenuItem value={"Engineering"}>Engineering</MenuItem>
+                    <MenuItem value={"Web&Software Development"}>Web&Software Development</MenuItem>
+                    <MenuItem value={"Law&Legal"}>Law&Legal</MenuItem>
+                    <MenuItem value={"Marketing"}>Marketing</MenuItem>
+                    <MenuItem value={"Writing&Translation"}>Writing&Translation</MenuItem>
+                    <MenuItem value={"Architecture"}>Architecture</MenuItem>
+                </Select>
+                    </FormControl>
+                  </Box>
+                  <Box sx={{display:"flex",flexDirection:"column",marginLeft:"1%"}}>
+        <label>Date</label>
+        <FormControl sx={{marginLeft:"1%",marginBottom:"15%"}}>
+                <InputLabel id="demo-simple-select-label">Date</InputLabel>
+                 <Select
+                    labelId="demo-simple-select-label"
+                    id="demo-simple-select"
+                    sx={{color:"black"}}
+                    value={jobType}
+                    label="Date"
+                    required
+                    onChange={jobtypeHandler}
+                    
+                    >
+                    <MenuItem value={"New to Old"}>New to Old</MenuItem>
+                    <MenuItem value={"Old to New"}>Old to New</MenuItem>
+                  
+                </Select>
+                    </FormControl>
+                    <Button variant="contained">Apply</Button>
+                  </Box>
+        </div>
+
+    </Box>
+        {isLoading ? <Spinner/> :
+        <>
+        
+    <div style={gridstyle} className="grid">
+    {output.length>0 ?
+      output.map((value,index)=>{
+     if(value.Date.slice(9,13)>year || value.Date.slice(9,13)==year && value.Date.slice(3,5)>month || 
+     value.Date.slice(9,13)==year && value.Date.slice(3,5)==month && value.Date.slice(6,8)>day){
+       return(
+         <Jobinfocard key={index} id={value.Id} Name={value.Name} Category={value.category} photo={value.photo} companyName={value.companyName}/>
+       )
+     }
+ })
+   
+  : 
+
+      job.map((value,index)=>{
+     
+
+        if(value.Date.slice(9,13)>year || value.Date.slice(9,13)==year && value.Date.slice(3,5)>month || 
+        value.Date.slice(9,13)==year && value.Date.slice(3,5)==month && value.Date.slice(6,8)>day){
+          return(
+            <Jobinfocard key={index} id={value.Id} Name={value.Name} Category={value.category} photo={value.photo} companyName={value.companyName}/>
+          )
+        }
+          
+        
+    })}
+  <Box  sx={{justifyContent:"center",alignItems:"center",textAlign:"center"}}> 
+  
+
+  </Box>
+   </div> 
+  
+        </>}
+
       </div>
+      <div style={{color:"white",background: "rgb(21, 101, 192)",bottom:"0",height:"2rem",width:"100%", boxShadow:" 0px 2px 4px -1px rgb(0 0 0 / 20%), 0px 4px 5px 0px rgb(0 0 0 / 14%), 0px 1px 10px 0px rgb(0 0 0 / 12%)"}}>
+        <div className="mid"  style={{justifyContent:"center",textAlign:"center",alignItems:"center",marginTop:"10px"}}>2022 HrPortal. All rights reserved
+  </div>
+    </div>
+   
+   
+ </div>
+   
     </>
   );
 }

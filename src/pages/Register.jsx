@@ -16,6 +16,7 @@ import Checkbox from '@mui/material/Checkbox';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import CssBaseline from '@mui/material/CssBaseline';
 import Stepperr from '../components/Stepperr';
+import { Typography } from '@mui/material';
 function Register() {
 
   // const [value, setValue] = useState('')
@@ -105,11 +106,12 @@ const options2=[
   React.useEffect(() => {
     setIsUser("user");
   }, [])
+  
   const label = { inputProps: { 'aria-label': 'Checkbox demo' } }
   return (
-      <>
+      <div style={{backgroundColor:"rgb(248, 248, 248)",minHeight:"100vh"}}>
       <CssBaseline />
-    <header className='header'>
+    <header className='header' style={{margin:"0 auto 0 auto",width:"50%",borderRadius:"0 0 3rem 3rem"}}>
       <div className="logo">
         <Link to="/">HR Portal</Link>
       </div>
@@ -125,21 +127,14 @@ const options2=[
       </ul>
     </header>
     <div className="container" style={{marginTop:"3%",minHeight:"90vh"}}>
-       <div className="middle" style={{width:"50%",boxShadow:" 0px 2px 1px -1px rgb(0 0 0 / 20%), 0px 1px 1px 0px rgb(0 0 0 / 14%), 0px 1px 3px 0px rgb(0 0 0 / 12%)"
-       ,borderRadius: "1.125rem",
-     padding: "2%",
-}}>
-   
-       
-          <Stepperr/>
-       </div>
+      <Stepperr/>
    </div>
  
    <div style={{color:"white",background: "rgb(21, 101, 192)",bottom:"0",height:"2rem",width:"100%", boxShadow:" 0px 2px 4px -1px rgb(0 0 0 / 20%), 0px 4px 5px 0px rgb(0 0 0 / 14%), 0px 1px 10px 0px rgb(0 0 0 / 12%)"}}>
         <div className="mid"  style={{justifyContent:"center",textAlign:"center",alignItems:"center",marginTop:"10px"}}>2022 HrPortal. All rights reserved
   </div>
     </div>
-      </>
+      </div>
   )
 }
 

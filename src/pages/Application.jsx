@@ -7,7 +7,7 @@ import Box from '@mui/material/Box';
 import { useNavigate } from 'react-router-dom';
 import { styled } from '@mui/material/styles';
 import jwt_decode from "jwt-decode";
-import Navbar from '../components/Navbar';
+import Navbar2 from '../components/Navbar2';
 import jsPDF from "jspdf";
 import { useParams } from 'react-router-dom';
 import { Alert } from '@mui/material';
@@ -415,6 +415,7 @@ try {
             {
              ToEmail:`${userInfo.email}`,
              Subject:"Successfull Application",
+             Body:"Your application has been successfully sent to the company",
             }
           );
         } catch (error) {
@@ -424,17 +425,17 @@ try {
       }
      setTimeout(()=>setIsHide(false),500)
   return (
-   <>
-  {singleJob && user ? <>  <Navbar/>
+   <div style={{backgroundColor:"rgb(248, 248, 248)"}}>
+  {singleJob && user ? <>  <Navbar2/>
   {isLoading? <Spinner/>:
-     <div className="container" style={{marginTop:"3%"}}>
+     <div className="container" style={{marginTop:"3%",marginBottom:"3%"}}>
      <div className="middle" style={{width:"50%",boxShadow:" 0px 2px 1px -1px rgb(0 0 0 / 20%), 0px 1px 1px 0px rgb(0 0 0 / 14%), 0px 1px 3px 0px rgb(0 0 0 / 12%)"
-     ,borderRadius: "1.125rem",
+     ,borderRadius: "1.125rem",backgroundColor:"white",
    padding: "2%",
 }}>
-     <h1 style={{marginBottom:"10%"}}>
-                Job Name:{singleJob.Name}
-            </h1>
+     <Typography variant='h4' style={{marginBottom:"10%",color:"rgb(25, 118, 210)"}}>
+                {singleJob.Name}
+            </Typography>
             {alert1 ? <Alert severity="success">Upload Successfull(You will be redirected to the main page in5s)</Alert> :  ""}
              <div style={{display:"flex",flexDirection:"column", marginTop:"4%",marginBottom:"4%"}} className="uploads">
 <div className="leftpart" style={{display:"flex",flexDirection:"column",alignItems:"center"}}>
@@ -482,7 +483,7 @@ try {
 
    <Footer/>
    </> : isLoading ? <Spinner/> : !isHide ? <NotFound/>  :<Spinner/>}
-   </>
+   </div>
   )
 }
 

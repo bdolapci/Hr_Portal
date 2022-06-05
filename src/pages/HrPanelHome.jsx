@@ -8,8 +8,10 @@ import axios from 'axios';
 import {AreaChart, Area,LineChart,Line,BarChart,CartesianGrid,XAxis,YAxis,Legend,Tooltip,Bar,PieChart,Pie,Cell} from 'recharts';
 import Box from '@mui/material/Box';
 function HrPanelHome() {
-  var token=localStorage.getItem("User");
-  var decoded = jwt_decode(token);
+  if(JSON.parse(localStorage.getItem("User")) !== null){
+    var token=localStorage.getItem("User");
+    var decoded = jwt_decode(token);
+   }
   const [alljobs,setalljobs]=React.useState([]);
   const [totalJobs,setTotalJobs]=React.useState(0);
   const [totalap,setTotalap]=React.useState(0);
@@ -186,8 +188,8 @@ function HrPanelHome() {
   ]
 
   return (
-    <>
-    {decoded.userRole=="hr" ?<>
+    <div style={{backgroundColor:"rgb(248, 248, 248)",minHeight:"100vh"}}>
+    {JSON.parse(localStorage.getItem("User")) !== null? decoded.userRole=="hr" ?<>
     <Navbar/>
     <SideBar/>
     <div className="container" >
@@ -195,7 +197,7 @@ function HrPanelHome() {
     <div className="informations" style={{display:"flex",flexDirection:"row"}}>
    
       <div className="leftpart" style={{display:"flex",flexDirection:"column",justifyContent:"center",alignItems:"center"}}>
-      <Box sx={{boxShadow: "rgb(0 0 0 / 16%) 0px 1px 4px",borderRadius:"1.125rem"}}>
+      <Box sx={{boxShadow: "rgb(0 0 0 / 16%) 0px 1px 4px",borderRadius:"1.125rem",backgroundColor:"white"}}>
         <Typography>Number of applicants for the last 5 closed jobs</Typography>
       
         <AreaChart
@@ -218,7 +220,7 @@ function HrPanelHome() {
       
       </Box>
      <Box sx={{display:"flex",flexDirection:"row",marginBottom:"4%"}}>
-       <Box  sx={{boxShadow: "rgb(0 0 0 / 16%) 0px 1px 4px",borderRadius:"1.125rem"}}>
+       <Box  sx={{boxShadow: "rgb(0 0 0 / 16%) 0px 1px 4px",borderRadius:"1.125rem",backgroundColor:"white"}}>
        <Typography>Total Jobs Bar </Typography>
      <BarChart width={730} height={250} data={data}>
       <XAxis dataKey="name" />
@@ -230,7 +232,7 @@ function HrPanelHome() {
       <Bar dataKey="Closed Jobs" fill="#FFBB28" />
     </BarChart>
        </Box>
-      <Box sx={{boxShadow: "rgb(0 0 0 / 16%) 0px 1px 4px",borderRadius:"1.125rem",marginLeft:"2%"}}>
+      <Box sx={{boxShadow: "rgb(0 0 0 / 16%) 0px 1px 4px",borderRadius:"1.125rem",marginLeft:"2%",backgroundColor:"white"}}>
       <Typography>Total Applicants Chart </Typography>
       <div className="conpie" style={{display:"flex",justifyContent:"center"}}>
       <PieChart width={530} height={250}>
@@ -246,26 +248,7 @@ function HrPanelHome() {
     </div>
       </Box>
      </Box>
-        
-    {/* {/* <LineChart
-          width={500}
-          height={300}
-          data={data3}
-          margin={{
-            top: 5,
-            right: 30,
-            left: 20,
-            bottom: 5,
-          }}
-        > 
-          <CartesianGrid strokeDasharray="3 3" />
-          <XAxis dataKey="name" />
-          <YAxis />
-          <Tooltip />
-          <Legend />
-          <Line type="monotone" dataKey="pv" stroke="#8884d8" activeDot={{ r: 8 }} />
-        
-        </LineChart> */}
+ 
         <Typography sx={{marginBottom:"2%",textAlign:"start",fontSize:"24px",color:""}}>Most Applied Job: <span style={{color:"rgb(25, 118, 210)"}}>{mostapplied}</span></Typography>
         <Typography sx={{marginBottom:"2%",textAlign:"start",fontSize:"24px"}}>Most Applied Category: <span style={{color:"rgb(25, 118, 210)"}}>{mostappliedCategory}</span></Typography>
         <Typography sx={{marginBottom:"2%",textAlign:"start",fontSize:"24px"}}>Acceptance/Application Ratio for All opened Jobs: <span style={{color:"rgb(25, 118, 210)"}}>{ratio?ratio.toString().slice(0,4):""}</span></Typography>
@@ -273,8 +256,8 @@ function HrPanelHome() {
     
     </div>
     </div>
-    </> :<Unauthorized/>}
-    </>
+    </> :<Unauthorized/>:<Unauthorized/>}
+    </div>
   )
 }
 
