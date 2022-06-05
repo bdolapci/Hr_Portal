@@ -13,6 +13,7 @@ import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import SkipNextIcon from '@mui/icons-material/SkipNext';
 import banner from '../pictures/banner.jpg'
 import { useNavigate } from 'react-router-dom';
+import Stack from '@mui/material/Stack';
 function Jobcard(props) {
   const navigate = useNavigate();
   function jobInfo(){
@@ -23,7 +24,7 @@ function Jobcard(props) {
   return (
     <>
      
-    <Card sx={{ display: 'flex' }}>
+    <Card sx={{ display: 'flex'}}>
     <Button onClick={jobInfo} variant='contained' style={{height:"75px", width:"80px",marginTop:"35px", marginRight:"20px", marginLeft:"10px"}}>Apply Job</Button>
       <Box sx={{ display: 'flex', flexDirection: 'column', width:"70%" }}>
         <CardContent sx={{ flex: '1 0 auto' }}>
@@ -46,6 +47,7 @@ function Jobcard(props) {
       />
       
     </Card>
+    
     </>
   )
 }

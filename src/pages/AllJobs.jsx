@@ -24,14 +24,13 @@ import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import InputLabel from "@mui/material/InputLabel";
 import { Card, CardContent, Typography } from "@mui/material";
+import Stack from "@mui/material/Stack";
 
 function AllJobs() {
   const [job, setJob] = React.useState([]);
   const [category, setCategory] = React.useState("");
+  const [filteredJobs, setFilteredJobs] = React.useState([]);
   const [getJobInfo, setGetJobInfo] = React.useState("");
-  function categoryHandler(e) {
-    setCategory(e.target.value);
-  }
 
   let Navigate = useNavigate();
   let a = [];
@@ -50,7 +49,8 @@ function AllJobs() {
       }
 
       setJob(b);
-      console.log(a);
+      setFilteredJobs(b);
+      // console.log(a);
     } catch (error) {
       console.log(error);
     }
@@ -58,6 +58,25 @@ function AllJobs() {
   useEffect(() => {
     deneme();
   }, []);
+
+  const categoryHandler = (e) => {
+    setCategory(e.target.value);
+    if (e.target.value == null) {
+      setFilteredJobs(job);
+    } else {
+      let category = e.target.value;
+      let jobList;
+      if (category) {
+        let keyword = category.toLowerCase();
+        jobList = job.filter((item) =>
+          item.category.toLowerCase().includes(keyword)
+        );
+      } else {
+        jobList = job;
+      }
+      setFilteredJobs(jobList);
+    }
+  };
 
   //console.log(job[1].Name)
 
@@ -72,7 +91,7 @@ function AllJobs() {
     marginBottom: "10%",
   };
   // const job2 ={"Name":["deneme","deneme2"],}
-  console.log(job);
+  //console.log(job);
 
   const [query, setQuery] = React.useState("");
 
@@ -94,16 +113,29 @@ function AllJobs() {
   //   category();
   // }, []);
 
+  function cories() {
+    category.map((value, index) => {
+      return (
+        //dropdown
+        <>
+          <MenuItem value={value.category}></MenuItem>
+        </>
+      );
+      console.log(value.category);
+    });
+  }
+
   return (
     <>
       <Navbar />
       <h1 style={{ textAlign: "center", marginTop: "5%", fontSize: "64px" }}>
         Categories
       </h1>
+
       <input type="text"></input>
       <br />
       <Box sx={{ width: "100%", marginBottom: "2%", marginTop: "0" }}>
-        <Typography>Chose the Category</Typography>
+        <Typography>Choose the Category</Typography>
         <FormControl sx={{ width: "20%" }}>
           <InputLabel id="demo-simple-select-label">Category</InputLabel>
           <Select
@@ -113,20 +145,21 @@ function AllJobs() {
             value={category}
             label="Category"
             required
-            onChange={categoryHandler}
+            onChange={(e) => categoryHandler(e)}
           >
-            <MenuItem value="">
-              <em>None</em>
+            <MenuItem value={null}>
+              <em>All</em>
             </MenuItem>
+
             <MenuItem value={"Software"}>Software</MenuItem>
-            <MenuItem value={20}>20</MenuItem>
-            <MenuItem value={30}>Thirty</MenuItem>
+            <MenuItem value={"Asistan"}>Asistan</MenuItem>
+            <MenuItem value={"Stajyer"}>Stajyer</MenuItem>
           </Select>
         </FormControl>
       </Box>
       <br />
       <div style={gridstyle} className="grid">
-        {job.map((value, index) => {
+        {filteredJobs.map((value, index) => {
           return (
             //dropdown
             <>
