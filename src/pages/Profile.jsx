@@ -31,7 +31,6 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import { useLocation } from 'react-router-dom'
-import Unauthorized from '../components/Unauthorized'
 function Profile() {
   
   const [open, setOpen] = useState(false);
@@ -60,28 +59,12 @@ function Profile() {
     boxShadow: 24,
     p: 4,
   };
-  const stylediv={
-    display: "inline-block",
-                          background:" linear-gradient(top, #f9f9f9, #e3e3e3)",
-                          border: "1px solid #999",
-                          borderRadius: "3px",
-                          padding:" 5px 8px",
-                          outline: "none",
-                          whiteSpace: "nowrap",
-                          cursor: "pointer",
-                          textShadow: "1px 1px #fff",
-                          fontWeight: "700",
-                          fontSize: "10pt",
-                          marginBottom:"3%"
-  }
   const {id} = useParams();
   const[job,setJob]=React.useState([]);
   const[profile,setProfile]=React.useState("");
   const[user,setUser]=React.useState([]);
-  if(JSON.parse(localStorage.getItem("User")) !== null){
-    var token=localStorage.getItem("User");
+  var token=localStorage.getItem("User");
     var decoded = jwt_decode(token);
-   }
 
   React.useEffect(()=>{
     
@@ -150,7 +133,7 @@ React.useEffect(()=>{
      }
    }
    setUser(a);
-
+   console.log(user)
 })
 
 },[location])
@@ -276,158 +259,7 @@ React.useEffect(()=>{
   const changeHandler = value => {
     setValue(value)
   }
-  const [file,setFile]=React.useState();
-  const [fileName,setFileName]=React.useState();
-  const saveFile=(event)=>{
-    setFile(event.target.files[0])
-    setFileName(event.target.files[0].name)
-  }
-  const [file2,setFile2]=React.useState();
-  const [fileName2,setFileName2]=React.useState();
-  const saveFile2=(event)=>{
-    setFile2(event.target.files[0])
-    setFileName2(event.target.files[0].name)
-  }
-  const [file3,setFile3]=React.useState();
-  const [fileName3,setFileName3]=React.useState();
-  const saveFile3=(event)=>{
-    setFile3(event.target.files[0])
-    setFileName3(event.target.files[0].name)
-  }
-  const [file4,setFile4]=React.useState();
-  const [fileName4,setFileName4]=React.useState();
-  const saveFile4=(event)=>{
-    setFile4(event.target.files[0])
-    setFileName4(event.target.files[0].name)
-  }
-  const [uploadfilealert,setUploadfilealert] = React.useState(false);
-  const [alert1,setAlert1]=React.useState(false);
-  const uploadFile =async (Id)=>{
-    setUploadfilealert(true);
-    const nameoffile=decoded.id+"_"+Id+"_"+fileName
-    const formData=new FormData();
-    if(file !== undefined){
 
-      formData.append("formFile",file,nameoffile)
-      try {
-        const res=await axios.post("https://localhost:44361/api/Home/UploadFile",formData)
-        console.log(res);
-        setAlert1(true)
-        setTimeout(() => {
-          setAlert1(false);
-        }, 4000); 
-        
-      } catch (error) {
-        setAlert1(false);
-        console.log(error)
-      }
-    }
-try {
-  const res=await axios.post("https://localhost:44361/api/Home/CreateFile",{
-    Userid:decoded.id,
-    Name:fileName,
-    Jobid:id,
-  })
-  console.log(res);
-} catch (error) {
-  
-  console.log(error)
-}
-  const nameoffile2=decoded.id+"_"+Id+"_"+fileName2
-  const formData2=new FormData();
-  if(file2!==undefined){
-    formData2.append("formFile",file2,nameoffile2)
- 
-  
-  try {
-  const res=await axios.post("https://localhost:44361/api/Home/UploadFile",formData2)
-  console.log(res);
-  setAlert1(true)
-  setTimeout(() => {
-  setAlert1(false);
-  }, 4000); 
-
-  } catch (error) {
-  setAlert1(false);
-  console.log(error)
-  }
-  try {
-    const res=await axios.post("https://localhost:44361/api/Home/CreateFile",{
-      Userid:decoded.id,
-      Name:fileName2,
-      Jobid:id,
-    })
-    console.log(res);
-  } catch (error) {
-    
-    console.log(error)
-}
-}
-    const nameoffile3=decoded.id+"_"+Id+"_"+fileName3
-    const formData3=new FormData();
-    if(file3!==undefined){
-      formData3.append("formFile",file3,nameoffile3)
-
-
-    try {
-    const res=await axios.post("https://localhost:44361/api/Home/UploadFile",formData3)
-    console.log(res);
-    setAlert1(true)
-    setTimeout(() => {
-    setAlert1(false);
-    }, 4000); 
-
-    } catch (error) {
-    setAlert1(false);
-    console.log(error)
-    }
-    try {
-      const res=await axios.post("https://localhost:44361/api/Home/CreateFile",{
-        Userid:decoded.id,
-        Name:fileName3,
-        Jobid:id,
-      })
-      console.log(res);
-    } catch (error) {
-      
-      console.log(error)
-  }
-    }
-      
- 
-  
-    const nameoffile4=decoded.id+"_"+Id+"_"+fileName4
-    const formData4=new FormData();
-    if(file4!==undefined){
-      formData4.append("formFile",file4,nameoffile4)
-
-
-    try {
-    const res=await axios.post("https://localhost:44361/api/Home/UploadFile",formData4)
-    console.log(res);
-    setAlert1(true)
-    setTimeout(() => {
-    setAlert1(false);
-    }, 4000); 
-
-    } catch (error) {
-    setAlert1(false);
-    console.log(error)
-    }
-    try {
-      const res=await axios.post("https://localhost:44361/api/Home/CreateFile",{
-        Userid:decoded.id,
-        Name:fileName4,
-        Jobid:id,
-      })
-      console.log(res);
-    } catch (error) {
-      
-      console.log(error)
-  }
-    }
-    window.location.reload(true)
-  }
   const editgender =async()=>{
     try {
       const res =await axios.post(
@@ -656,10 +488,7 @@ try {
     setPhonenumber(e.target.value);
   }
 
-  const [open3, setOpen3] = React.useState(false);
-
-  const handleOpen3 = () => setOpen3(true);
-  const handleClose3 = () => setOpen3(false);
+ 
 
   const options2=[
     { value: "Female",label:"Female"},
@@ -734,11 +563,11 @@ try {
     const handleChange = (event) => {
       setAge(event.target.value);
     };
- 
+
     const handleNext = () => {
       if (activeStep===0) {
           controlemail();
-        if(email==user.email){
+        if(email===user.email){
           randomNumber();
           skip();
           setWrongEmail(false);
@@ -797,22 +626,7 @@ try {
      
     const [emptyField2,setEmptyField2] = React.useState(false);
     const [wrongEmail,setWrongEmail] = React.useState(false);
- 
   const columns = [
-    {
-      name:"isExtraDocumentRequested",
-      label:"Extra Document Requested",
-      options: {
-        display: false,
-      }
-    },
-    {
-      name:"Jobsid",
-      label:"Job Id",
-      options: {
-        display: false,
-      }
-    },
     {
       name:"Name",
       label:"Job Name",
@@ -821,7 +635,6 @@ try {
       name:"category",
       label:"Job Category",
     },
-   
     {
       name:"isAccepted",
       label:"Accepted/Rejected",
@@ -829,32 +642,12 @@ try {
         customBodyRender: (value, tableMeta, updateValue) => {
           return (
             <>
-            {value==0 ? <Typography sx={{color:"blue"}}>Waiting</Typography>:value ==1 ? <Typography sx={{color:"green"}}>Accepted</Typography>:<Typography sx={{color:"red"}}>Rejected</Typography>}
+            <Typography >{value==0 ? "Waiting" : value==1 ? "Approved" : "Rejected"}</Typography>
             </>
           );
         }
       }
     },
-    {
-      name:"Jobsid",
-      label:"Extra Document Upload",
-      options: {
-        customBodyRender: (value, tableMeta, updateValue) => {
-        
-          return (
-            <>
-            {uploadfilealert ? <Alert severity="success" >Your files are being uploaded page will reload automatically when finished</Alert>:""}
-           {tableMeta.rowData[0]==0 ? <Button variant="contained" disabled>Upload Documents(Closed)</Button>: <>
-           <Button onClick={handleOpen3} variant="contained">Upload Documents</Button> {fileName ==undefined ?  <Button disabled sx={{marginLeft:"2%"}} variant='contained'>Finish Upload</Button>
-           : <Button sx={{marginLeft:"2%"}} onClick={()=>{uploadFile(value)}} variant='contained'>Finish Upload</Button>}
-          
-           </>}
-            </>
-          );
-        }
-      }
-    },
-    
   ]
   var formData =new FormData();
 
@@ -888,10 +681,9 @@ try {
   const [value, setValue] = useState('')
   const options3 = useMemo(() => countryList().getData(), [])
   return (
-    <div style={{backgroundColor:"rgb(248, 248, 248) !important",minHeight:"100vh " }}>
-   
-    {JSON.parse(localStorage.getItem("User")) ? <>
+    <>
     <Navbar/>
+    
     <div className="page">
         <div className="topside">
         <img src={banner} alt="banner" />
@@ -905,14 +697,14 @@ try {
       style={{    position: "relative",
         right: "4rem"}}
       className="set">
-        {JSON.parse(localStorage.getItem("User")) ? profile.Userid == decoded.id ? <Button 
+        {profile.Userid == decoded.id ? <Button 
         onClick={handleOpenit}
         sx={{    
           top: "-50px",
           position: "relative"}}>
         <SettingsIcon />
         
-       </Button> : "" :<Unauthorized/>}
+       </Button> : "" }
        <Modal
             open={openit}
             onClose={handleCloseit}
@@ -926,13 +718,12 @@ try {
                     >
 
            <Box sx={{display:"flex",flexDirection:"column",width:"50%",margin:"auto"}}>                            
-                        <Typography>Job Title</Typography>
+                      
                              <TextField 
                             label="Title"  
                             sx={{marginBottom:"5%"}}    
                             onChange={titleHandler}     
                             />
-
                             </Box>
                             <Button type="submit" >Save</Button>
                             </form>
@@ -941,11 +732,11 @@ try {
       </div>
         </div>
 
-              
+     
         <div className="pp">
           {profile.photo =="banner.jpg" ?  <img src={banner} alt="banner"></img>: 
            <img src={"https://hrportal.blob.core.windows.net/uploadfile/"+profile.photo} alt="banner"></img> }
-        {JSON.parse(localStorage.getItem("User"))? profile.Userid == decoded.id ?
+        {profile.Userid == decoded.id ?
         <Button 
         onClick={handleOpen}
         sx={{    
@@ -953,7 +744,7 @@ try {
           position: "relative"}}>
         <SettingsIcon />
         
-       </Button> : "":<Unauthorized/> }
+       </Button> : "" }
        <Modal
             open={open}
             onClose={handleClose}
@@ -1131,8 +922,8 @@ try {
             
         </div>
           <div style={{justifyContent:"center",alignItems:"center",textAlign:"center",marginBottom:""}} className="changepassword">
-          {JSON.parse(localStorage.getItem("User")) ?profile.Userid == decoded.id ?
-            <Button onClick={handleOpench} variant="contained">Change Password</Button> : "" : <Unauthorized/> }
+          {profile.Userid == decoded.id ?
+            <Button onClick={handleOpench} variant="contained">Change Password</Button> : "" }
             <Modal
             open={opench}
             onClose={handleClosech}
@@ -1162,12 +953,11 @@ try {
         </React.Fragment>
       ) : (
         <React.Fragment>
-        
-        {wrongEmail ? <Alert sx={{marginTop:"3%"}} severity="error">Email is not correct</Alert> :  ""}
+        {emptyField2 ? <Alert severity="error">verification number is incorrect</Alert> :  "" }
           {activeStep === 0 ?( 
           <TextField style={{marginTop:"20px",marginLeft:"20px"}} onChange={emailInput} id="outlined-basic" label="Email" variant="outlined" />
           ):""}
-         {emptyField2 ? <Alert severity="error">verification number is incorrect</Alert> :  "" }
+          {wrongEmail ? <Alert sx={{marginTop:"3%"}} severity="error">Email is not correct</Alert> :  ""}
           {activeStep === 1 ?( 
             <React.Fragment>
               {/* <Typography style={{marginTop:"20px",marginLeft:"20px",backgroundColor:"white",width:"200px",height:"50px",textAlign:"center"}} sx={{ mt: 2, mb: 1 }}>{randomnum}</Typography> */}
@@ -1206,7 +996,7 @@ try {
         <div className="experience" >
         <h3 style={{margin:"10px"}}>Education</h3>
         <hr/>
-        {JSON.parse(localStorage.getItem("User")) ?profile.Userid == decoded.id ?
+        {profile.Userid == decoded.id ?
         <Button   
         onClick={handleOpenex}
         sx={{    
@@ -1215,7 +1005,7 @@ try {
           position: "relative"}}>
         <SettingsIcon />
         
-       </Button> : "" :<Unauthorized/>}
+       </Button> : "" }
           <Box sx={{display:"flex",flexDirection:"row",justifyContent:"space-around",marginTop:"0px"}}>
           <div  style={{display:"flex",flexDirection:"column"}}>
              <h4 style={{marginTop:"0px"}}>First Education</h4>
@@ -1397,7 +1187,7 @@ try {
           <div className="experience" >
         <h3 style={{margin:"10px"}}>Experience</h3>
         <hr/>
-        {JSON.parse(localStorage.getItem("User")) ?profile.Userid == decoded.id ?
+        {profile.Userid == decoded.id ?
         <Button 
         onClick={handleOpened}
         sx={{    
@@ -1406,7 +1196,7 @@ try {
           position: "relative"}}>
         <SettingsIcon />
         
-       </Button> : "" :<Unauthorized/> }
+       </Button> : "" }
        <Box sx={{display:"flex",flexDirection:"row",justifyContent:"space-around",marginTop:"0px"}}>
           <div  style={{display:"flex",flexDirection:"column"}}>
              <h4 style={{marginTop:"0px"}}>First Job</h4>
@@ -1583,47 +1373,10 @@ try {
         </div>
       
         </div>
-        <Modal
-        open={open3}
-        onClose={handleClose3}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
-      >
-        <Box sx={{
-            position: 'absolute',
-            top: '50%',
-            left: '50%',
-            transform: 'translate(-50%, -50%)',
-            width: 600,
-            bgcolor: 'background.paper',
-            border: '2px solid #000',
-            boxShadow: 24,
-            p: 4,
-            display: 'flex',
-            flexDirection: 'column',
-        }}>
-          <Typography id="modal-modal-title" variant="h6" component="h2" sx={{marginBottom:"5%"}}>
-            Upload Requested Documents <br/> You can upload up to 4 file
-          </Typography>
-         <Box x={{textAlign:"center"}}>
-         <input style={stylediv} type="file"  onChange={saveFile}/>
-          <input style={stylediv} type="file"  onChange={saveFile2}/>
-          <input style={stylediv} type="file"  onChange={saveFile3}/>
-          <input style={stylediv} type="file"  onChange={saveFile4}/>
-       
-         </Box>
-         <Box >
-         
-
-         </Box>
-        </Box>
-      
-      </Modal>
+        
     </div>
     <Footer/>
-    </> :<Unauthorized/>}
-  
-    </div>
+    </>
   )
 }
 

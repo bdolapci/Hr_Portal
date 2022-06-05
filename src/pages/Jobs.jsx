@@ -1,7 +1,7 @@
 import React from 'react'
 import Navbar from '../components/Navbar';
 import SideBar from '../components/SideBar'
-import { Button, Link, TablePagination, TextField, Typography } from '@mui/material';
+import { Button, Link, TablePagination, TextField } from '@mui/material';
 import { Box } from '@mui/material';
 import OneJobHR from '../components/OneJobHR';
 import { useEffect } from 'react';
@@ -20,10 +20,8 @@ function Jobs(props) {
     const[job,setJob]=React.useState([]);
     const [getJob, setGetJob] = React.useState("");
     const [getApplicantsfortJob, setGetApplicantsfortJob] = React.useState("");
-    if(JSON.parse(localStorage.getItem("User")) !== null){
-      var token=localStorage.getItem("User");
-      var decoded = jwt_decode(token);
-     }
+    var token=localStorage.getItem("User");
+    var decoded = jwt_decode(token);
     let Navigate = useNavigate();
     useEffect(()=>{
         axios.get("https://localhost:44361/api/Home/Jobs",{
@@ -122,13 +120,13 @@ const getApplicantsforJob=async (Id)=>{
     };
     
   return (
-    <div style={{backgroundColor:"rgb(248, 248, 248)",minHeight:"140vh"}}>
-      {JSON.parse(localStorage.getItem("User")) !== null ?decoded.userRole=="hr" ?<>
+    <>
+      {decoded.userRole=="hr" ?<>
       <Navbar/>
    <SideBar/>
    <div className="container" >
     <Box sx={{marginBottom:"2%",marginTop:"1%"}}>
-        <Typography variant='h4' sx={{color:"rgb(25, 118, 210)"}}>Welcome to the Jobs Section </Typography>
+        <h3>Welcome to the Jobs Section </h3>
     </Box>
     <Box sx={{ height: 400, width: '70%' }}>
     <MUIDataTable
@@ -144,8 +142,8 @@ const getApplicantsforJob=async (Id)=>{
     />
     </Box>
    </div>
-      </>  :<Unauthorized/> :<Unauthorized/>}
-    </div>
+      </>  :<Unauthorized/>}
+    </>
   )
 }
 

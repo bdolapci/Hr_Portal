@@ -21,6 +21,7 @@ import Application from "./pages/Application";
 import Categories from "./pages/Categories";
 import Documents from "./pages/Documents";
 import JobInfo from "./pages/JobInfo";
+import AllJobs from "./pages/AllJobs";
 function App() {
   // var token = localStorage.getItem("User");
   // var decoded = jwt_decode(token);
@@ -32,6 +33,7 @@ function App() {
           <Route path='/register' element={<Register />} />
           <Route path='/login' element={<Login />} />
           <Route path='/profile/:id' element={<Profile />} />
+          <Route path='/jobs' element={<AllJobs />} />
           <Route path='/adminpanel/users' element={<AdminPanelUsers />}></Route>
           <Route path='/adminpanel/hr' element={<AdminPanelHR />}></Route>
           <Route path='/adminpanel/jobs' element={<AdminPanelJobs />}></Route>

@@ -21,10 +21,8 @@ import Unauthorized from '../components/Unauthorized';
 function AdminPanelUsers() {
 
 
-  if(JSON.parse(localStorage.getItem("User")) !== null){
-    var token=localStorage.getItem("User");
-    var decoded = jwt_decode(token);
-   }
+      var token=localStorage.getItem("User");
+      var decoded = jwt_decode(token);
 
 const [user,setUser]=React.useState([]);
 
@@ -120,13 +118,13 @@ const options = {
 };
 
   return (
-      <div style={{backgroundColor:"rgb(248, 248, 248)",minHeight:"100vh"}}>
-      {JSON.parse(localStorage.getItem("User")) !== null ? decoded.userRole=="admin" ?<>
+      <>
+      {decoded.userRole=="admin" ?<>
       <Navbar/>
     <SideBar/>
     <div className="container">
     <Box sx={{marginBottom:"2%",marginTop:"1%"}}>
-        <Typography variant='h4' sx={{color:"rgb(25, 118, 210)"}}>Welcome to the Users Section {decoded.firstName} </Typography>
+        <h3>Welcome to the Users Section {decoded.firstName} </h3>
     </Box>
     <Box sx={{ height: 400, width: '70%' }}>
     <MUIDataTable
@@ -141,9 +139,9 @@ const options = {
     />
     </Box>
           </div>      
-      </> : <Unauthorized/>:<Unauthorized/>}
+      </> : <Unauthorized/>}
   
-    </div>
+    </>
     
   )
 }

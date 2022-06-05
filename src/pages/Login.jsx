@@ -20,8 +20,6 @@ import Step from '@mui/material/Step';
 import StepLabel from '@mui/material/StepLabel';
 import Typography from '@mui/material/Typography';
 import HttpsIcon from '@mui/icons-material/Https';
-
-import "../styles/Login.scss"
 function Login() {
   //let Navigate =useNavigate();
   const[email,setEmail]=React.useState("");
@@ -255,7 +253,7 @@ function Login() {
     };
  
   return (
-      <div style={{backgroundColor:"rgb(248, 248, 248)",minHeight:"100vh"}}>
+      <>
     <header className='header'>
       <div className="logo">
         <Link to="/">HR Portal</Link>
@@ -272,9 +270,8 @@ function Login() {
       </ul>
     </header>
     <section className='body-register'>
-      
       <div className="register-form" >
-          <div className="register-form-body" style={{backgrounColor:"white"}} >
+          <div className="register-form-body" >
             <h1 style={{borderBottom: "6px solid #1976d2"}}>Log In</h1>
             <form
             onSubmit={(e)=>{
@@ -375,7 +372,7 @@ function Login() {
         <div className="mid"  style={{justifyContent:"center",textAlign:"center",alignItems:"center",marginTop:"10px"}}>2022 HrPortal. All rights reserved
   </div>
     </div>
-      </div>
+      </>
   )
 }
 

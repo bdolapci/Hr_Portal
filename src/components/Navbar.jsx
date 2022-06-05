@@ -41,11 +41,9 @@ function Navbar() {
         let a=[]
         let b = res.data.map((x=>x.Id))
         for(let i=0;i<res.data.length;i++){
-         if(user){
           if(res.data[i].Userid==decoded.id){
             a.push(b[i])
           }
-         }
         }
         setProfiledata(a);
       })
@@ -119,9 +117,9 @@ function Navbar() {
           <li>
           <Link to="/login">Log In</Link>
         </li>
-        
-          <Button sx={{color:"white !important"}} variant='contained' href="/register">Register</Button>
-      
+        <li className='register'>
+          <Link to="/register">Register</Link>
+        </li>
             </>
 }
       </ul>
