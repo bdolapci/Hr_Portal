@@ -18,19 +18,19 @@ import { useParams } from "react-router-dom";
 import Unauthorized from "../components/Unauthorized";
 import Jobinfocard from "../components/Jobinfocard";
 import Footer from "../components/Footer";
-import Dropdown from "../components/Dropdown";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import InputLabel from "@mui/material/InputLabel";
 import { Card, CardContent, Typography } from "@mui/material";
 import Stack from "@mui/material/Stack";
+import Jobs from "./Jobs";
 
 function AllJobs() {
   const [job, setJob] = React.useState([]);
   const [category, setCategory] = React.useState("");
   const [filteredJobs, setFilteredJobs] = React.useState([]);
-  const [getJobInfo, setGetJobInfo] = React.useState("");
+  const [searchJobs, setSearchJobs] = React.useState("");
 
   let Navigate = useNavigate();
   let a = [];
@@ -50,7 +50,6 @@ function AllJobs() {
 
       setJob(b);
       setFilteredJobs(b);
-      // console.log(a);
     } catch (error) {
       console.log(error);
     }
@@ -60,6 +59,7 @@ function AllJobs() {
   }, []);
 
   const categoryHandler = (e) => {
+    //filter
     setCategory(e.target.value);
     if (e.target.value == null) {
       setFilteredJobs(job);
@@ -78,7 +78,25 @@ function AllJobs() {
     }
   };
 
-  //console.log(job[1].Name)
+  const searchHandler = (e) => {
+    //filter
+    setSearchJobs(e.target.value);
+    if (e.target.value == null) {
+      setFilteredJobs(job);
+    } else {
+      let search = e.target.value;
+      let jobList;
+      if (search) {
+        let keyword = search.toLowerCase();
+        jobList = job.filter((item) =>
+          item.Name.toLowerCase().includes(keyword)
+        );
+      } else {
+        jobList = job;
+      }
+      setFilteredJobs(jobList);
+    }
+  };
 
   const gridstyle = {
     display: "grid",
@@ -90,40 +108,6 @@ function AllJobs() {
     marginTop: "6%",
     marginBottom: "10%",
   };
-  // const job2 ={"Name":["deneme","deneme2"],}
-  //console.log(job);
-
-  const [query, setQuery] = React.useState("");
-
-  // const category = async () => {
-  //   try {
-  //     const res = await axios.get("https://localhost:44361/api/Home/Jobs");
-  //     for (var i = 0; i < res.data.length; i++) {
-  //       a.push(res.data[i].category);
-  //     }
-
-  //     setGetJobInfo(a);
-  //     console.log(a);
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
-
-  // useEffect(() => {
-  //   category();
-  // }, []);
-
-  function cories() {
-    category.map((value, index) => {
-      return (
-        //dropdown
-        <>
-          <MenuItem value={value.category}></MenuItem>
-        </>
-      );
-      console.log(value.category);
-    });
-  }
 
   return (
     <>
@@ -132,8 +116,15 @@ function AllJobs() {
         Categories
       </h1>
 
-      <input type="text"></input>
-      <br />
+      <div style={gridstyle} className="grid">
+      
+      <TextField
+        id="search"
+        label="Search"
+        variant="outlined"
+        placeholder="Search"
+        onChange={(e) => searchHandler(e)}
+      />
       <Box sx={{ width: "100%", marginBottom: "2%", marginTop: "0" }}>
         <Typography>Choose the Category</Typography>
         <FormControl sx={{ width: "20%" }}>
@@ -157,8 +148,8 @@ function AllJobs() {
           </Select>
         </FormControl>
       </Box>
-      <br />
-      <div style={gridstyle} className="grid">
+      
+      
         {filteredJobs.map((value, index) => {
           return (
             //dropdown
