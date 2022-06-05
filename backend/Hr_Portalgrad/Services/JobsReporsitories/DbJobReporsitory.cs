@@ -40,6 +40,7 @@ namespace HR_Portalgrad.Services.JobsReporsitories
             return job;
         }
 
+       
         public async Task<Jobs> EditJobDate(int id, int UserId, string Date)
         {
             var job = new Jobs { Id = id, UserId = UserId, Date = Date };
@@ -56,6 +57,45 @@ namespace HR_Portalgrad.Services.JobsReporsitories
             _context.Jobs.Attach(job);
             _context.Entry(job).Property(j => j.UserId).IsModified = false;
             _context.Entry(job).Property(j => j.description).IsModified = true;
+            await _context.SaveChangesAsync();
+            return job;
+        }
+
+        public async Task<Jobs> EditJobExpereienceneed(int id, int UserId, string expereienceneed)
+        {
+            var job = new Jobs { Id = id, UserId = UserId, experienceneed = expereienceneed };
+            _context.Jobs.Attach(job);
+            _context.Entry(job).Property(j => j.UserId).IsModified = false;
+            _context.Entry(job).Property(j => j.experienceneed).IsModified = true;
+            await _context.SaveChangesAsync();
+            return job;
+        }
+        public async Task<Jobs> EditJobCompanyName(int id, int UserId, string companyName)
+        {
+            var job = new Jobs { Id = id, UserId = UserId, companyName = companyName };
+            _context.Jobs.Attach(job);
+            _context.Entry(job).Property(j => j.UserId).IsModified = false;
+            _context.Entry(job).Property(j => j.companyName).IsModified = true;
+            await _context.SaveChangesAsync();
+            return job;
+        }
+
+        public async Task<Jobs> EditJobRemote(int id, int UserId, string remote)
+        {
+            var job = new Jobs { Id = id, UserId = UserId, isRemote = remote };
+            _context.Jobs.Attach(job);
+            _context.Entry(job).Property(j => j.UserId).IsModified = false;
+            _context.Entry(job).Property(j => j.isRemote).IsModified = true;
+            await _context.SaveChangesAsync();
+            return job;
+        }
+
+        public async Task<Jobs> EditJobType(int id, int UserId, string type)
+        {
+            var job = new Jobs { Id = id, UserId = UserId, jobType = type };
+            _context.Jobs.Attach(job);
+            _context.Entry(job).Property(j => j.UserId).IsModified = false;
+            _context.Entry(job).Property(j => j.jobType).IsModified = true;
             await _context.SaveChangesAsync();
             return job;
         }
@@ -79,6 +119,8 @@ namespace HR_Portalgrad.Services.JobsReporsitories
             await _context.SaveChangesAsync();
             return job;
         }
+
+      
 
         public async Task<List<Jobs>> GetAllJobs()
         {

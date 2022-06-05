@@ -242,6 +242,10 @@ namespace HR_Portalgrad.Controller
                 description = job.description,
                 category = job.category,
                 photo = job.photo,
+                isRemote = job.isRemote,
+                experienceneed = job.experienceneed,
+                jobType = job.jobType,
+                companyName = job.companyName,
             };
             await _jobReporsitory.PostJob(newJob);
             return newJob;
@@ -299,6 +303,26 @@ namespace HR_Portalgrad.Controller
         public async Task<Jobs> EditJobsPhoto(Jobs job)
         {
             return await _jobReporsitory.EditJobPhoto(job.Id, job.UserId, job.photo);
+        }
+        [HttpPost("Jobs/EditJobRemote")]
+        public async Task<Jobs> EditJobsRemote(Jobs job)
+        {
+            return await _jobReporsitory.EditJobRemote(job.Id, job.UserId, job.isRemote);
+        }
+        [HttpPost("Jobs/EditJobCompanyName")]
+        public async Task<Jobs> EditJobsCompanyName(Jobs job)
+        {
+            return await _jobReporsitory.EditJobCompanyName(job.Id, job.UserId, job.companyName);
+        }
+        [HttpPost("Jobs/EditExperienceNeed")]
+        public async Task<Jobs> EditExperienceNeed(Jobs job)
+        {
+            return await _jobReporsitory.EditJobExpereienceneed(job.Id, job.UserId, job.experienceneed);
+        }
+        [HttpPost("Jobs/EditJobType")]
+        public async Task<Jobs> EditJobType(Jobs job)
+        {
+            return await _jobReporsitory.EditJobType(job.Id, job.UserId, job.jobType);
         }
 
         //[HttpPost("EditProfile")]
@@ -492,6 +516,7 @@ namespace HR_Portalgrad.Controller
             }
             return BadRequest();
         }
+
         [HttpGet("GetFiles")]
         public async Task<IActionResult> Get()
         {

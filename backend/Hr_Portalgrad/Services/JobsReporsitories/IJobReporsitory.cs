@@ -16,6 +16,10 @@ namespace HR_Portalgrad.Services.JobsReporsitories
         Task<Jobs> EditJobDescription(int id, int UserId, string description);
         Task<Jobs> EditJobCategory(int id, int UserId, string category);
         Task<Jobs> EditJobPhoto(int id, int UserId, string photo);
+        Task<Jobs> EditJobRemote(int id, int UserId, string remote);
+        Task<Jobs> EditJobExpereienceneed(int id, int UserId,string expereienceneed);
+        Task<Jobs> EditJobCompanyName(int id, int UserId,string companyName);
+        Task<Jobs> EditJobType(int id, int UserId,string type);
         Task<Jobs> GetSingleJob(int id);
         Task<Jobs> GetApplicantsJob(int id);
     }

@@ -4,14 +4,16 @@ using HR_Portalgrad.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace HR_Portalgrad.Migrations
 {
     [DbContext(typeof(AuthDBContext))]
-    partial class AuthDBContextModelSnapshot : ModelSnapshot
+    [Migration("20220605105433_newjobs2")]
+    partial class newjobs2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -115,8 +117,8 @@ namespace HR_Portalgrad.Migrations
                     b.Property<string>("experienceneed")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("isRemote")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("isRemote")
+                        .HasColumnType("int");
 
                     b.Property<string>("jobType")
                         .HasColumnType("nvarchar(max)");

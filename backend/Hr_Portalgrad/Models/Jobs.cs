@@ -24,6 +24,10 @@ namespace HR_Portalgrad.Models
         public string category { get; set; }
         [StringLength(500)]
         public string photo { get; set; }
+        public string isRemote { get; set; }
+        public string experienceneed { get; set; }
+        public string companyName { get; set; }
+        public string jobType { get; set; }
         public List<Applicants> Applicants { get; set; }
         public List<Files> File { get; set; }
     }
