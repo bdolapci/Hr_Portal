@@ -33,7 +33,8 @@ function App() {
           <Route path='/register' element={<Register />} />
           <Route path='/login' element={<Login />} />
           <Route path='/profile/:id' element={<Profile />} />
-          <Route path='/jobs' element={<AllJobs />} />
+          <Route path='/jobs/' element={<AllJobs />} />
+          <Route path='/jobs/:categories' element={<AllJobs />} />
           <Route path='/adminpanel/users' element={<AdminPanelUsers />}></Route>
           <Route path='/adminpanel/hr' element={<AdminPanelHR />}></Route>
           <Route path='/adminpanel/jobs' element={<AdminPanelJobs />}></Route>

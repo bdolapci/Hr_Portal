@@ -79,6 +79,7 @@ const [successalert,setSuccessalert]=React.useState(false)
           setFile(event.target.files[0])
           setFileName(event.target.files[0].name)
         }
+   
         const nameoffile=id+"_"+fileName
         const nameoffile2=getJob.photo
         const [alert1,setAlert1]=React.useState(false);
@@ -97,30 +98,33 @@ const [successalert,setSuccessalert]=React.useState(false)
           getsinglejob()
           setIsLoading(false);
         },[])
-    
-        const uploadFile =async (event)=>{
-       
-          
-          if(fileName == undefined){
-
-            const formData=new FormData();
-          formData.append("formFile","https://hrportal.blob.core.windows.net/uploadfile/"+nameoffile2,nameoffile2)
-          try {
-            const res=await axios.post("https://localhost:44361/api/Home/UploadFile",formData)
-            console.log(res);
-            setAlert1(true)
-          
-            setTimeout(() => {
-              nav("/hrPanel/home")
-              setAlert1(false);
-            }, 2000); 
-            
-            } catch (error) {
-              setAlert1(false);
-            console.log(error)
+        const uploadfile2 =async (event)=>{
+          let blob =await fetch("https://hrportal.blob.core.windows.net/uploadfile/"+nameoffile2,{
+            headers:{
+              'Acess-Control-Allow-Origin':'*',
             }
+          }).then(
+            response => response.blob()
+          ).then(blobFile=>new File([blobFile],nameoffile2),{type: "image/jpeg"})
+          const formData=new FormData();
+        formData.append("formFile",blob,nameoffile2)
+        try {
+          const res=await axios.post("https://localhost:44361/api/Home/UploadFile",formData)
+          console.log(res);
+          setAlert1(true)
+        
+          setTimeout(() => {
+            nav("/hrPanel/home")
+            setAlert1(false);
+          }, 2000); 
+          
+          } catch (error) {
+            setAlert1(false);
+          console.log(error)
           }
-          else{
+        }
+        console.log(file,nameoffile2)
+        const uploadFile =async (event)=>{
             const formData=new FormData();
           formData.append("formFile",file,nameoffile)
             try {
@@ -137,7 +141,7 @@ const [successalert,setSuccessalert]=React.useState(false)
                 setAlert1(false);
               console.log(error)
               }
-              }
+             
           }
         
        
@@ -218,6 +222,23 @@ const [successalert,setSuccessalert]=React.useState(false)
             Id: `${id}`,
             UserId:decoded.id,
             photo: `${nameoffile}`,
+          })
+          setSuccessalert(true)
+          setTimeout(()=>{
+            nav("/hrPanel/home")
+          },2000)
+        } catch (error) {
+          console.log(error)
+        }
+      }
+      const editJobPhoto2 =async()=>{
+        try {
+          const res=await axios.post(
+            `https://localhost:44361/api/Home/Jobs/EditJobPhoto`,
+          {
+            Id: `${id}`,
+            UserId:decoded.id,
+            photo: `${nameoffile2}`,
           })
           setSuccessalert(true)
           setTimeout(()=>{
@@ -351,7 +372,10 @@ const [successalert,setSuccessalert]=React.useState(false)
              uploadFile()
              editJobPhoto()
            }
-           
+           if(file ==undefined){
+            uploadfile2()
+            editJobPhoto2()
+          }           
            e.preventDefault()
            
          }}>

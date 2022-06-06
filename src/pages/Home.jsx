@@ -132,16 +132,16 @@ function Home() {
         justifyContent:"space-between"}}> 
 
     <Navbar2/>
-    <Box sx={{marginTop:"8%"}}><TextField 
+  
+        {isLoading ? <Spinner/> :
+        <>
+          <Box sx={{marginTop:"8%"}}><TextField 
   sx={{ marginBottom:"2%",width:"40%",backgroundColor:"white"  }}
   placeholder="Search Job"
   id="outlined-basic"
   variant="outlined"
   onChange={e=>setInput(e.target.value)}
 ></TextField></Box>
-        {isLoading ? <Spinner/> :
-        <>
-        
     <div style={gridstyle} className="grid">
     {output.length>0 ?
       output.map((value,index)=>{

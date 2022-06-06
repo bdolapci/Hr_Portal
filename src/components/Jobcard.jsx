@@ -26,7 +26,7 @@ function Jobcard(Categoryex) {
         </Typography>
       </CardContent>
       <CardActions>
-        <Button size="small">See Jobs</Button>
+        <Button size="small" href={'/jobs/'+Categoryex.title}>See Jobs</Button>
       </CardActions>
     </Card>
     </>
