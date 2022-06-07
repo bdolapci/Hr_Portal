@@ -108,7 +108,8 @@ const postJob =async()=>{
         isRemote: `${isRemote}`,
         jobType: `${jobtype}`,
         companyName: `${companyName}`,
-        experienceneed: `${experienceneed}`
+        experienceneed: `${experienceneed}`,
+        SystemDate: `${new Date()}`
       })
       setSuccessalert(true)
     }
@@ -125,7 +126,8 @@ const postJob =async()=>{
         isRemote: `${isRemote}`,
         jobtype: `${jobtype}`,
         companyName: `${companyName}`,
-        experienceneed: `${experienceneed}`
+        experienceneed: `${experienceneed}`,
+        SystemDate: `${new Date()}`
       })
 
       setSuccessalert(true)
@@ -199,6 +201,7 @@ const dat=new Date().toISOString()
                       <DatePicker
                         label="Date"
                         value={value}
+                        required
                         format="DD-MM-YYYY"
                         onChange={(newValue) => {
                           setValue(newValue);
@@ -225,7 +228,7 @@ const dat=new Date().toISOString()
                     required
                     onChange={categoryHandler}
                     >
-                    <MenuItem value={"Accounting"}>Accounting</MenuItem>
+                     <MenuItem value={"Accounting"}>Accounting</MenuItem>
                     <MenuItem value={"Customer Service"}>Customer Service</MenuItem>
                     <MenuItem value={"Analytics&Data Science"}>Analytics & Data Science</MenuItem>
                     <MenuItem value={"Design&Illustration"}>Design&Illustration</MenuItem>

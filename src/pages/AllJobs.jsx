@@ -56,26 +56,18 @@ function AllJobs() {
     function dateHandler(e){
     setDate(e.target.value);
     }
-  let Navigate = useNavigate();
-  let a  =[]
+
+
   let b = []
-  let c = []
+
   const deneme = async()=>{
     setIsLoading(true);
     try{
       const res = await axios.get("https://localhost:44361/api/Home/Jobs")
       for(var i = 0; i<res.data.length; i++){
-          a.push(res.data[i])
+        b.push(res.data[i])
+    
       }
-      a.reverse()
-      if(a.length>=10){
-        for(var i = 0; i<10; i++){
-        b.push(a[i])
-    }}else{
-      for(var i = 0; i<a.length; i++){
-        b.push(a[i])
-      }
-    } 
       for(var i = 0; i<b.length; i++){
         if(b[i].Date.includes("Jan")){
           b[i].Date = b[i].Date.replace("Jan",1)
@@ -123,17 +115,83 @@ function AllJobs() {
 
     }
   }
+  let x=[]
+  const [output, setOutput] = React.useState()
+    const getfilter=async()=>{
+      try {
+        const res=await axios.post("https://localhost:44361/api/Home/JobsFiltered",{
+            companyName:companyName,
+            jobType:jobType,
+            experience:experienceneed,
+            isRemote:isRemote,
+            SystemDate:date
+        } 
+        )
+       
+        for(var i = 0; i<res.data.length; i++){
+          x.push(res.data[i])
+      
+        }
+        for(var i = 0; i< x.length; i++){
+          if( x[i].Date.includes("Jan")){
+            x[i].Date =  x[i].Date.replace("Jan",1)
+          }
+          if( x[i].Date.includes("Feb")){
+            x[i].Date =  x[i].Date.replace("Feb",2)
+          }
+          if( x[i].Date.includes("Mar")){
+            x[i].Date =  x[i].Date.replace("Mar",3)
+          }
+          if( x[i].Date.includes("Apr")){
+            x[i].Date =  x[i].Date.replace("Apr",4)
+          }
+          if( x[i].Date.includes("May")){
+            x[i].Date =  x[i].Date.replace("May",5)
+          }
+          if( x[i].Date.includes("Jun")){
+            x[i].Date =  x[i].Date.replace("Jun",6)
+          }
+          if( x[i].Date.includes("Jul")){
+            x[i].Date =  x[i].Date.replace("Jul",7)
+          }
+          if( x[i].Date.includes("Aug")){
+            x[i].Date =  x[i].Date.replace("Aug",8)
+          }
+          if( x[i].Date.includes("Sep")){
+            x[i].Date =  x[i].Date.replace("Sep",9)
+          }
+          if( x[i].Date.includes("Oct")){
+            x[i].Date =  x[i].Date.replace("Oct",10)
+          }
+          if( x[i].Date.includes("Nov")){
+            x[i].Date =  x[i].Date.replace("Nov",11)
+          }
+          if( x[i].Date.includes("Dec")){
+            x[i].Date =  x[i].Date.replace("Dec",12)
+          }
+        }
+        
+        setJob(x)
+      } catch (error) {
+        console.log(error)
+      }
+    }
+
     useEffect(()=>{
       deneme()
     },[])
+
+
     const clearfilter=()=>{
       setJobtype("")
       setCompanyName("")
       setExperienceneed("")
       setIsRemote("")
       setDate("")
-
+      setCompanyName("")
+     window.location.reload()
     }
+  
 
 
   const newDate = new Date();
@@ -141,22 +199,22 @@ function AllJobs() {
   const month = newDate.getMonth()+1;
   const day = newDate.getDate();
  // const job2 ={"Name":["deneme","deneme2"],}
-  const [input, setInput] = React.useState("")
+  
 
-  const [output, setOutput] = React.useState(job)
+  
 
  
   
-  React.useEffect(()=>{
-    setOutput([])
+  // React.useEffect(()=>{
+  //   setOutput([])
   
-    job.filter(val=>{
-      if(val.companyName && val.companyName.toLowerCase().includes(input.toLowerCase())){
-        setOutput(output=>[...output,val])
-      }
+  //   job.filter(val=>{
+  //     if(val.companyName && val.companyName.toLowerCase().includes(input.toLowerCase())){
+  //       setOutput(output=>[...output,val])
+  //     }
       
-    })
-  },[input])
+  //   })
+  // },[input])
 
  
   const gridstyle={
@@ -170,61 +228,30 @@ function AllJobs() {
     width:"80%"
 }
   
-  console.log(categories,isRemote,jobType,date,)
 const Cards=({job})=>{
-  
+    
   return(
     <>
-    
-     {output.length>0 ?
-      output.map((value,index)=>{
-     if(value.Date.slice(9,13)>year || value.Date.slice(9,13)==year && value.Date.slice(3,5)>month || 
-     value.Date.slice(9,13)==year && value.Date.slice(3,5)==month && value.Date.slice(6,8)>day || value.Date=='null'){
-       return(
-         <>
-         {categories!=undefined && categories==value.category && isRemote.length==0 && jobType=="" && date =="" ? 
-                  <Jobinfocard key={index} id={value.Id} Name={value.Name} Category={value.category} photo={value.photo} companyName={value.companyName}/>    
-          :categories!=undefined && categories==value.category && isRemote.length>0 && isRemote==value.isRemote && jobType=="" && date =="" ?
-          <Jobinfocard key={index} id={value.Id} Name={value.Name} Category={value.category} photo={value.photo} companyName={value.companyName}/>
-          :categories!=undefined && isRemote.length>0 && isRemote==value.isRemote && jobType.length>0 && jobType ==value.jobType && date =="" ?
-            <Jobinfocard key={index} id={value.Id} Name={value.Name} Category={value.category} photo={value.photo} companyName={value.companyName}/>
-          :categories!=undefined && isRemote.length>0 && isRemote==value.isRemote && jobType.length>0 && jobType ==value.jobType &&  date =="New to Old" ?
-          <>
-          { console.log(value.Date,"gew") }
-            <Jobinfocard key={index} id={value.Id} Name={value.Name} Category={value.category} photo={value.photo} companyName={value.companyName}/>
-          </>
-        
-          :categories!=undefined && isRemote.length>0 && isRemote==value.isRemote && jobType.length>0 && jobType ==value.jobType &&  date =="Old to New" ?
-            <Jobinfocard key={index} id={value.Id} Name={value.Name} Category={value.category} photo={value.photo} companyName={value.companyName}/>
-          :""
-
-         }
-         </>
-       )
-     }
- })
-   
-  : 
-
-      job.map((value,index)=>{
+      { job.map((value,index)=>{
      
 
-        if(value.Date.slice(9,13)>year || value.Date.slice(9,13)==year && value.Date.slice(3,5)>month || 
-        value.Date.slice(9,13)==year && value.Date.slice(3,5)==month && value.Date.slice(6,8)>day || value.Date=='null'){
-          return(
-              <>
-              {categories != undefined &&categories==value.category ?
-                          <Jobinfocard key={index} id={value.Id} Name={value.Name} Category={value.category} photo={value.photo} companyName={value.companyName}/>
-            :   categories==undefined ?
-            <Jobinfocard key={index} id={value.Id} Name={value.Name} Category={value.category} photo={value.photo} companyName={value.companyName}/>
-            :""
-                        }
-              </>
-            )
-        }
-          
-        
-    })}
+     if(value.Date.slice(9,13)>year || value.Date.slice(9,13)==year && value.Date.slice(3,5)>month || 
+     value.Date.slice(9,13)==year && value.Date.slice(3,5)==month && value.Date.slice(6,8)>day|| value.Date=='null'){
+       return(
+           <>
+              
+           {categories != undefined &&categories==value.category ?
+                       <Jobinfocard key={index} id={value.Id} Name={value.Name} Category={value.category} photo={value.photo} companyName={value.companyName}/>
+         :   categories==undefined ?
+         <Jobinfocard key={index} id={value.Id} Name={value.Name} Category={value.category} photo={value.photo} companyName={value.companyName}/>
+         :""
+                     }
+           </>
+         )
+     }
+       
+     
+ })}
     </>
   )
 }
@@ -239,12 +266,14 @@ const Pagination =({cardPerPage,totalCardds,paginate})=>{
       <ul style={{listStyleType:"none",display:"flex",flexDirection:"row",position:"relative"}}  className="pagination">
         {pageNumbers.map(number=>(
           <li style={{listStyleType:"none",padding:"1%"}} key={number} className="page-item">
-            <a style={{backgroundColor:"rgb(25, 118, 210)",
-            padding:"70%",
+            <button style={{backgroundColor:"rgb(25, 118, 210)",
+           width:"2rem",
+           height:"2rem",
+           border:0,
             borderRadius:"0.3rem",
-            color:"white",textDecoration:"none"}} onClick={()=>paginate(number)} href='/jobs/#!' className="page-link">
+            color:"white",textDecoration:"none"}} onClick={()=>paginate(number)}  className="page-link">
               {number}
-            </a>
+            </button>
           </li>
         ))}
       </ul>
@@ -256,6 +285,7 @@ const indexOfLastPost = currentPage * postsPerPage;
 const indexOfFirstPost = indexOfLastPost - postsPerPage;
 const currentPosts = job.slice(indexOfFirstPost, indexOfLastPost);
 const paginate = pageNumber => setCurrentPage(pageNumber);
+
 
 
   return (
@@ -275,18 +305,23 @@ const paginate = pageNumber => setCurrentPage(pageNumber);
     height: "45rem",
     width: "25%",
     boxShadow:"0px 2px 4px -1px rgb(0 0 0 / 20%), 0px 4px 5px 0px rgb(0 0 0 / 14%), 0px 1px 10px 0px rgb(0 0 0 / 12%)",
-    padding:"2%",borderRadius:"1.125rem",display:"flex",flexDirection:"column"}}>
+    padding:"2%",borderRadius:"1.125rem",display:"flex",flexDirection:"column",backgroundColor:"white"}}>
          <Typography variant="h4" sx={{marginBottom:"1%",color:"rgb(25, 118, 210)"}}>Filtering</Typography>
-      
+        <form onSubmit={(e)=>{
+          e.preventDefault()        
+            getfilter()
+
+        }}>
+
         <div style={{display:"flex",flexDirection:"column",width:"100%",textAlign:"start",justifyContent:"start"}}>
         <Box sx={{display:"flex",flexDirection:"column"}}>  
         <label>Company Name</label>
-        <TextField sx={{marginLeft:"1%"}} onChange={(e)=>{setInput(e.target.value)}}  ></TextField>
+        <TextField sx={{marginLeft:"1%"}} onChange={companyNameHandler}  ></TextField>
         </Box>
 
         <Box sx={{display:"flex",flexDirection:"column",marginLeft:"1%"}}>  
         <label>Experience Type</label>
-        <TextField ></TextField>
+        <TextField onChange={experienceneedHandler}></TextField>
         </Box>
       <Box sx={{display:"flex",flexDirection:"column",marginLeft:"1%"}}>
         <label>Work Option</label>
@@ -300,7 +335,7 @@ const paginate = pageNumber => setCurrentPage(pageNumber);
                     label="Work Option"
                     
                     onChange={isRemoteHandler}
-
+                    
                     
                     >
                     <MenuItem value={"Remote"}>Remote</MenuItem>
@@ -312,6 +347,7 @@ const paginate = pageNumber => setCurrentPage(pageNumber);
                   <Box sx={{display:"flex",flexDirection:"column",marginLeft:"1%"}}>
         <label>Job Type</label>
         <FormControl sx={{marginLeft:"1%"}}>
+                      
                 <InputLabel id="demo-simple-select-label">Job Type</InputLabel>
                  <Select
                     labelId="demo-simple-select-label"
@@ -349,15 +385,15 @@ const paginate = pageNumber => setCurrentPage(pageNumber);
                   
                 </Select>
                     </FormControl>
-                   
+                    <Button sx={{marginBottom:"5%"}} variant="contained" type="submit">Apply Filter</Button>
                 <Button variant="contained" onClick={clearfilter}>Clear Filter</Button>
                   </Box>
         </div>    
      
-
+        </form>
     </Box>
        
-        
+        {console.log(job)}
     <div style={gridstyle} className="grid">
     <Cards job={currentPosts}/>
     <Pagination
@@ -372,7 +408,7 @@ const paginate = pageNumber => setCurrentPage(pageNumber);
 
       </div>
       <div style={{color:"white",background: "rgb(21, 101, 192)",bottom:"0",height:"2rem",width:"100%", boxShadow:" 0px 2px 4px -1px rgb(0 0 0 / 20%), 0px 4px 5px 0px rgb(0 0 0 / 14%), 0px 1px 10px 0px rgb(0 0 0 / 12%)"}}>
-        <div className="mid"  style={{justifyContent:"center",textAlign:"center",alignItems:"center",marginTop:"10px"}}>2022 HrPortal. All rights reserved
+        <div className="mid"  style={{justifyContent:"center",textAlign:"center",alignItems:"center"}}>2022 HrPortal. All rights reserved
   </div>
     </div>
    

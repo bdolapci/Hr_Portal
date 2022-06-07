@@ -259,7 +259,9 @@ function Login() {
       <div style={{backgroundColor:"rgb(248, 248, 248)",minHeight:"100vh"}}>
     <header className='header' style={{margin:"0 auto 0 auto",width:"50%",borderRadius:"0 0 3rem 3rem"}}>
       <div className="logo">
-        <Link to="/">HR Portal</Link>
+        <Link to="/">
+        <Typography variant='h6' sx={{color:"rgb(25, 118, 210)"}}>HR Portal</Typography>
+         </Link>
       </div>
       <ul>
         <li>
