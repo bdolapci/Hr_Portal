@@ -199,7 +199,6 @@ const dat=new Date().toISOString()
                       <DatePicker
                         label="Date"
                         value={value}
-                        required
                         format="DD-MM-YYYY"
                         onChange={(newValue) => {
                           setValue(newValue);
@@ -226,9 +225,16 @@ const dat=new Date().toISOString()
                     required
                     onChange={categoryHandler}
                     >
-                    <MenuItem value={"Software"}>Software</MenuItem>
-                    <MenuItem value={20}>20</MenuItem>
-                    <MenuItem value={30}>Thirty</MenuItem>
+                    <MenuItem value={"Accounting"}>Accounting</MenuItem>
+                    <MenuItem value={"Customer Service"}>Customer Service</MenuItem>
+                    <MenuItem value={"Analytics&Data Science"}>Analytics & Data Science</MenuItem>
+                    <MenuItem value={"Design&Illustration"}>Design&Illustration</MenuItem>
+                    <MenuItem value={"Engineering"}>Engineering</MenuItem>
+                    <MenuItem value={"Web&Software Development"}>Web&Software Development</MenuItem>
+                    <MenuItem value={"Law&Legal"}>Law&Legal</MenuItem>
+                    <MenuItem value={"Marketing"}>Marketing</MenuItem>
+                    <MenuItem value={"Writing&Translation"}>Writing&Translation</MenuItem>
+                    <MenuItem value={"Architecture"}>Architecture</MenuItem>
                 </Select>
                     </FormControl>
                       </Box>
@@ -250,7 +256,7 @@ const dat=new Date().toISOString()
                           fontWeight: "700",
                           fontSize: "10pt",
                         }} type="file" onChange={saveFile}
-                        required/>
+                        />
             </div>
                 
                 </div>

@@ -179,7 +179,7 @@ const Cards=({job})=>{
      {output.length>0 ?
       output.map((value,index)=>{
      if(value.Date.slice(9,13)>year || value.Date.slice(9,13)==year && value.Date.slice(3,5)>month || 
-     value.Date.slice(9,13)==year && value.Date.slice(3,5)==month && value.Date.slice(6,8)>day){
+     value.Date.slice(9,13)==year && value.Date.slice(3,5)==month && value.Date.slice(6,8)>day || value.Date=='null'){
        return(
          <>
          {categories!=undefined && categories==value.category && isRemote.length==0 && jobType=="" && date =="" ? 
@@ -210,7 +210,7 @@ const Cards=({job})=>{
      
 
         if(value.Date.slice(9,13)>year || value.Date.slice(9,13)==year && value.Date.slice(3,5)>month || 
-        value.Date.slice(9,13)==year && value.Date.slice(3,5)==month && value.Date.slice(6,8)>day){
+        value.Date.slice(9,13)==year && value.Date.slice(3,5)==month && value.Date.slice(6,8)>day || value.Date=='null'){
           return(
               <>
               {categories != undefined &&categories==value.category ?

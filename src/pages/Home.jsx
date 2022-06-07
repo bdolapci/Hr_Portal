@@ -125,6 +125,7 @@ function Home() {
     })
   },[input])
   console.log(output,input.length)
+  console.log(job)
   return (
 
       <div style={{
@@ -146,7 +147,7 @@ function Home() {
     {output.length>0 ?
       output.map((value,index)=>{
      if(value.Date.slice(9,13)>year || value.Date.slice(9,13)==year && value.Date.slice(3,5)>month || 
-     value.Date.slice(9,13)==year && value.Date.slice(3,5)==month && value.Date.slice(6,8)>day){
+     value.Date.slice(9,13)==year && value.Date.slice(3,5)==month && value.Date.slice(6,8)>day || value.Date=='null'){
        return(
          <Jobinfocard key={index} id={value.Id} Name={value.Name} Category={value.category} photo={value.photo} companyName={value.companyName}/>
        )
@@ -158,8 +159,8 @@ function Home() {
      : job.map((value,index)=>{
      
 
-        if(value.Date.slice(9,13)>year || value.Date.slice(9,13)==year && value.Date.slice(3,5)>month || 
-        value.Date.slice(9,13)==year && value.Date.slice(3,5)==month && value.Date.slice(6,8)>day){
+        if( value.Date.slice(9,13)>year || value.Date.slice(9,13)==year && value.Date.slice(3,5)>month || 
+        value.Date.slice(9,13)==year && value.Date.slice(3,5)==month && value.Date.slice(6,8)>day || value.Date=='null'){
           return(
             <Jobinfocard key={index} id={value.Id} Name={value.Name} Category={value.category} photo={value.photo} companyName={value.companyName}/>
           )
