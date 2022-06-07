@@ -28,6 +28,8 @@ namespace HR_Portalgrad.Models
         public string experienceneed { get; set; }
         public string companyName { get; set; }
         public string jobType { get; set; }
+
+        public string SystemDate { get; set; }
         public List<Applicants> Applicants { get; set; }
         public List<Files> File { get; set; }
     }

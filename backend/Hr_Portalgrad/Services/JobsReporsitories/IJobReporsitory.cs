@@ -22,5 +22,6 @@ namespace HR_Portalgrad.Services.JobsReporsitories
         Task<Jobs> EditJobType(int id, int UserId,string type);
         Task<Jobs> GetSingleJob(int id);
         Task<Jobs> GetApplicantsJob(int id);
+        Task<List<Jobs>> FilteringJobs(string companyName,string jobType,string isRemote,string experience,string Date);
     }
 }

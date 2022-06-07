@@ -126,6 +126,39 @@ namespace HR_Portalgrad.Services.JobsReporsitories
         {
             return await _context.Jobs.ToListAsync();
         }
+        public async Task<List<Jobs>> FilteringJobs(string companyName,string jobType, string isRemote, string experience, string SystemDate)
+        {
+            var jobs = from j in _context.Jobs
+                       select j;
+            if(!string.IsNullOrEmpty(companyName))
+            {
+                jobs = jobs.Where(j => j.companyName.Contains(companyName));
+            }
+            if (!string.IsNullOrEmpty(isRemote))
+            {
+                jobs = jobs.Where(j => j.isRemote.Contains(isRemote));
+            }
+            if (!string.IsNullOrEmpty(experience))
+            {
+                jobs = jobs.Where(j => j.experienceneed.Contains(experience));
+            }
+            if (SystemDate == "New to Old")
+            {
+                jobs = jobs.OrderByDescending(j => j.SystemDate);
+            }
+            if(SystemDate == "Old to New")
+            {
+                jobs=jobs.OrderBy(j=>j.SystemDate);
+            }
+            if (!string.IsNullOrEmpty(jobType))
+            {
+                jobs = jobs.Where(j => j.jobType.Contains(jobType));
+            }
+            
+            return await jobs.ToListAsync();
+           
+        }
+
 
         public async Task<Jobs> GetApplicantsJob(int id)
         {

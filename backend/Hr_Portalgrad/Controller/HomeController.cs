@@ -221,6 +221,11 @@ namespace HR_Portalgrad.Controller
         {
             return await _jobReporsitory.GetAllJobs();
         }
+        [HttpPost("JobsFiltered")]
+        public async Task<List<Jobs>> GetJobsFiltered( [FromBody] FilterRequest filterRequest)
+        {
+            return await _jobReporsitory.FilteringJobs( filterRequest.companyName,filterRequest.jobType,  filterRequest.isRemote,  filterRequest.experience,  filterRequest.SystemDate);
+        }
         [HttpDelete("Jobs/{id?}")]
         public async Task<Jobs> DeleteJobs(int id)
         {
@@ -246,6 +251,7 @@ namespace HR_Portalgrad.Controller
                 experienceneed = job.experienceneed,
                 jobType = job.jobType,
                 companyName = job.companyName,
+                SystemDate=job.SystemDate
             };
             await _jobReporsitory.PostJob(newJob);
             return newJob;
