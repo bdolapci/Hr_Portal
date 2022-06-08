@@ -19,6 +19,8 @@ function JobInfo(){
     const [alert,setAlert] = React.useState(false);
     const [isHide, setIsHide] = React.useState(true);
     const [alert2,setAlert2] = React.useState(false);
+    const [isappliedbefore,setIsappliedbefore] = React.useState(false);
+    const [alert3,setAlert3] = React.useState(false);
     const {id} = useParams();
     const navigate = useNavigate();
    if(JSON.parse(localStorage.getItem("User")) !== null){
@@ -33,6 +35,22 @@ function JobInfo(){
             setIsLoading(false);
         })
       }
+    const getapplicants=async()=>{
+      try {
+        const res=await axios.get("https://localhost:44361/api/Home/Applicants")
+        for(let i=0;i<res.data.length;i++){
+          if(res.data[i].Jobsid==id && res.data[i].UserId==decoded.id){
+            setIsappliedbefore(true);
+          }
+        }
+        
+      } catch (error) {
+          console.log(error);
+      }
+
+    }
+    console.log(isappliedbefore)
+   
      const getUserInfo =()=>{
         setIsLoading(true);
         axios.get(`https://localhost:44361/api/Home`,{
@@ -56,6 +74,13 @@ function JobInfo(){
      }
     
      const applyjob = () =>{
+         if(isappliedbefore==true){
+            setTimeout(() => setAlert3(false), 3000);
+            setAlert3(true);
+         }
+         else{
+
+     
          if(JSON.parse(localStorage.getItem("User")) !== null){
             if(decoded.userRole != "hr" ){
                 navigate("/application/"+id);
@@ -68,13 +93,14 @@ function JobInfo(){
             setTimeout(() => setAlert2(false), 3000);
             setAlert2(true);
         }
+    }
        
      }
 
 
       React.useEffect(()=>{
           getallInfo();
-          
+          getapplicants();
        
         
       },[])
@@ -100,12 +126,14 @@ function JobInfo(){
                  
                  <div className="description" style={{whiteSpace: "pre-wrap",textAlign:"left"}}>{job.description}</div>
                  <Box sx={{justifyContent:"center",alignItems:"center",textAlign:"center"}}>
-                 <Button onClick={()=>{applyjob()}} variant='contained'>Apply Job</Button>
+                     
+                 {job.Date=="closed"?  <Button disabled variant='contained'>Job Closed</Button>:  <Button onClick={()=>{applyjob()}} variant='contained'>Apply Job</Button>}
+                 {alert3 ? <Alert severity="error">You have already applied for this job</Alert> : null}
                  {alert ? <Alert  sx={{marginTop:"2%  "}}  severity="error">It seems like you are using Hr account please use personal account to apply job</Alert> : ""}
                  {alert2 ? <Alert  sx={{marginTop:"2%  "}}  severity="error">It seems like you are not logged in.Please Login or Register</Alert> : ""}
                  </Box>
              </div>
-             <div className="rightpart" style={{width:"20%",boxShadow:"rgb(0 0 0 / 16%) 0px 1px 4px",marginLeft:"5%",borderRadius:"1.125rem",height:"45rem",backgroundColor:"white"}}>
+             <div className="rightpart" style={{width:"20%",boxShadow:"rgb(0 0 0 / 16%) 0px 1px 4px",marginLeft:"5%",borderRadius:"1.125rem",height:"50rem",backgroundColor:"white"}}>
             {job.photo=="" ? <img src={banner} style={{maxWidth:"250px",marginTop:"5%"}} alt="empty"/> :
              <img style={{maxWidth:"250px",maxHeight:"200px",marginTop:"5%"}} src={"https://hrportal.blob.core.windows.net/uploadfile/"+job.photo} alt="banner"></img>}
                   <h3 style={{color:"rgb(25, 118, 210)"}}>Category <br/><span style={{fontWeight:"normal",color:"black"}}>{job.category}</span></h3>
@@ -118,7 +146,8 @@ function JobInfo(){
                
                  
                  <Box sx={{justifyContent:"center",alignItems:"center",textAlign:"center"}}>
-                 <Button onClick={()=>{applyjob()}} variant='contained'>Apply Job</Button>
+                     {job.Date=="closed"?  <Button disabled variant='contained'>Job Closed</Button>:  <Button onClick={()=>{applyjob()}} variant='contained'>Apply Job</Button>}
+                     {alert3 ? <Alert severity="error">You have already applied for this job</Alert> : null}
                  {alert ? <Alert sx={{marginTop:"2%  "}} severity="error">It seems like you are using Hr account please use personal account to apply job</Alert> : ""}
                  {alert2 ? <Alert  sx={{marginTop:"2%  "}}  severity="error">It seems like you are not logged in.Please Login or Register </Alert> : ""}
                  </Box>

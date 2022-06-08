@@ -92,7 +92,7 @@ let f=[0,0,0,0,0,0,0,0,0,0,0,0]
       const today = new Date()
       for(var i=0;i<res.data.length;i++){
         const newDate = new Date(res.data[i].Date)
-        if (today.getTime() <newDate.getTime()) {
+        if (today.getTime() <newDate.getTime() || res.data[i].Date=="null") {
           c.push(a[i])
          
         }
@@ -151,7 +151,7 @@ const renderCustomizedLabel = ({ cx, cy, midAngle, innerRadius, outerRadius, per
   return (
     <>
     {JSON.parse(localStorage.getItem("User")) !== null ?decoded.userRole=="admin" ? 
-    <div style={{backgroundColor:"rgb(248, 248, 248)"}}>
+    <div style={{backgroundColor:"rgb(248, 248, 248)",minHeight:"100vh"}}>
         <Navbar/>
     <SideBar/>
     <div className="container" >

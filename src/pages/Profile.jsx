@@ -32,6 +32,8 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import { useLocation } from 'react-router-dom'
 import Unauthorized from '../components/Unauthorized'
+import NotFound from '../components/NotFound'
+import Spinner from '../components/Spinner'
 function Profile() {
   
   const [open, setOpen] = useState(false);
@@ -82,19 +84,35 @@ function Profile() {
     var token=localStorage.getItem("User");
     var decoded = jwt_decode(token);
    }
+   const [authprofile,setAuthprofile]=React.useState("");
+
+   const getallprofiles=async()=>{
+     setIsLoading(true);
+    const res= await axios.get("https://localhost:44361/api/Home/Profile")
+      for(var i=0;i<res.data.length;i++){
+        if(res.data[i].Id==id){
+          setAuthprofile(res.data[i].Id)
+        }
+
+      }
+      setIsLoading(false);
+     
+   }
 
   React.useEffect(()=>{
+    getallprofiles();
     
-   
 },[]);
-
+  
 const getallInfo = () => {
+  setIsLoading(true);
   axios.get(`https://localhost:44361/api/Home/Profile/${id}`,{
   }).then((res)=>{
       setProfile(res.data);
      
    
   })
+  setIsLoading(false);
 }
 const location = useLocation();
 const content = ()=>{
@@ -127,6 +145,7 @@ const content = ()=>{
 }
 let a=""
 React.useEffect(()=>{
+  setIsLoading(true);
   axios.get("https://localhost:44361/api/Home/JobsApplicantJoin",{
     }).then((res)=>{
       let a=[]
@@ -140,7 +159,7 @@ React.useEffect(()=>{
    
  getallInfo();
  content();
-
+    
  axios.get(`https://localhost:44361/api/Home/ProfileUserJoin`,{
 }).then((res)=>{
    
@@ -152,7 +171,7 @@ React.useEffect(()=>{
    setUser(a);
 
 })
-
+setIsLoading(false);
 },[location])
 React.useEffect(()=>{
   getallInfo();
@@ -160,7 +179,7 @@ React.useEffect(()=>{
  
 },[location])
 
-
+const [isHide, setIsHide] = React.useState(true);
   const [facebook, setFacebook] = React.useState('');
   const [twitter, setTwitter] = React.useState('');
   const [linkedin, setLinkedin] = React.useState('');
@@ -175,7 +194,7 @@ React.useEffect(()=>{
   const [gender,setGender] =React.useState('');
   const [phonenumber,setPhonenumber]=React.useState('');
 
-
+  const [isLoading, setIsLoading] = React.useState(false);
   const [schoolName, setSchoolName] = React.useState("");
 
   const [schoolName2, setSchoolName2] = React.useState("");
@@ -201,6 +220,7 @@ React.useEffect(()=>{
   const [yearsOfExperience,setYearsOfExperience]=React.useState("");
   const [yearsOfExperience2,setYearsOfExperience2]=React.useState("");
   const [yearsOfExperience3,setYearsOfExperience3]=React.useState("");
+  setTimeout(()=>setIsHide(false),500)
   const schoolNameHandler = (e) => {
     setSchoolName(e.target.value);
   };
@@ -843,7 +863,7 @@ try {
         
           return (
             <>
-            {uploadfilealert ? <Alert severity="success" >Your files are being uploaded page will reload automatically when finished</Alert>:""}
+         
            {tableMeta.rowData[0]==0 ? <Button variant="contained" disabled>Upload Documents(Closed)</Button>: <>
            <Button onClick={handleOpen3} variant="contained">Upload Documents</Button> {fileName ==undefined ?  <Button disabled sx={{marginLeft:"2%"}} variant='contained'>Finish Upload</Button>
            : <Button sx={{marginLeft:"2%"}} onClick={()=>{uploadFile(value)}} variant='contained'>Finish Upload</Button>}
@@ -865,6 +885,7 @@ try {
     }
    
   }
+
   async function submitFileData(){
    await axios.post("https://localhost:44361/api/Home/UploadFile", formData)
     .then(res=>{
@@ -887,11 +908,16 @@ try {
   };
   const [value, setValue] = useState('')
   const options3 = useMemo(() => countryList().getData(), [])
+
+
   return (
     <div style={{backgroundColor:"rgb(248, 248, 248) !important",minHeight:"100vh " }}>
    
-    {JSON.parse(localStorage.getItem("User")) ? <>
+    {JSON.parse(localStorage.getItem("User")) && authprofile!="" ? <>
     <Navbar2/>
+    {isLoading ? <Spinner/> :<>
+    
+  
     <br/>
     <div className="page">
         <div className="topside">
@@ -944,8 +970,9 @@ try {
 
               
         <div className="pp">
-          {profile.photo =="banner.jpg" ?  <img src={banner} alt="banner"></img>: 
-           <img src={"https://hrportal.blob.core.windows.net/uploadfile/"+profile.photo} alt="banner"></img> }
+          {profile.photo ?
+          profile.photo =="banner.jpg" ?  <img src={banner} alt="banner"></img>: 
+           <img src={"https://hrportal.blob.core.windows.net/uploadfile/"+profile.photo} alt="banner"></img>: <img src={banner} alt="banner"></img>}
         {JSON.parse(localStorage.getItem("User"))? profile.Userid == decoded.id ?
         <Button 
         onClick={handleOpen}
@@ -1236,6 +1263,7 @@ try {
             </div>
             <div  style={{display:"flex",flexDirection:"column"}}>
              <h4 style={{marginTop:"0px"}}>Third Education</h4> 
+             {console.log(profile.education,"")}
            <Typography><b>School Name:</b>  {profile.education ? schoolName3=="undefined" ? schoolName3=="": schoolName3  : ""}</Typography>
            <Typography><b>Degree:</b>  {profile.education ? degree3=="undefined" ? degree3=="": degree3  : ""}</Typography>
            <Typography><b>GPA: </b> {profile.education ? gpa3=="undefined" ? gpa3=="": gpa3  : ""}</Typography>
@@ -1570,6 +1598,7 @@ try {
             </Modal> 
           </div>
             <div className="activeapplications">           
+            {uploadfilealert ? <Alert severity="success" >Your files are being uploaded page will reload automatically when finished</Alert>:""}
              <MUIDataTable
                 className="table"
                title={<><Box>
@@ -1621,8 +1650,9 @@ try {
       
       </Modal>
     </div>
+    </>}
     <Footer/>
-    </> :<Unauthorized/>}
+    </> :isLoading ? <Spinner/> : !isHide ? <NotFound/> : <Spinner/>}
   
     </div>
   )

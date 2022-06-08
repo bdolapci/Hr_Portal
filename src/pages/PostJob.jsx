@@ -278,7 +278,7 @@ const dat=new Date().toISOString()
                     required
                     onChange={isRemoteHandler}
                     >
-                    <MenuItem value={"Software"}>Remote</MenuItem>
+                    <MenuItem value={"Remote"}>Remote</MenuItem>
                     <MenuItem value={"Hybrid"}>Hybrid</MenuItem>
                     <MenuItem value={"On Place"}>On Place</MenuItem>
                 </Select>

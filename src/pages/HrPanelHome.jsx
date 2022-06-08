@@ -61,7 +61,7 @@ function HrPanelHome() {
       for(var i=0;i<a.length;i++){
         const newDate = new Date(a[i].Date)
         
-        if (today.getTime() <newDate.getTime()) {
+        if (today.getTime() <newDate.getTime() || res.data[i].Date =="null") {
           c.push(a[i])
          
         }

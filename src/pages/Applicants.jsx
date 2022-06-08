@@ -159,7 +159,7 @@ const handleClose3 = () => setOpen3(false);
     {
      ToEmail:`${x}`,
       Subject:"Information about our application",
-      Body:"We are happy to inform you that you have been accepted to the job"+job.Name+"\n" +"Hr for the Job will contact you soon"
+      Body:"We are happy to inform you that you have been accepted to the job"+job.Name+"\n" +"Hr for the Job will contact you soon"+"\n"+"\n"+"This mail is automatic Please do not respond to this mail"
     })
     window.location.reload(true);
      
@@ -185,7 +185,7 @@ const handleClose3 = () => setOpen3(false);
       {
         ToEmail:`${y}`,
         Subject:"Information about our application",
-        Body:"We regret to inform you that you have not been selected for the job:"+job.Name+"\n" +" We wish you successfull carreer",
+        Body:"We regret to inform you that you have not been selected for the job:"+job.Name+"\n" +" We wish you successfull carreer"+"\n"+"\n"+"This mail is automatic Please do not respond to this mail"
       })
       window.location.reload(true);
     

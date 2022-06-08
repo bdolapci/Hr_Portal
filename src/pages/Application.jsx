@@ -415,7 +415,7 @@ try {
             {
              ToEmail:`${userInfo.email}`,
              Subject:"Successfull Application",
-             Body:"Your application has been successfully sent to the company",
+             Body:"Your application has been successfully sent to the company "+singleJob.companyName+"\n"+"\n"+"This mail is automatic Please do not respond to this mail"
             }
           );
         } catch (error) {
