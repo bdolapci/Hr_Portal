@@ -25,27 +25,7 @@ namespace HR_Portalgrad.Services.EmailReporsitories
             _context = context;
            
         }
-        public async Task<int> SendEmailAsync(MailRequest mailRequest)
-        {
-            Random rnd = new Random();
-            var otpcode =rnd.Next(9001 + 100000);
-            var email = new MimeMessage();
-            email.Sender = MailboxAddress.Parse(_mailSettings.Mail);
-            email.To.Add(MailboxAddress.Parse(mailRequest.ToEmail));
-            email.Subject = mailRequest.Subject;
-            var builder = new BodyBuilder();
-            string msg = "Your otp code is: " + otpcode;
-            builder.HtmlBody = msg;
-            email.Body = builder.ToMessageBody();
-            using var smtp = new SmtpClient();
-            smtp.Connect(_mailSettings.Host, _mailSettings.Port, SecureSocketOptions.StartTls);
-            smtp.Authenticate(_mailSettings.Mail, _mailSettings.Password);
-            await smtp.SendAsync(email);
-            smtp.Disconnect(true);
-            return otpcode;
-        }
-
-        public async Task<string> SendEmailSuccess(MailRequest mailRequest,int id,string body)
+        public async Task<string> SendEmailSuccess(MailRequest mailRequest, int id, string body)
         {
             var us = new Jobs { Id = id };
             var email = new MimeMessage();
@@ -62,6 +42,51 @@ namespace HR_Portalgrad.Services.EmailReporsitories
             smtp.Disconnect(true);
             return body;
         }
+        public async Task<int> SendEmailAsync(MailRequest mailRequest)
+        {
+            string clientId = _mailSettings.clientId;
+            string clientSecret = _mailSettings.clientSecret;
+            string fromMail = _mailSettings.Mail;
+            string[] scopes = new string[] { "https://mail.google.com/" };
+            ClientSecrets clientSecrets = new()
+            {
+                ClientId = clientId,
+                ClientSecret = clientSecret
+            };
+            UserCredential userCredential = GoogleWebAuthorizationBroker.AuthorizeAsync(clientSecrets, scopes, "user", CancellationToken.None).Result;
+            //Authorization granted or not required (if the saved access token already available)
+            if (userCredential.Token.IsExpired(userCredential.Flow.Clock))
+            {
+                //The access token has expired, refreshing it
+                if (!userCredential.RefreshTokenAsync(CancellationToken.None).Result)
+                {
+                    return 0;
+                }
+            }
+            Random rnd = new Random();
+            var otpcode =rnd.Next(9001 + 100000);
+            var email = new MimeMessage();
+           
+            email.From.Add(MailboxAddress.Parse(fromMail));
+            email.To.Add(MailboxAddress.Parse(mailRequest.ToEmail));
+            email.Subject = mailRequest.Subject;
+            var builder = new BodyBuilder();
+            string msg = "Your otp code is: " + otpcode;
+            builder.HtmlBody = msg;
+            email.Body = builder.ToMessageBody();
+            using (var client = new SmtpClient())
+            {
+                client.Connect(_mailSettings.Host, _mailSettings.Port, SecureSocketOptions.StartTls);
+                var oauth2 = new SaslMechanismOAuth2(fromMail, userCredential.Token.AccessToken);
+                client.Authenticate(oauth2);
+                await client.SendAsync(email);
+                client.Disconnect(true);
+            }
+           
+            return otpcode;
+        }
+
+
         public async Task<string> SendMail(MailRequest mailRequest,string body)
         {
             try
