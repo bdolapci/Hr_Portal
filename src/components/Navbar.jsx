@@ -58,11 +58,14 @@ function Navbar() {
   
   const handleClose = () => {
     setAnchorEl(null);
-    Navigate(`/profile/${profiledata}`);
   }
   const handle =()=>{
     handleClose();
     logout();
+  }
+
+  const handleProfile = () =>{
+    Navigate(`/profile/${profiledata}`);
   }
   return (
     <header className='header' sx={{margin:"0px"}}>
@@ -113,7 +116,7 @@ function Navbar() {
                 open={Boolean(anchorEl)}
                 onClose={handleClose}
               >
-                <MenuItem  onClick={handleClose}>Profile</MenuItem>
+                <MenuItem  onClick={handleProfile}>Profile</MenuItem>
                 <MenuItem onClick={handle}> Logout</MenuItem>
               </Menu>
             </div>
