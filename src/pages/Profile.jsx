@@ -104,46 +104,47 @@ function Profile() {
     
 },[]);
   
-const getallInfo = () => {
+const getallInfo = async () => {
   setIsLoading(true);
-  axios.get(`https://localhost:44361/api/Home/Profile/${id}`,{
+  await axios.get(`https://localhost:44361/api/Home/Profile/${id}`,{
   }).then((res)=>{
       setProfile(res.data);
-     
+     content(res.data);
    
   })
   setIsLoading(false);
 }
 const location = useLocation();
-const content = ()=>{
- if(profile.education){
-  setSchoolName(profile.education.split(",")[0]);
-  setSchoolName2(profile.education.split(",")[1]);
-  setSchoolName3(profile.education.split(",")[2]);
-  setDegree(profile.education.split(",")[3]);
-  setDegree2(profile.education.split(",")[4]);
-  setDegree3(profile.education.split(",")[5]);
-  setGpa(profile.education.split(",")[6]);
-  setGpa2(profile.education.split(",")[7]);
-  setGpa3(profile.education.split(",")[8]);
-  setEducationdate(profile.education.split(",")[9]);
-  setEducationdate2(profile.education.split(",")[10]);
-  setEducationdate3(profile.education.split(",")[11]);
-  setCompanyName(profile.experience.split(",")[0]);
-  setCompanyName2(profile.experience.split(",")[1]);
-  setCompanyName3(profile.experience.split(",")[2]);
-  setJobTitle(profile.experience.split(",")[3]);
-  setJobTitle2(profile.experience.split(",")[4]);
-  setJobTitle3(profile.experience.split(",")[5]);
-  setJobDescription(profile.experience.split(",")[6]);
-  setJobDescription2(profile.experience.split(",")[7]);
-  setJobDescription3(profile.experience.split(",")[8]);
-  setYearsOfExperience(profile.experience.split(",")[9]);
-  setYearsOfExperience2(profile.experience.split(",")[10]);
-  setYearsOfExperience3(profile.experience.split(",")[11]);
+const content = (a)=>{
+ if(a.education){
+  setSchoolName(a.education.split(",")[0]);
+  setSchoolName2(a.education.split(",")[1]);
+  setSchoolName3(a.education.split(",")[2]);
+  setDegree(a.education.split(",")[3]);
+  setDegree2(a.education.split(",")[4]);
+  setDegree3(a.education.split(",")[5]);
+  setGpa(a.education.split(",")[6]);
+  setGpa2(a.education.split(",")[7]);
+  setGpa3(a.education.split(",")[8]);
+  setEducationdate(a.education.split(",")[9]);
+  setEducationdate2(a.education.split(",")[10]);
+  setEducationdate3(a.education.split(",")[11]);
+  setCompanyName(a.experience.split(",")[0]);
+  setCompanyName2(a.experience.split(",")[1]);
+  setCompanyName3(a.experience.split(",")[2]);
+  setJobTitle(a.experience.split(",")[3]);
+  setJobTitle2(a.experience.split(",")[4]);
+  setJobTitle3(a.experience.split(",")[5]);
+  setJobDescription(a.experience.split(",")[6]);
+  setJobDescription2(a.experience.split(",")[7]);
+  setJobDescription3(a.experience.split(",")[8]);
+  setYearsOfExperience(a.experience.split(",")[9]);
+  setYearsOfExperience2(a.experience.split(",")[10]);
+  setYearsOfExperience3(a.experience.split(",")[11]);
  }
 }
 let a=""
+console.log()
 React.useEffect(()=>{
   setIsLoading(true);
   axios.get("https://localhost:44361/api/Home/JobsApplicantJoin",{
@@ -158,9 +159,13 @@ React.useEffect(()=>{
     })
    
  getallInfo();
- content();
     
- axios.get(`https://localhost:44361/api/Home/ProfileUserJoin`,{
+ 
+setIsLoading(false);
+},[])
+
+React.useEffect(()=>{
+  axios.get(`https://localhost:44361/api/Home/ProfileUserJoin`,{
 }).then((res)=>{
    
    for(var i=0;i<res.data.length;i++){
@@ -171,13 +176,12 @@ React.useEffect(()=>{
    setUser(a);
 
 })
-setIsLoading(false);
-},[location])
+},[])
 React.useEffect(()=>{
   getallInfo();
-  content();
- 
-},[location])
+},[])
+
+
 
 const [isHide, setIsHide] = React.useState(true);
   const [facebook, setFacebook] = React.useState('');
@@ -322,6 +326,7 @@ const [isHide, setIsHide] = React.useState(true);
   }
   const [uploadfilealert,setUploadfilealert] = React.useState(false);
   const [alert1,setAlert1]=React.useState(false);
+  
   const uploadFile =async (Id)=>{
     setUploadfilealert(true);
     const nameoffile=decoded.id+"_"+Id+"_"+fileName

@@ -325,7 +325,7 @@ const [successalert,setSuccessalert]=React.useState(false)
       setTimeout(()=>setIsHide(false),500)
      
   return (
-   <div style={{backgroundColor:"rgb(248, 248, 248)",minHeight:"105vh"}}>
+   <div style={{backgroundColor:"rgb(248, 248, 248)",height:"120vh"}}>
   { JSON.parse(localStorage.getItem("User")) !== null ?decoded.userRole=="hr" && getJob.UserId ==decoded.id ?<>
   <Navbar/>
    <SideBar/>
