@@ -110,7 +110,7 @@ function JobInfo(){
       setTimeout(()=>setIsHide(false),500)
     return(
         
-        <div style={{backgroundColor:"rgb(248, 248, 248)",minHeight:"100vh"}}>
+        <div style={{backgroundColor:"rgb(251, 251, 251)",minHeight:"100vh"}}>
         {id==job.Id ? <>
             <Navbar2 />
         {isLoading ? <Spinner /> :
@@ -142,8 +142,8 @@ function JobInfo(){
                   <h3 style={{color:"rgb(25, 118, 210)"}}>Job Experience <br/><span style={{fontWeight:"normal",color:"black"}}>{job.experienceneed}</span></h3>
                  <h3 style={{color:"rgb(25, 118, 210)"}}>HR Name <br/><span style={{fontWeight:"normal",color:"black"}}> {user.firstName} {user.lastName} </span></h3>
                  <h3 style={{color:"rgb(25, 118, 210)"}}>HR Email <br/> <span style={{fontWeight:"normal",color:"black"}}>{user.email}</span></h3>
-                 <Button href={profile.Linkedin}><LinkedInIcon>{profile.Linkedin}</LinkedInIcon></Button>
-               
+                 {profile.Linkedin !="" ? <Button href={profile.Linkedin}><LinkedInIcon>{profile.Linkedin}</LinkedInIcon></Button>
+               : ""}
                  
                  <Box sx={{justifyContent:"center",alignItems:"center",textAlign:"center"}}>
                      {job.Date=="closed"?  <Button disabled variant='contained'>Job Closed</Button>:  <Button onClick={()=>{applyjob()}} variant='contained'>Apply Job</Button>}

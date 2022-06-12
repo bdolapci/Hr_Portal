@@ -180,7 +180,7 @@ const options = {
   
       <>
         {JSON.parse(localStorage.getItem("User")) !== null ?decoded.userRole =="admin" ?
-        <div style={{backgroundColor:"rgb(248, 248, 248)",minHeight:"100vh"}}>
+        <div style={{backgroundColor:"rgb(251, 251, 251)",minHeight:"100vh"}}>
          <Navbar/>
     <SideBar/>
     <div className="container">

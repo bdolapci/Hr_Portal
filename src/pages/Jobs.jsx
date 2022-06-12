@@ -254,7 +254,7 @@ const getApplicantsforJob=async (Id)=>{
     };
     
   return (
-    <div style={{backgroundColor:"rgb(248, 248, 248)",minHeight:"140vh"}}>
+    <div style={{backgroundColor:"rgb(251, 251, 251)",minHeight:"140vh"}}>
       {JSON.parse(localStorage.getItem("User")) !== null ?decoded.userRole=="hr" ?<>
       <Navbar/>
    <SideBar/>

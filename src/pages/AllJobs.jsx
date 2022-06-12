@@ -291,7 +291,7 @@ const paginate = pageNumber => setCurrentPage(pageNumber);
   return (
     <>
       <div style={{
-        backgroundColor: "rgb(248 248 248)",minHeight:"100vh",display:"flex",minHeight:"100vh",flexDirection:"column",
+       backgroundColor:"rgb(251, 251, 251)",minHeight:"100vh",display:"flex",minHeight:"100vh",flexDirection:"column",
         justifyContent:"space-between"}}> 
 
     <Navbar2/>

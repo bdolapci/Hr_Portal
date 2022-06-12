@@ -916,7 +916,7 @@ try {
 
 
   return (
-    <div style={{backgroundColor:"rgb(248, 248, 248) !important",minHeight:"100vh " }}>
+    <div style={{backgroundColor:"rgb(251, 251, 251) !important",minHeight:"100vh " }}>
    
     {JSON.parse(localStorage.getItem("User")) && authprofile!="" ? <>
     <Navbar2/>

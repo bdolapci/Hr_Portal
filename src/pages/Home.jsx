@@ -18,22 +18,38 @@ import { useParams } from 'react-router-dom';
 import Unauthorized from '../components/Unauthorized';
 import Jobinfocard from '../components/Jobinfocard';
 import Spinner from '../components/Spinner';
+import signin from '../pictures/singin.jpg';
+import cowork from '../pictures/cowork.svg';
+import share from '../pictures/share.svg';
 function Home() {
 
   const [isLoading, setIsLoading] = React.useState(false);
   const [isHide, setIsHide] = React.useState(true);
   const[job,setJob]=React.useState([]);
   const [getJobInfo, setGetJobInfo] = React.useState("");
+  const [getopThree, setGetopThree] = React.useState("");
+   const text2=["Everywhere","Office","Home"]
+
+    const [newName2, setnewName2] = React.useState("");
   let Navigate = useNavigate();
   let a  =[]
   let b = []
-  let c = []
   const deneme = async()=>{
     setIsLoading(true);
     try{
       const res = await axios.get("https://localhost:44361/api/Home/Jobs")
       for(var i = 0; i<res.data.length; i++){
           a.push(res.data[i])
+      }
+      let c = res.data.map((x=>x.category))
+      const count ={}
+      for(const element of c){
+        if(count[element]){
+          count[element]++
+        }
+        else{
+          count[element] = 1
+        }
       }
       a.reverse()
       if(a.length>=10){
@@ -83,7 +99,10 @@ function Home() {
         }
       }
       setJob(b)
-     
+
+
+      setGetopThree(count)
+
       setIsLoading(false);
     }
     catch(error){
@@ -95,9 +114,20 @@ function Home() {
       deneme()
     },[])
 
+    const shuffle2=React.useCallback(()=>{
+      const index2= Math.floor(Math.random() * text2.length);
+      setnewName2(text2[index2]);
+    },[])
+
+  useEffect(() => {
+    const intervalID2 = setInterval(shuffle2, 2000);
+    return () => {
+
+      clearInterval(intervalID2);
+    }
+}, [shuffle2])
+
 //console.log(job[1].Name)
-
-
     const gridstyle={
       display:"grid",
       gridRow:" auto auto",
@@ -124,17 +154,47 @@ function Home() {
       }
     })
   },[input])
-  console.log(output,input.length)
+  
   return (
 
       <div style={{
-        backgroundColor: "rgb(248 248 248)",minHeight:"100vh",display:"flex",minHeight:"100vh",flexDirection:"column",
+        backgroundColor: "rgb(251 251 251)",minHeight:"100vh",display:"flex",flexDirection:"column",
         justifyContent:"space-between"}}> 
 
     <Navbar2/>
   
         {isLoading ? <Spinner/> :
         <>
+        <Box sx={{display:"flex",flexDirection:"row",justifyContent:"center",}}>
+          <Box sx={{marginRight:"3rem",alignItems:"center",textAlign:"center",display:"flex",flexDirection:"column",
+          justifyContent:"space-around"}}>
+          <Typography variant="h4"><span style={{color:"rgb(25, 118, 210)"}}>Discover</span> new Opportunities</Typography>
+          <Typography variant="h5">Top Three Category</Typography>
+          <ul>
+          {Object.keys(getopThree).map((key,index)=>{
+            return(
+              <li style={{textAlign:"start",color:"rgb(25, 118, 210)"}} key={index}> <Typography variant='h5' sx={{color:"black"}}>{key}</Typography></li>
+            )
+          })}
+          
+            
+          </ul>
+          </Box>
+          <Box>
+          <img  style={{width:"25rem"}} className='signinsvg' src={share} alt="signin" />
+          </Box>
+        </Box>
+        <Box sx={{display:"flex",flexDirection:"row-reverse",justifyContent:"center",}}>
+          <Box sx={{alignItems:"center",textAlign:"center",display:"flex",flexDirection:"column",
+          justifyContent:"center",width: "24rem"}}>
+          <Typography variant="h4">Work from <span style={{color:"rgb(25, 118, 210)"}}>{newName2}</span></Typography>
+         
+        
+          </Box>
+          <Box sx={{marginRight:"3rem"}}>
+          <img style={{width:"25rem"}}  className='signinsvg' src={cowork} alt="signin" />
+          </Box>
+        </Box>
           <Box sx={{marginTop:"8%"}}><TextField 
   sx={{ marginBottom:"2%",width:"40%",backgroundColor:"white"  }}
   placeholder="Search Job"

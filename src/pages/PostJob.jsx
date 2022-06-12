@@ -147,7 +147,7 @@ const dat=new Date().toISOString()
     display: 'none',
   });
   return (
-    <div style={{backgroundColor:"rgb(248, 248, 248)",height:"120vh"}}>
+    <div style={{backgroundColor:"rgb(251, 251, 251)",height:"120vh"}}>
    {JSON.parse(localStorage.getItem("User")) !== null ?decoded.userRole =="hr" ? <>
    <Navbar/>
     <SideBar/>

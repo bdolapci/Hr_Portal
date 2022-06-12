@@ -36,7 +36,7 @@ function Categories() {
     }
     
   return (
-    <div style={{backgroundColor:"rgb(248, 248, 248)"}}>
+    <div style={{backgroundColor:"rgb(251, 251, 251)"}}>
     
     <Navbar2/>
     <Typography style={{textAlign:"center",marginTop:"5%",fontSize:"84px",letterSpacing:"3px",color:"rgb(25, 118, 210)"}}>Categories</Typography>

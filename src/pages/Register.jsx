@@ -109,7 +109,7 @@ const options2=[
   
   const label = { inputProps: { 'aria-label': 'Checkbox demo' } }
   return (
-      <div style={{backgroundColor:"rgb(248, 248, 248)",minHeight:"100vh"}}>
+      <div style={{backgroundColor:"rgb(251, 251, 251)",minHeight:"100vh"}}>
       <CssBaseline />
     <header className='header' style={{margin:"0 auto 0 auto",width:"50%",borderRadius:"0 0 3rem 3rem"}}>
       <div className="logo">

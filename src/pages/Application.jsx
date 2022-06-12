@@ -425,7 +425,7 @@ try {
       }
      setTimeout(()=>setIsHide(false),500)
   return (
-   <div style={{backgroundColor:"rgb(248, 248, 248)"}}>
+   <div style={{backgroundColor:"rgb(251, 251, 251)"}}>
   {singleJob && user ? <>  <Navbar2/>
   {isLoading? <Spinner/>:
      <div className="container" style={{marginTop:"3%",marginBottom:"3%"}}>
@@ -462,7 +462,7 @@ try {
 </div>
                <label style={{marginTop:"4%"}}>Please upload the files that wanted in Job Description</label>
                <label>You can upload up to 4 files</label>
-               <div className="divupload" style={{marginTop:"4%",display:"flex",justifyContent:"center",flexDirection:"column",alignItems:"center"}}>         
+          <div className="divupload" style={{marginTop:"4%",display:"flex",justifyContent:"center",flexDirection:"column",alignItems:"center"}}>         
           <input style={stylediv} type="file"  onChange={saveFile}/>
 <input style={stylediv} type="file"  onChange={saveFile2}/>
  <input style={stylediv} type="file"  onChange={saveFile3}/>
