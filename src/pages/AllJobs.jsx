@@ -295,7 +295,7 @@ const paginate = pageNumber => setCurrentPage(pageNumber);
         justifyContent:"space-between"}}> 
 
     <Navbar2/>
-      
+    <Typography color="rgb(25, 118, 210)" variant="h3" sx={{justifyContent:"center",textAlign:"center",marginTop:"5rem"}}>{categories}</Typography>
       <div className="containerall" style={{display:"flex",flexDirection:"row",justifyContent:"center",width:"60%",margin:"0 0 0 17%"}}>
       {isLoading ? <Spinner/> :
         <>
@@ -312,7 +312,7 @@ const paginate = pageNumber => setCurrentPage(pageNumber);
             getfilter()
 
         }}>
-
+            
         <div style={{display:"flex",flexDirection:"column",width:"100%",textAlign:"start",justifyContent:"start"}}>
         <Box sx={{display:"flex",flexDirection:"column"}}>  
         <label>Company Name</label>

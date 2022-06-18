@@ -167,13 +167,14 @@ function Home() {
         <>
         <Box sx={{display:"flex",flexDirection:"row",justifyContent:"center",}}>
           <Box sx={{marginRight:"3rem",alignItems:"center",textAlign:"center",display:"flex",flexDirection:"column",
-          justifyContent:"space-around"}}>
+          justifyContent:"center"}}>
           <Typography variant="h4"><span style={{color:"rgb(25, 118, 210)"}}>Discover</span> new Opportunities</Typography>
-          <Typography variant="h5">Top Three Category</Typography>
-          <ul>
+        
+          <ul style={{listStyle:"none",padding:0}}>
           {Object.keys(getopThree).map((key,index)=>{
             return(
-              <li style={{textAlign:"start",color:"rgb(25, 118, 210)"}} key={index}> <Typography variant='h5' sx={{color:"black"}}>{key}</Typography></li>
+              <li style={{color:"rgb(25, 118, 210)",textAlign:"center",marginBottom:"15px"}} key={index}> 
+              <Typography variant='h5' sx={{color:"black"}}>{key}</Typography></li>
             )
           })}
           

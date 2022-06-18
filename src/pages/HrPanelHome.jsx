@@ -35,6 +35,7 @@ function HrPanelHome() {
   let g=[]
   let h=[]
   let s=[]
+  let k=[]
   const getJobs =async()=>{
     try {
       const res =await axios.get("https://localhost:44361/api/Home/Jobs")
@@ -136,12 +137,14 @@ function HrPanelHome() {
           continue;
         }
       }
-     
+      for(var i=0;i<s.length;i++){
+        k.push(s[i].Name)
+      }
 
       setLast5applicants(appnumber)
       
     
-      setLast5jobs(s)
+      setLast5jobs(k)
       setWaitingapplicants(h.length)
       setAccpetedApplicants(f.length)
       setRejectedApplicants(g.length)
@@ -152,7 +155,7 @@ function HrPanelHome() {
       console.log(error)
     }
   }
-  console.log(last5applicants,last5jobs,"")
+  console.log(last5applicants,last5jobs,"a")
   React.useEffect(()=>{
     getJobs()
  
@@ -180,11 +183,11 @@ function HrPanelHome() {
     );
   };
   const data4=[
-    {name:"Last Closed",value:last5applicants[0]},
-    {name:"Fourth Closed",value:last5applicants[1]},
-    {name:"Third Closed",value:last5applicants[2]},
-    {name:"Second Closed",value:last5applicants[3]},
-    {name:"First Closed",value:last5applicants[4]},
+    {name:last5jobs[0],value:last5applicants[0]},
+    {name:last5jobs[1],value:last5applicants[1]},
+    {name:last5jobs[2],value:last5applicants[2]},
+    {name:last5jobs[3],value:last5applicants[3]},
+    {name:last5jobs[4],value:last5applicants[4]},
   ]
 
   return (
