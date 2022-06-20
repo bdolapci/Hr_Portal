@@ -30,6 +30,7 @@ function AllJobs() {
   const [isLoading, setIsLoading] = React.useState(false);
   const [isHide, setIsHide] = React.useState(true);
   const[job,setJob]=React.useState([]);
+  const [categoryjob,setCategoryjob]=React.useState([]);
   const [getJobInfo, setGetJobInfo] = React.useState("");
   const [isRemote,setIsRemote]=React.useState("")
   const [jobType,setJobtype]=React.useState("")
@@ -106,8 +107,12 @@ function AllJobs() {
           b[i].Date = b[i].Date.replace("Dec",12)
         }
       }
+      if(categories !== undefined){
+        setCategoryjob(b.filter(x=>x.category.includes(categories)))
+      }
+      else{
       setJob(b)
-     
+      }
       setIsLoading(false);
     }
     catch(error){
@@ -227,9 +232,9 @@ function AllJobs() {
     marginTop:"5rem",
     width:"80%"
 }
-  
+
 const Cards=({job})=>{
-    
+  console.log(job)
   return(
     <>
       { job.map((value,index)=>{
@@ -286,13 +291,13 @@ const indexOfFirstPost = indexOfLastPost - postsPerPage;
 const currentPosts = job.slice(indexOfFirstPost, indexOfLastPost);
 const paginate = pageNumber => setCurrentPage(pageNumber);
 
-
+const currentPost2 =categoryjob.slice(indexOfFirstPost, indexOfLastPost);
 
   return (
     <>
       <div style={{
        backgroundColor:"rgb(251, 251, 251)",minHeight:"100vh",display:"flex",minHeight:"100vh",flexDirection:"column",
-        justifyContent:"space-between"}}> 
+       }}> 
 
     <Navbar2/>
     <Typography color="rgb(25, 118, 210)" variant="h3" sx={{justifyContent:"center",textAlign:"center",marginTop:"5rem"}}>{categories}</Typography>
@@ -393,21 +398,31 @@ const paginate = pageNumber => setCurrentPage(pageNumber);
         </form>
     </Box>
        
-        {console.log(job)}
+    
     <div style={gridstyle} className="grid">
+    {categories !=undefined ? <>
+      <Cards job={currentPost2}/>
+      <Pagination
+        cardPerPage={postsPerPage}
+        totalCardds={categoryjob.length}
+        paginate={paginate}
+        />
+    </> :<>
     <Cards job={currentPosts}/>
     <Pagination
         cardPerPage={postsPerPage}
         totalCardds={job.length}
         paginate={paginate}
         />
+    </>}
+    
 
    </div> 
   
         </>}
 
       </div>
-      <div style={{color:"white",background: "rgb(21, 101, 192)",bottom:"0",height:"2rem",width:"100%", boxShadow:" 0px 2px 4px -1px rgb(0 0 0 / 20%), 0px 4px 5px 0px rgb(0 0 0 / 14%), 0px 1px 10px 0px rgb(0 0 0 / 12%)"}}>
+      <div style={{color:"white",background: "rgb(21, 101, 192)",bottom:"0",height:"2rem",width:"100%",position:"fixed", boxShadow:" 0px 2px 4px -1px rgb(0 0 0 / 20%), 0px 4px 5px 0px rgb(0 0 0 / 14%), 0px 1px 10px 0px rgb(0 0 0 / 12%)"}}>
         <div className="mid"  style={{justifyContent:"center",textAlign:"center",alignItems:"center"}}>2022 HrPortal. All rights reserved
   </div>
     </div>
