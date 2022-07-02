@@ -5,8 +5,8 @@ Our aim is to provide a site where users can easily apply for jobs and small com
 in same place which it will cost them less and make things easier for job appliers. 
 
 To start the project <br/>
-Go to backend and run sln <br/>
-Go to frontend and npm install then npm start <br/>
+Go to backend branch and run sln <br/>
+Go to frontend branch and npm install then npm start <br/>
 !İmportant note since this system use azure storage you should open for yourself and add the connection string.
 
 Functional Requirements<br/>
